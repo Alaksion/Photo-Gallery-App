@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.mvisample"
+
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.mvisample"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
@@ -33,20 +34,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
-    }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
+
     implementation(platform("androidx.compose:compose-bom:2022.10.00"))
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
