@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "MviSample"
-include ':app'
-include ':platform:uistate'
+include(":app")
+include(":platform:uistate")
