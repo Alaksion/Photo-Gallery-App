@@ -12,6 +12,10 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+
 rootProject.name = "MviSample"
 include(":app")
 include(":platform:uistate")

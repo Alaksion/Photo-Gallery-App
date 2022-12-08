@@ -1,25 +1,22 @@
 package com.example.mvisample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.mvisample.ui.components.ObjectiveCardView
+import androidx.compose.ui.platform.LocalContext
 import com.example.mvisample.ui.theme.MviSampleTheme
+import com.example.uievent.UiEventEffect
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
@@ -28,29 +25,29 @@ class MainActivity : ComponentActivity() {
         setContent {
             MviSampleTheme {
                 val viewModel by viewModels<MainViewModel>()
+                val context = LocalContext.current
+
+                UiEventEffect(
+                    eventHandler = viewModel,
+                    onEventReceived = {
+                        Toast.makeText(
+                            context, it.name,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                )
+
                 // A surface container using the 'background' color from the theme
-                Scaffold(topBar = {
-                    TopAppBar(title = { Text("My Objectives") }, actions = {
-                        IconButton(
-                            onClick = { /*TODO*/ }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null,
-                            )
-                        }
-                    })
-                }) {
-                    LazyColumn(
-                        modifier = Modifier.padding(it),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                Scaffold {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(it),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        items(viewModel.objectives) { card ->
-                            ObjectiveCardView(
-                                data = card,
-                                actions = {},
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            )
+
+                        Button(onClick = { /*TODO*/ }) {
+                            Text("Send UI event")
                         }
                     }
                 }
