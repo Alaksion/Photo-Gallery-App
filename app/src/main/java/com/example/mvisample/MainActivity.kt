@@ -34,10 +34,10 @@ class MainActivity : ComponentActivity() {
                             context, it.name,
                             Toast.LENGTH_SHORT
                         ).show()
+                        viewModel.consumeEvent(it)
                     }
                 )
 
-                // A surface container using the 'background' color from the theme
                 Scaffold {
                     Column(
                         modifier = Modifier
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        Button(onClick = { /*TODO*/ }) {
+                        Button(onClick = { viewModel.receiveEvent() }) {
                             Text("Send UI event")
                         }
                     }

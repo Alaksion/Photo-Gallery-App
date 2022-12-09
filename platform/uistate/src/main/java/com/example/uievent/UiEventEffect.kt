@@ -22,7 +22,6 @@ fun <T : UiEvent> UiEventEffect(
             lifecycleOwner = lifecycleOwner,
             onEventReceived = {
                 onEventReceived(it)
-                eventHandler.consumeEvent(it)
             }
         )
     }
