@@ -7,10 +7,19 @@ import kotlinx.coroutines.flow.update
 
 interface UiEventHandler<T : UiEvent> {
 
+    /**
+     * Events held by this handler
+     * */
     val events: StateFlow<List<T>>
 
+    /**
+     * Enqueue a new event to the UiEvents queue
+     * */
     suspend fun enqueueEvent(event: T)
 
+    /**
+     * Notify the handler to remove an event that has been consumed
+     * */
     fun consumeEvent(event: T)
 
 }
