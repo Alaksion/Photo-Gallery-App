@@ -5,19 +5,28 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModelProvider
+import androidx.compose.ui.unit.dp
 import com.example.mvisample.ui.theme.MviSampleTheme
 import com.example.uievent.UiEventEffect
+import com.example.uistate.UiStateContent
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
@@ -29,6 +38,7 @@ class MainActivity : ComponentActivity() {
                     factoryProducer = { MainViewModelProvider() }
                 )
                 val context = LocalContext.current
+                val state = viewModel.uiState.collectAsState().value
 
                 UiEventEffect(
                     eventHandler = viewModel,
@@ -41,19 +51,52 @@ class MainActivity : ComponentActivity() {
                     }
                 )
 
-                Scaffold {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(it),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-
-                        Button(onClick = { viewModel.receiveEvent() }) {
-                            Text("Send UI event")
+                state.UiStateContent(
+                    stateContent = {
+                        MainView(
+                            state = it,
+                            handleIntent = viewModel::handleIntent
+                        )
+                    },
+                    loadingState = {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator()
                         }
+                    },
+                    errorState = {
+
                     }
+                )
+            }
+        }
+    }
+
+    @Composable
+    internal fun MainView(
+        state: MainState,
+        handleIntent: (MainIntent) -> Unit
+    ) {
+        Scaffold {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = { handleIntent(MainIntent.SendEvent) }) {
+                    Text("Send UI event")
                 }
+                Spacer(Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = state.mock,
+                    onValueChange = { text -> handleIntent(MainIntent.UpdateText(text)) },
+                    modifier = Modifier.fillMaxWidth()
+
+                )
             }
         }
     }

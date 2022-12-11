@@ -20,12 +20,12 @@ abstract class UiStateViewModel<T>(
     protected val currentState = MutableStateFlow(initialState)
 
     protected fun setState(
+        showLoading: Boolean = true,
         block: suspend (T) -> T,
-        showLoading: Boolean = true
     ) {
         if (showLoading) mutableUiState.value = UiState.Loading
 
-        viewModelScope.launch(dispatcher) {
+        runSuspend {
             runCatching {
                 block(currentState.value)
             }.fold(
@@ -37,6 +37,14 @@ abstract class UiStateViewModel<T>(
                     mutableUiState.value = UiState.Error(exception)
                 }
             )
+        }
+    }
+
+    protected fun runSuspend(
+        block: suspend () -> Unit
+    ) {
+        viewModelScope.launch(dispatcher) {
+            block()
         }
     }
 

@@ -2,14 +2,12 @@ package com.example.mvisample
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.example.uievent.UiEvent
 import com.example.uievent.UiEventHandler
 import com.example.uievent.UiEventHandlerImpl
 import com.example.uistate.UiStateViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.UUID
 
 
@@ -20,13 +18,27 @@ internal enum class SampleEvents(override val eventId: UUID) : UiEvent {
 
 internal class MainViewModel(
     dispatcher: CoroutineDispatcher
-) :
-    UiStateViewModel<MainState>(MainState(), dispatcher),
+) : UiStateViewModel<MainState>(MainState(), dispatcher),
     UiEventHandler<SampleEvents> by UiEventHandlerImpl() {
 
-    fun receiveEvent() {
-        viewModelScope.launch {
+    fun handleIntent(intent: MainIntent) {
+        when (intent) {
+            is MainIntent.SendEvent -> receiveEvent()
+            is MainIntent.UpdateText -> updateText(intent.text)
+        }
+    }
+
+    private fun receiveEvent() {
+        runSuspend {
             enqueueEvent(SampleEvents.Hello)
+        }
+    }
+
+    private fun updateText(text: String) {
+        setState(
+            showLoading = false
+        ) { currentState ->
+            currentState.copy(mock = text)
         }
     }
 
