@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
 import com.example.mvisample.ui.theme.MviSampleTheme
 import com.example.uievent.UiEventEffect
 
@@ -24,7 +25,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MviSampleTheme {
-                val viewModel by viewModels<MainViewModel>()
+                val viewModel by viewModels<MainViewModel>(
+                    factoryProducer = { MainViewModelProvider() }
+                )
                 val context = LocalContext.current
 
                 UiEventEffect(
