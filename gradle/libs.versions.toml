@@ -1,0 +1,37 @@
+[versions]
+androidX-ktx-core = "1.9.0"
+androidX-lifecycle-runtime = "2.5.1"
+
+androidX-compose-activity = "1.6.1"
+androidX-compose-bom = "2022.10.00"
+
+androidX-test-junit = "1.1.4"
+androidX-test-espresso = "3.5.0"
+
+junit = "4.13.2"
+
+[libraries]
+
+androidX-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidX-compose-bom" }
+androidX-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidX-compose-activity" }
+
+androidX-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidX-lifecycle-runtime" }
+androidX-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidX-ktx-core" }
+
+
+androiX-compose-ui = { module = "androidx.compose.ui:ui" }
+androiX-compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androiX-compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androiX-compose-material3 = { module = "androidx.compose.material3:material3" }
+
+junit = { module = "junit:junit", version.ref = "junit" }
+androidX-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidX-test-junit" }
+androidX-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidX-test-espresso" }
+
+androidX-compose-test-junit = { module = "androidx.compose.ui:ui-test-junit4" }
+androidX-compose-debug-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidX-compose-debug-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+[plugins]
+
+[bundles]
