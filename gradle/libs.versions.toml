@@ -19,10 +19,10 @@ androidX-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-kt
 androidX-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidX-ktx-core" }
 
 
-androiX-compose-ui = { module = "androidx.compose.ui:ui" }
-androiX-compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
-androiX-compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-androiX-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidX-compose-ui = { module = "androidx.compose.ui:ui" }
+androidX-compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androidX-compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidX-compose-material3 = { module = "androidx.compose.material3:material3" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 androidX-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidX-test-junit" }

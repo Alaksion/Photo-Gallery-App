@@ -42,22 +42,24 @@ android {
 
 dependencies {
 
-    implementation(projects.platform.uicomponents)
-    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    testImplementation("junit:junit:4.13.2")
+    implementation(projects.platform.uistate)
 
-    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    implementation(platform(libs.androidX.compose.bom))
+    implementation(libs.androidX.core.ktx)
+    implementation(libs.androidX.lifecycle.runtime)
+    implementation(libs.androidX.compose.activity)
+    implementation(libs.androidX.compose.ui)
+    implementation(libs.androidX.compose.graphics)
+    implementation(libs.androidX.compose.tooling.preview)
+    implementation(libs.androidX.compose.material3)
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    testImplementation(libs.junit)
+
+    androidTestImplementation(platform(libs.androidX.compose.bom))
+    androidTestImplementation(libs.androidX.compose.test.junit)
+    androidTestImplementation(libs.androidX.test.espresso)
+    androidTestImplementation(libs.androidX.test.junit)
+
+    debugImplementation(libs.androidX.compose.debug.tooling)
+    debugImplementation(libs.androidX.compose.debug.manifest)
 }
