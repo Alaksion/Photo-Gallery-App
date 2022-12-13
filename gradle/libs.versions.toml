@@ -5,6 +5,7 @@ androidX-lifecycle-viewmodel = "2.5.1"
 
 androidX-compose-activity = "1.6.1"
 androidX-compose-bom = "2022.10.00"
+androidX-compose-compiler = "1.3.2"
 
 androidX-test-junit = "1.1.4"
 androidX-test-espresso = "3.5.0"
