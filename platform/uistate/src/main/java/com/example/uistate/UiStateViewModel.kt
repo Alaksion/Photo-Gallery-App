@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 abstract class UiStateViewModel<T>(
-    private val initialState: T,
+    initialState: T,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
