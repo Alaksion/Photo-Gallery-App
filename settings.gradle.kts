@@ -14,9 +14,6 @@ dependencyResolutionManagement {
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
+apply(from = "./includes.gradle.kts")
 
 rootProject.name = "MviSample"
-include(":app")
-include(":platform:uistate")
-include(":platform:uicomponents")
