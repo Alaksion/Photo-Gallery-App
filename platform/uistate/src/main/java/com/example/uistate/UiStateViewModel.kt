@@ -23,7 +23,7 @@ abstract class UiStateViewModel<T>(
 
     /**
      * Use this function to update the UiState once. Any unhandled exception thrown will automatically update the
-     * UiState to Error.
+     * UiState to [UiState.Error].
      *
      * @param showLoading Whether or not the loading state should be displayed while the suspend block is suspended. By default it's true.
      * @param block Suspend block responsible for the UiState update.
@@ -51,7 +51,7 @@ abstract class UiStateViewModel<T>(
 
     /**
      * Use this to update the state multiple times in a single block. Any unhandled exceptions will automatically
-     * update the UiState to Error.
+     * update the UiState to [UiState.Error].
      *
      * @param showLoading Whether or not the loading state should be set at the start of the suspended block. By default it's true
      * @param block Suspend block which provides the usage of [StateManager], helper class that allows multiple state updates.
@@ -77,7 +77,23 @@ abstract class UiStateViewModel<T>(
         }
     }
 
-    protected fun runSuspend(
+    /**
+     * Use this function to run suspend code that won't update the UiState. Any unhandled exceptions will set the
+     * UiState to [UiState.Error] automatically.
+     * */
+    protected fun runSuspendCatching(
+        block: suspend () -> Unit
+    ) {
+        runSuspend {
+            runCatching {
+                block()
+            }.onFailure {
+                mutableUiState.value = UiState.Error(it)
+            }
+        }
+    }
+
+    private fun runSuspend(
         block: suspend () -> Unit
     ) {
         viewModelScope.launch(dispatcher) {
