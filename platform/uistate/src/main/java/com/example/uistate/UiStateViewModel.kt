@@ -17,8 +17,17 @@ abstract class UiStateViewModel<T>(
 
     val uiState: StateFlow<UiState<T>> = mutableUiState.asStateFlow()
 
-    protected val currentState = MutableStateFlow(initialState)
+    protected val currentStateData = MutableStateFlow(initialState)
 
+    private val stateUpdater by lazy { StateManager(currentStateData) }
+
+    /**
+     * Use this function to update the UiState once. Any unhandled exception thrown will automatically update the
+     * UiState to Error.
+     *
+     * @param showLoading Whether or not the loading state should be displayed while the suspend block is suspended. By default it's true.
+     * @param block Suspend block responsible for the UiState update.
+     * */
     protected fun setState(
         showLoading: Boolean = true,
         block: suspend (T) -> T,
@@ -27,14 +36,42 @@ abstract class UiStateViewModel<T>(
 
         runSuspend {
             runCatching {
-                block(currentState.value)
+                block(currentStateData.value)
             }.fold(
                 onSuccess = { newState ->
-                    currentState.value = newState
-                    mutableUiState.value = UiState.Content(newState)
+                    currentStateData.value = newState
+                    mutableUiState.value = UiState.Content(currentStateData.value)
                 },
                 onFailure = { exception ->
                     mutableUiState.value = UiState.Error(exception)
+                }
+            )
+        }
+    }
+
+    /**
+     * Use this to update the state multiple times in a single block. Any unhandled exceptions will automatically
+     * update the UiState to Error.
+     *
+     * @param showLoading Whether or not the loading state should be set at the start of the suspended block. By default it's true
+     * @param block Suspend block which provides the usage of [StateManager], helper class that allows multiple state updates.
+     * */
+    protected fun stateUpdater(
+        showLoading: Boolean = true,
+        block: suspend (StateManager<T>) -> Unit
+    ) {
+        runSuspend {
+            runCatching {
+                if (showLoading) {
+                    mutableUiState.value = UiState.Loading
+                }
+                block(stateUpdater)
+            }.fold(
+                onFailure = {
+                    mutableUiState.value = UiState.Error(it)
+                },
+                onSuccess = {
+                    mutableUiState.value = UiState.Content(currentStateData.value)
                 }
             )
         }
