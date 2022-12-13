@@ -42,7 +42,7 @@ android {
 
 dependencies {
 
-    implementation(projects.platform.uistate)
+    implementation(projects.platform.uicomponents)
 
     implementation(platform(libs.androidX.compose.bom))
     implementation(libs.androidX.core.ktx)
