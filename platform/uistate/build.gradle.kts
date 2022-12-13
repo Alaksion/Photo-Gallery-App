@@ -46,11 +46,9 @@ dependencies {
     implementation(platform(libs.androidX.compose.bom))
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.lifecycle.runtime)
-    implementation(libs.androidX.compose.activity)
-    implementation(libs.androidX.compose.ui)
-    implementation(libs.androidX.compose.graphics)
-    implementation(libs.androidX.compose.tooling.preview)
-    implementation(libs.androidX.compose.material3)
+    implementation(libs.androidX.lifecycle.viewmodel)
+
+    implementation(libs.bundles.compose.ui)
 
     testImplementation(libs.junit)
 
@@ -59,6 +57,5 @@ dependencies {
     androidTestImplementation(libs.androidX.test.espresso)
     androidTestImplementation(libs.androidX.test.junit)
 
-    debugImplementation(libs.androidX.compose.debug.tooling)
-    debugImplementation(libs.androidX.compose.debug.manifest)
+    debugImplementation(libs.bundles.compose.debug)
 }

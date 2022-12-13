@@ -1,6 +1,7 @@
 [versions]
 androidX-ktx-core = "1.9.0"
 androidX-lifecycle-runtime = "2.5.1"
+androidX-lifecycle-viewmodel = "2.5.1"
 
 androidX-compose-activity = "1.6.1"
 androidX-compose-bom = "2022.10.00"
@@ -19,8 +20,9 @@ androidX-compose-bom = { module = "androidx.compose:compose-bom", version.ref = 
 androidX-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidX-compose-activity" }
 
 androidX-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidX-lifecycle-runtime" }
-androidX-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidX-ktx-core" }
+androidX-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidX-lifecycle-viewmodel" }
 
+androidX-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidX-ktx-core" }
 
 androidX-compose-ui = { module = "androidx.compose.ui:ui" }
 androidX-compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
@@ -42,3 +44,5 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 [bundles]
+compose-debug = ["androidX-compose-debug-tooling", "androidX-compose-debug-manifest"]
+compose-ui = ["androidX-compose-ui", "androidX-compose-graphics", "androidX-compose-tooling-preview", "androidX-compose-material3"]
