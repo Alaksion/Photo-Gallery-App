@@ -7,9 +7,9 @@ class StateManager<T>(
 ) {
 
     fun update(
-        newState: T,
+        block: (T) -> T,
     ) {
-        state.value = newState
+        state.value = block(state.value)
     }
 
 }

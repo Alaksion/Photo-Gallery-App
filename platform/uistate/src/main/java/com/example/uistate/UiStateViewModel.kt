@@ -17,9 +17,10 @@ abstract class UiStateViewModel<T>(
 
     val uiState: StateFlow<UiState<T>> = mutableUiState.asStateFlow()
 
-    protected val currentStateData = MutableStateFlow(initialState)
+    private val mutableStateData = MutableStateFlow(initialState)
+    protected val stateData = mutableStateData.value
 
-    private val stateUpdater by lazy { StateManager(currentStateData) }
+    private val stateUpdater by lazy { StateManager(mutableStateData) }
 
     /**
      * Use this function to update the UiState once. Any unhandled exception thrown will automatically update the
@@ -36,11 +37,11 @@ abstract class UiStateViewModel<T>(
 
         runSuspend {
             runCatching {
-                block(currentStateData.value)
+                block(mutableStateData.value)
             }.fold(
                 onSuccess = { newState ->
-                    currentStateData.value = newState
-                    mutableUiState.value = UiState.Content(currentStateData.value)
+                    mutableStateData.value = newState
+                    mutableUiState.value = UiState.Content(mutableStateData.value)
                 },
                 onFailure = { exception ->
                     mutableUiState.value = UiState.Error(exception)
@@ -71,7 +72,7 @@ abstract class UiStateViewModel<T>(
                     mutableUiState.value = UiState.Error(it)
                 },
                 onSuccess = {
-                    mutableUiState.value = UiState.Content(currentStateData.value)
+                    mutableUiState.value = UiState.Content(mutableStateData.value)
                 }
             )
         }
