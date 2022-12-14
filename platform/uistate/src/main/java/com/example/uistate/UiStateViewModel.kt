@@ -3,9 +3,12 @@ package com.example.uistate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 abstract class UiStateViewModel<T>(
@@ -102,4 +105,13 @@ abstract class UiStateViewModel<T>(
         }
     }
 
+}
+
+/**
+ * Utility function to collect T from UiState ignoring Error and Loading emissions.
+ * */
+fun <T> StateFlow<UiState<T>>.filterForData(): Flow<T> {
+    return this
+        .filter { uiState -> uiState is UiState.Content }
+        .map { (it as UiState.Content).state }
 }
