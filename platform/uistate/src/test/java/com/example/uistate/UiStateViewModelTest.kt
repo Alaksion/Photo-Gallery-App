@@ -45,5 +45,90 @@ internal class UiStateViewModelTest {
         }
     }
 
+    @Test
+    fun `Should update state and call loadingState when setState is called`() =
+        runTest(dispatcher) {
+
+            viewModel.uiState.test {
+                skipItems(1)
+
+                viewModel.updateStateOnce(
+                    text = "update",
+                    number = 30,
+                    boolean = false,
+                    showLoading = true
+                )
+
+                val loadingState = awaitItem()
+                val contentState = awaitItem()
+
+                Truth.assertThat(loadingState).isInstanceOf(UiState.Loading::class.java)
+                Truth.assertThat(contentState).isInstanceOf(UiState.Content::class.java)
+                Truth.assertThat((contentState as UiState.Content).state).isEqualTo(
+                    SampleState(
+                        text = "update",
+                        number = 30,
+                        boolean = false
+                    )
+                )
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `Should update state and not call loadingState when setState is called with showLoading false`() =
+        runTest(dispatcher) {
+
+            viewModel.uiState.test {
+                skipItems(1)
+
+                viewModel.updateStateOnce(
+                    text = "update",
+                    number = 30,
+                    boolean = false,
+                    showLoading = false
+                )
+
+                val contentState = awaitItem()
+
+                Truth.assertThat(contentState).isInstanceOf(UiState.Content::class.java)
+                Truth.assertThat((contentState as UiState.Content).state).isEqualTo(
+                    SampleState(
+                        text = "update",
+                        number = 30,
+                        boolean = false
+                    )
+                )
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `Should set uiState to error when setState throws an unhandled exception`() =
+        runTest(dispatcher) {
+            viewModel.shouldThrowException = true
+
+            viewModel.uiState.test {
+                skipItems(1)
+
+                viewModel.updateStateOnce(
+                    text = "update",
+                    number = 30,
+                    boolean = false,
+                    showLoading = false
+                )
+
+                val contentState = awaitItem()
+
+                Truth.assertThat(contentState).isInstanceOf(UiState.Error::class.java)
+                Truth.assertThat((contentState as UiState.Error).error)
+                    .isInstanceOf(SampleException::class.java)
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
 
 }

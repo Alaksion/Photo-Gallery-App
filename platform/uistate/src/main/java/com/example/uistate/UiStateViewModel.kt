@@ -84,12 +84,17 @@ abstract class UiStateViewModel<T>(
     /**
      * Use this function to run suspend code that won't update the UiState. Any unhandled exceptions will set the
      * UiState to [UiState.Error] automatically.
+     *
+     * @param showLoading Whether or not the loading state should be set at the start of the suspended block. By default it's true
+     * @param block Suspend block to be executed
      * */
     protected fun runSuspendCatching(
+        showLoading: Boolean = true,
         block: suspend () -> Unit
     ) {
         runSuspend {
             runCatching {
+                if (showLoading) mutableUiState.value = UiState.Loading
                 block()
             }.onFailure {
                 mutableUiState.value = UiState.Error(it)
