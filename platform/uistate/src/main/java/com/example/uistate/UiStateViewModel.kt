@@ -26,7 +26,7 @@ abstract class UiStateViewModel<T>(
     protected val stateData: T
         get() = mutableUiState.value.data
 
-    private val stateUpdater by lazy { StateManager(mutableUiState) }
+    private val stateUpdater by lazy { StateManagerImpl(mutableUiState) }
 
     /**
      * Use this function to update the UiState once. Any unhandled exception thrown will automatically update the
@@ -42,10 +42,14 @@ abstract class UiStateViewModel<T>(
         updateState(
             showLoading = showLoading,
             block = { updater ->
-                updater.updateState(
-                    data = block(mutableUiState.value.data),
-                    type = UiStateType.Content
-                )
+                val resolvedBlock = block(mutableUiState.value.data)
+
+                updater.updateState { currentState ->
+                    currentState.copy(
+                        data = resolvedBlock,
+                        uiState = UiStateType.Content
+                    )
+                }
             }
         )
     }
@@ -55,11 +59,11 @@ abstract class UiStateViewModel<T>(
      * update the UiState to [UiState.Error].
      *
      * @param showLoading Whether or not the loading state should be set at the start of the suspended block. By default it's true
-     * @param block Suspend block which provides the usage of [StateManager], helper class that allows multiple state updates.
+     * @param block Suspend block which provides the usage of [StateManagerImpl], helper class that allows multiple state updates.
      * */
     protected fun updateState(
         showLoading: Boolean = true,
-        block: suspend (StateManager<T>) -> Unit
+        block: suspend (StateManagerImpl<T>) -> Unit
     ) {
         runSuspend {
             runCatching {
