@@ -36,99 +36,97 @@ internal class UiStateViewModelTest {
     @Test
     fun `Should start with content state containing initial data`() = runTest(dispatcher) {
 
-        viewModel.uiState.filterForData().test {
+        viewModel.uiState.test {
             val state = awaitItem()
 
-            Truth.assertThat(state).isEqualTo(SampleState())
+            Truth.assertThat(state.data).isEqualTo(SampleState())
+            Truth.assertThat(state.uiState).isEqualTo(UiStateType.Content)
 
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `Should update state and call loadingState when setState is called`() =
+    fun `Should update state and show loading state when setState is called`() =
         runTest(dispatcher) {
 
             viewModel.uiState.test {
                 skipItems(1)
 
                 viewModel.updateStateOnce(
-                    text = "update",
-                    number = 30,
-                    boolean = false,
+                    text = "updated",
+                    number = 9999,
+                    boolean = true,
                     showLoading = true
                 )
 
                 val loadingState = awaitItem()
                 val contentState = awaitItem()
 
-                Truth.assertThat(loadingState).isInstanceOf(UiState.Loading::class.java)
-                Truth.assertThat(contentState).isInstanceOf(UiState.Content::class.java)
-                Truth.assertThat((contentState as UiState.Content).state).isEqualTo(
+                Truth.assertThat(loadingState.uiState).isEqualTo(UiStateType.Loading)
+
+                Truth.assertThat(contentState.uiState).isEqualTo(UiStateType.Content)
+                Truth.assertThat(contentState.data).isEqualTo(
                     SampleState(
-                        text = "update",
-                        number = 30,
-                        boolean = false
+                        text = "updated",
+                        number = 9999,
+                        boolean = true
                     )
                 )
-
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
     @Test
-    fun `Should update state and not call loadingState when setState is called with showLoading false`() =
+    fun `Should update state and ignore loading state when setState is called with loading = false`() =
         runTest(dispatcher) {
-
             viewModel.uiState.test {
                 skipItems(1)
 
                 viewModel.updateStateOnce(
-                    text = "update",
-                    number = 30,
-                    boolean = false,
+                    text = "updated",
+                    number = 9999,
+                    boolean = true,
                     showLoading = false
                 )
 
                 val contentState = awaitItem()
 
-                Truth.assertThat(contentState).isInstanceOf(UiState.Content::class.java)
-                Truth.assertThat((contentState as UiState.Content).state).isEqualTo(
+                Truth.assertThat(contentState.uiState).isEqualTo(UiStateType.Content)
+                Truth.assertThat(contentState.data).isEqualTo(
                     SampleState(
-                        text = "update",
-                        number = 30,
-                        boolean = false
+                        text = "updated",
+                        number = 9999,
+                        boolean = true
                     )
                 )
-
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
     @Test
-    fun `Should set uiState to error when setState throws an unhandled exception`() =
+    fun `Should update state to error when set state throws an unhandled exception`() =
         runTest(dispatcher) {
+
             viewModel.shouldThrowException = true
 
             viewModel.uiState.test {
                 skipItems(1)
 
                 viewModel.updateStateOnce(
-                    text = "update",
-                    number = 30,
-                    boolean = false,
+                    text = "updated",
+                    number = 9999,
+                    boolean = true,
                     showLoading = false
                 )
 
                 val contentState = awaitItem()
 
-                Truth.assertThat(contentState).isInstanceOf(UiState.Error::class.java)
-                Truth.assertThat((contentState as UiState.Error).error)
+                Truth.assertThat(contentState.uiState).isInstanceOf(UiStateType.Error::class.java)
+                Truth.assertThat((contentState.uiState as UiStateType.Error).error)
                     .isInstanceOf(SampleException::class.java)
-
                 cancelAndIgnoreRemainingEvents()
             }
         }
-
 
 }

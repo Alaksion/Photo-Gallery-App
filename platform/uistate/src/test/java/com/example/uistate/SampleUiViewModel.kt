@@ -46,27 +46,27 @@ internal class SampleUiViewModel(
     fun updateStateMultipleTimes(
         showLoading: Boolean
     ) {
-        stateUpdater(
+        updateState(
             showLoading = showLoading,
             block = { manager ->
 
                 if (shouldThrowException) throw SampleException()
 
-                manager.update { currentState ->
+                manager.updateData { currentState ->
                     currentState.copy(
                         text = currentState.text + "a",
                         number = currentState.number + 1
                     )
                 }
 
-                manager.update { currentState ->
+                manager.updateData { currentState ->
                     currentState.copy(
                         text = currentState.text + "a",
                         number = currentState.number + 1
                     )
                 }
 
-                manager.update { currentState ->
+                manager.updateData { currentState ->
                     currentState.copy(
                         text = currentState.text + "a",
                         number = currentState.number + 1

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -16,14 +15,18 @@ abstract class UiStateViewModel<T>(
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val mutableUiState = MutableStateFlow<UiState<T>>(UiState.Content(initialState))
-
+    private val mutableUiState = MutableStateFlow(
+        UiState(
+            data = initialState,
+            uiState = UiStateType.Content
+        )
+    )
     val uiState: StateFlow<UiState<T>> = mutableUiState.asStateFlow()
 
-    private val mutableStateData = MutableStateFlow(initialState)
-    protected val stateData = mutableStateData.value
+    protected val stateData: T
+        get() = mutableUiState.value.data
 
-    private val stateUpdater by lazy { StateManager(mutableStateData) }
+    private val stateUpdater by lazy { StateManager(mutableUiState) }
 
     /**
      * Use this function to update the UiState once. Any unhandled exception thrown will automatically update the
@@ -36,21 +39,15 @@ abstract class UiStateViewModel<T>(
         showLoading: Boolean = true,
         block: suspend (T) -> T,
     ) {
-        if (showLoading) mutableUiState.value = UiState.Loading
-
-        runSuspend {
-            runCatching {
-                block(mutableStateData.value)
-            }.fold(
-                onSuccess = { newState ->
-                    mutableStateData.value = newState
-                    mutableUiState.value = UiState.Content(mutableStateData.value)
-                },
-                onFailure = { exception ->
-                    mutableUiState.value = UiState.Error(exception)
-                }
-            )
-        }
+        updateState(
+            showLoading = showLoading,
+            block = { updater ->
+                updater.updateState(
+                    data = block(mutableUiState.value.data),
+                    type = UiStateType.Content
+                )
+            }
+        )
     }
 
     /**
@@ -60,22 +57,20 @@ abstract class UiStateViewModel<T>(
      * @param showLoading Whether or not the loading state should be set at the start of the suspended block. By default it's true
      * @param block Suspend block which provides the usage of [StateManager], helper class that allows multiple state updates.
      * */
-    protected fun stateUpdater(
+    protected fun updateState(
         showLoading: Boolean = true,
         block: suspend (StateManager<T>) -> Unit
     ) {
         runSuspend {
             runCatching {
-                if (showLoading) {
-                    mutableUiState.value = UiState.Loading
-                }
+                if (showLoading) stateUpdater.updateStateType(UiStateType.Loading)
                 block(stateUpdater)
             }.fold(
                 onFailure = {
-                    mutableUiState.value = UiState.Error(it)
+                    stateUpdater.updateStateType(UiStateType.Error(it))
                 },
                 onSuccess = {
-                    mutableUiState.value = UiState.Content(mutableStateData.value)
+                    stateUpdater.updateStateType(UiStateType.Content)
                 }
             )
         }
@@ -94,10 +89,10 @@ abstract class UiStateViewModel<T>(
     ) {
         runSuspend {
             runCatching {
-                if (showLoading) mutableUiState.value = UiState.Loading
+                if (showLoading) stateUpdater.updateStateType(UiStateType.Loading)
                 block()
             }.onFailure {
-                mutableUiState.value = UiState.Error(it)
+                stateUpdater.updateStateType(UiStateType.Error(it))
             }
         }
     }
@@ -115,8 +110,4 @@ abstract class UiStateViewModel<T>(
 /**
  * Utility function to collect T from UiState ignoring Error and Loading emissions.
  * */
-fun <T> StateFlow<UiState<T>>.filterForData(): Flow<T> {
-    return this
-        .filter { uiState -> uiState is UiState.Content }
-        .map { (it as UiState.Content).state }
-}
+fun <T> StateFlow<UiState<T>>.filterForData(): Flow<T> = this.map { it.data }

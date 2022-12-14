@@ -1,9 +1,15 @@
 package com.example.uistate
 
-sealed class UiState<out T> {
+sealed class UiStateType {
 
-    data class Content<T>(val state: T) : UiState<T>()
-    object Loading : UiState<Nothing>()
-    data class Error(val error: Throwable) : UiState<Nothing>()
+    object Content : UiStateType()
+    object Loading : UiStateType()
+    data class Error(val error: Throwable) : UiStateType()
 
 }
+
+
+data class UiState<T>(
+    val data: T,
+    val uiState: UiStateType
+)

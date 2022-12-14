@@ -11,10 +11,10 @@ fun <T> UiState<T>.UiStateContent(
     errorState: @Composable (Throwable) -> Unit,
     loadingState: @Composable () -> Unit = { DefaultLoadingView(modifier = Modifier.fillMaxSize()) },
 ) {
-    when (this) {
-        is UiState.Content -> stateContent(this.state)
-        is UiState.Loading -> loadingState()
-        is UiState.Error -> errorState(this.error)
+    when (this.uiState) {
+        is UiStateType.Content -> stateContent(this.data)
+        is UiStateType.Loading -> loadingState()
+        is UiStateType.Error -> errorState(this.uiState.error)
     }
 
 }
