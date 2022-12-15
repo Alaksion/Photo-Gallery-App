@@ -22,6 +22,7 @@ internal class SampleUiViewModel(
 ) : UiStateViewModel<SampleState>(dispatcher = dispatcher, initialState = SampleState()) {
 
     var shouldThrowException = false
+    var somethingSuspenseCalled = false
 
     fun updateStateOnce(
         text: String,
@@ -76,9 +77,12 @@ internal class SampleUiViewModel(
         )
     }
 
-    fun runSomethingSuspend() {
-        runSuspendCatching {
+    fun runSomethingSuspend(
+        showLoadingState: Boolean = false
+    ) {
+        runSuspendCatching(showLoading = showLoadingState) {
             if (shouldThrowException) throw SampleException()
+            somethingSuspenseCalled = true
             fakeService.doSomething(stateData.number)
         }
     }

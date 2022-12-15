@@ -95,6 +95,7 @@ abstract class UiStateViewModel<T>(
             runCatching {
                 if (showLoading) stateUpdater.updateStateType(UiStateType.Loading)
                 block()
+                stateUpdater.updateStateType(UiStateType.Content)
             }.onFailure {
                 stateUpdater.updateStateType(UiStateType.Error(it))
             }

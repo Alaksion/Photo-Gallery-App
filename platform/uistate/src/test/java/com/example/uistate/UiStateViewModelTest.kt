@@ -5,6 +5,7 @@ import com.google.common.truth.Truth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -127,6 +128,55 @@ internal class UiStateViewModelTest {
                     .isInstanceOf(SampleException::class.java)
                 cancelAndIgnoreRemainingEvents()
             }
+        }
+
+    @Test
+    fun `Should run suspend code when runSuspendCatching is called`() = runTest(dispatcher) {
+        viewModel.runSomethingSuspend()
+        advanceUntilIdle()
+
+        Truth.assertThat(viewModel.somethingSuspenseCalled).isTrue()
+    }
+
+    @Test
+    fun `Should set loading state when runSuspendCatching is called`() = runTest(dispatcher) {
+        viewModel.uiState.test {
+            skipItems(1)
+
+            viewModel.runSomethingSuspend(showLoadingState = true)
+
+            val loadingState = awaitItem()
+            val completionState = awaitItem()
+
+            Truth.assertThat(loadingState.uiState).isEqualTo(UiStateType.Loading)
+            Truth.assertThat(completionState.uiState).isEqualTo(UiStateType.Content)
+
+            cancelAndIgnoreRemainingEvents()
+        }
+
+    }
+
+    @Test
+    fun `Should set state to error when unhandled exception is thrown inside runSuspendCatching`() =
+        runTest(dispatcher) {
+            viewModel.uiState.test {
+                skipItems(1)
+
+                viewModel.shouldThrowException = true
+
+                viewModel.runSomethingSuspend(showLoadingState = false)
+
+                val completionState = awaitItem()
+
+                Truth.assertThat(completionState.uiState)
+                    .isInstanceOf(UiStateType.Error::class.java)
+
+                Truth.assertThat((completionState.uiState as UiStateType.Error).error)
+                    .isInstanceOf(SampleException::class.java)
+
+                cancelAndIgnoreRemainingEvents()
+            }
+
         }
 
 }
