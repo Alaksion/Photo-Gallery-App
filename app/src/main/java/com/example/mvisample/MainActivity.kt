@@ -45,7 +45,6 @@ class MainActivity : ComponentActivity() {
                             context, it.name,
                             Toast.LENGTH_SHORT
                         ).show()
-                        viewModel.consumeEvent(it)
                     }
                 )
 
