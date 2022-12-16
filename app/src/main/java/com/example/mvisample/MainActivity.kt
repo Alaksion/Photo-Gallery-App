@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mvisample.ui.theme.MviSampleTheme
 import com.example.uievent.UiEventEffect
 import com.example.uistate.UiStateContent
+import com.example.uistate.getValue
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     factoryProducer = { MainViewModelProvider() }
                 )
                 val context = LocalContext.current
-                val state = viewModel.uiState.collectAsState().value
+                val state by viewModel.uiState
 
                 UiEventEffect(
                     eventHandler = viewModel,

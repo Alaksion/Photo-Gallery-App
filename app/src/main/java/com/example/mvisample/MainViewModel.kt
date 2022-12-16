@@ -29,7 +29,7 @@ internal class MainViewModel(
     }
 
     private fun receiveEvent() {
-        runSuspend {
+        runSuspendCatching(showLoading = false) {
             enqueueEvent(SampleEvents.Hello)
         }
     }
