@@ -3,6 +3,9 @@ package com.example.uistate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
@@ -124,7 +127,11 @@ abstract class UiStateViewModel<T>(
      * */
     @Composable
     fun collectUiState(): State<UiState<T>> {
-        return this.mutableUiState.collectAsState()
+        val state by this.mutableUiState.collectAsState()
+
+        return remember(state) {
+            derivedStateOf { state }
+        }
     }
 
 }

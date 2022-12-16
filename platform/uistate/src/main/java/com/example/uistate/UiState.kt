@@ -1,10 +1,5 @@
 package com.example.uistate
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import kotlinx.coroutines.flow.StateFlow
-import kotlin.reflect.KProperty
-
 sealed class UiStateType {
 
     object Content : UiStateType()
