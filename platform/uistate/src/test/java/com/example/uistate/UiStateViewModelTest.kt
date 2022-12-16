@@ -179,4 +179,82 @@ internal class UiStateViewModelTest {
 
         }
 
+    @Test
+    fun `Should update state multiple times when updateState is called`() =
+        runTest(dispatcher) {
+            viewModel.uiState.filterForData().test {
+                skipItems(1)
+
+                viewModel.updateStateMultipleTimes(showLoading = false)
+
+                val state1 = awaitItem()
+                val state2 = awaitItem()
+                val state3 = awaitItem()
+
+                Truth.assertThat(state1.number).isEqualTo(11)
+                Truth.assertThat(state2.number).isEqualTo(12)
+                Truth.assertThat(state3.number).isEqualTo(13)
+
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `Should show loading state when updateState is called with showloading true`() =
+        runTest(dispatcher) {
+            viewModel.uiState.test {
+                skipItems(1)
+
+                viewModel.updateStateMultipleTimes(showLoading = true)
+
+                val loadingState = awaitItem()
+                skipItems(3)
+                val finalState = awaitItem()
+
+                Truth.assertThat(loadingState.uiState).isEqualTo(UiStateType.Loading)
+
+                Truth.assertThat(finalState.uiState).isEqualTo(UiStateType.Content)
+
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `Should not show loading state when updateState is called with showloading false`() =
+        runTest(dispatcher) {
+            viewModel.uiState.test {
+                skipItems(1)
+
+                viewModel.updateStateMultipleTimes(showLoading = false)
+
+                skipItems(2)
+                val finalState = awaitItem()
+
+                Truth.assertThat(finalState.uiState).isEqualTo(UiStateType.Content)
+
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `Should set to error state when unhandled exception is thrown inside updateState`() =
+        runTest(dispatcher) {
+            viewModel.shouldThrowException = true
+
+            viewModel.uiState.test {
+                skipItems(1)
+
+                viewModel.updateStateMultipleTimes(showLoading = false)
+
+                val finalState = awaitItem()
+
+                Truth.assertThat(finalState.uiState).isInstanceOf(UiStateType.Error::class.java)
+
+                Truth.assertThat((finalState.uiState as UiStateType.Error).error)
+                    .isInstanceOf(SampleException::class.java)
+
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
 }
