@@ -10,10 +10,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+interface UiStateOwner<T> {
+    val uiState: StateFlow<UiState<T>>
+
+    val stateData: T
+}
+
 abstract class UiStateViewModel<T>(
     initialState: T,
     private val dispatcher: CoroutineDispatcher
-) : ViewModel() {
+) : ViewModel(), UiStateOwner<T> {
 
     private val mutableUiState = MutableStateFlow(
         UiState(
@@ -21,9 +27,9 @@ abstract class UiStateViewModel<T>(
             uiState = UiStateType.Content
         )
     )
-    val uiState: StateFlow<UiState<T>> = mutableUiState.asStateFlow()
+    override val uiState: StateFlow<UiState<T>> = mutableUiState.asStateFlow()
 
-    protected val stateData: T
+    override val stateData: T
         get() = mutableUiState.value.data
 
     private val stateUpdater by lazy { StateManagerImpl(mutableUiState) }
