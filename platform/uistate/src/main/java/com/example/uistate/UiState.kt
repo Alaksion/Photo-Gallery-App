@@ -2,7 +2,6 @@ package com.example.uistate
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.reflect.KProperty
 
@@ -20,6 +19,7 @@ data class UiState<T>(
     val uiState: UiStateType
 )
 
+// This is not working find out why
 @Composable
 operator fun <T> StateFlow<UiState<T>>.getValue(thisObj: Any?, property: KProperty<*>): UiState<T> {
     return this.collectAsState().value

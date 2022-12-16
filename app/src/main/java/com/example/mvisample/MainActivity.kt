@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     factoryProducer = { MainViewModelProvider() }
                 )
                 val context = LocalContext.current
-                val state by viewModel.uiState
+                val state = viewModel.uiState.collectAsState().value
 
                 UiEventEffect(
                     eventHandler = viewModel,
