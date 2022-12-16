@@ -18,9 +18,3 @@ data class UiState<T>(
     val data: T,
     val uiState: UiStateType
 )
-
-// This is not working find out why
-@Composable
-operator fun <T> StateFlow<UiState<T>>.getValue(thisObj: Any?, property: KProperty<*>): UiState<T> {
-    return this.collectAsState().value
-}

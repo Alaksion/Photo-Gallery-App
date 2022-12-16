@@ -1,5 +1,8 @@
 package com.example.uistate
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
@@ -114,6 +117,14 @@ abstract class UiStateViewModel<T>(
         viewModelScope.launch(dispatcher) {
             block()
         }
+    }
+
+    /**
+     * Convenience function to facilitate the collection of UiState using property delegation.
+     * */
+    @Composable
+    fun collectUiState(): State<UiState<T>> {
+        return this.mutableUiState.collectAsState()
     }
 
 }

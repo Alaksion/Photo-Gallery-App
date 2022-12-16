@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.example.mvisample.ui.theme.MviSampleTheme
 import com.example.uievent.UiEventEffect
 import com.example.uistate.UiStateContent
-import com.example.uistate.getValue
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     factoryProducer = { MainViewModelProvider() }
                 )
                 val context = LocalContext.current
-                val state = viewModel.uiState.collectAsState().value
+                val state by viewModel.collectUiState()
 
                 UiEventEffect(
                     eventHandler = viewModel,
