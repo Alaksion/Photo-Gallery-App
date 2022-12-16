@@ -1,6 +1,5 @@
 package com.example.uievent
 
-import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +15,7 @@ interface UiEventHandler<T : UiEvent> {
     /**
      * Enqueue a new event to the UiEvents queue
      * */
-    suspend fun ViewModel.enqueueEvent(event: T)
+    suspend fun enqueueEvent(event: T)
 
     /**
      * Notify the handler to remove an event that has been consumed
@@ -31,7 +30,7 @@ class UiEventHandlerImpl<T : UiEvent> : UiEventHandler<T> {
 
     override val events: StateFlow<List<T>> = eventQueue.asStateFlow()
 
-    override suspend fun ViewModel.enqueueEvent(event: T) {
+    override suspend fun enqueueEvent(event: T) {
         eventQueue.update { currentState ->
             currentState + event
         }
