@@ -1,0 +1,15 @@
+name: Build MVI Sample Project
+
+on:
+  push:
+
+jobs:
+  build-gradle-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v2
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Run MVI Sample Gradle Build
+        run: ./gradlew build
