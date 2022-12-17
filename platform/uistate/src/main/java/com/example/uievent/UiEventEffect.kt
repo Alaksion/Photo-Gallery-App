@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 /**
  * Launched Effect wrapper to consume UiEvents from an UiEventHandler safely
  * @param eventHandler model class that implements UiEventHandler interface
- * @param onEventReceived callback called everytime an event is consumed
+ * @param onEventReceived callback called everytime an event is consumed.
  * */
 @Composable
 fun <T : UiEvent> UiEventEffect(
