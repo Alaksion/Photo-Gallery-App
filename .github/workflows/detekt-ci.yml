@@ -18,5 +18,7 @@ jobs:
   detekt:
     runs-on: ubuntu-latest
     steps:
-      - name: Run detekt
-        run: ./gradlew detekt
+    - name: Detekt all
+  # You may pin to the exact commit or the version.
+  # uses: natiginfo/action-detekt-all@07143c2b2a6dacadedb5e5d209f3c615bdcfe5ac
+      uses: natiginfo/action-detekt-all@1.22.0
