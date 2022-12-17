@@ -18,6 +18,14 @@ subprojects {
             parallel = true
             config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
             buildUponDefaultConfig = false
+            basePath = projectDir.absolutePath
+
+            reports {
+                html {
+                    required.set(true)
+                    outputLocation.set(file("$rootDir/build/report/detekt.html"))
+                }
+            }
         }
     }
 }
