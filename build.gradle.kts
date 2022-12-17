@@ -25,6 +25,7 @@ subprojects {
                     required.set(true)
                     outputLocation.set(file("$rootDir/build/report/detekt.html"))
                 }
+
             }
         }
     }
