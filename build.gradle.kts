@@ -26,6 +26,11 @@ subprojects {
                     outputLocation.set(file("$rootDir/build/report/detekt.html"))
                 }
 
+                sarif {
+                    required.set(true)
+                    outputLocation.set(file("$rootDir/build/report/detekt/detekt.sarif"))
+                }
+
             }
         }
     }
