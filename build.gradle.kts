@@ -16,7 +16,7 @@ subprojects {
     apply<DetektPlugin>()
 
     val reportMerge by tasks.registering(ReportMergeTask::class) {
-        output.set(rootProject.layout.buildDirectory.file("reports/detekt/merge.sarif"))
+        output.set(rootProject.layout.buildDirectory.file("reports/detekt/merge.html"))
     }
 
     tasks.withType<Detekt>() {
