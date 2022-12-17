@@ -18,10 +18,5 @@ jobs:
   detekt:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Detekt
-        uses: peter-murray/setup-detekt@v2
-        with:
-          detekt_version: 1.22
-      
       - name: Run detekt
-        run: detekt-cli --version
+        run: ./gradlew detekt
