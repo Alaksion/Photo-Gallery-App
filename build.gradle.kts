@@ -11,16 +11,16 @@ plugins {
     alias(libs.plugins.detekt) apply (false)
 }
 
-apply<DetektPlugin>()
-
-val reportMerge by tasks.registering(ReportMergeTask::class) {
-    output.set(rootProject.layout.buildDirectory.file("reports/detekt/merge.sarif"))
-}
-
 subprojects {
 
-    tasks {
-        withType<Detekt> {
+    apply<DetektPlugin>()
+
+    val reportMerge by tasks.registering(ReportMergeTask::class) {
+        output.set(rootProject.layout.buildDirectory.file("reports/detekt/merge.sarif"))
+    }
+
+    tasks.withType<Detekt>() {
+        reports {
             parallel = true
             config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
             buildUponDefaultConfig = false
@@ -30,6 +30,10 @@ subprojects {
                 sarif {
                     required.set(true)
                     outputLocation.set(file("$rootDir/build/report/detekt/detekt.sarif"))
+                }
+                html {
+                    required.set(true)
+                    outputLocation.set(file("$rootDir/build/report/detekt/detekt.html"))
                 }
             }
 
