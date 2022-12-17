@@ -1,9 +1,3 @@
-//gradleEnterprise {
-//    if(System.getenv("CI") != null) {
-//
-//    }
-//}
-
 pluginManagement {
     repositories {
         google()
