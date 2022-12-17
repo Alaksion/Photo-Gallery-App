@@ -40,7 +40,7 @@ subprojects {
             finalizedBy(reportMerge)
 
             reportMerge.configure {
-                input.from(sarifReportFile)
+                input.from(htmlReportFile)
             }
         }
     }
