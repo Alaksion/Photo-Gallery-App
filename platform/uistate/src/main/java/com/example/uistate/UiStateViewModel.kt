@@ -41,10 +41,11 @@ abstract class UiStateViewModel<T>(
     private val stateUpdater by lazy { StateManagerImpl(mutableUiState) }
 
     /**
-     * Use this function to update the UiState once. Any unhandled exception thrown will automatically update the
-     * UiState to [UiState.Error].
+     * Use this function to update the UiState once. Any unhandled exception thrown will
+     * automatically update the UiState to [UiState.Error].
      *
-     * @param showLoading Whether or not the loading state should be displayed while the suspend block is suspended. By default it's true.
+     * @param showLoading Whether or not the loading state should be displayed while the suspend
+     * block is suspended. By default it's true.
      * @param block Suspend block responsible for the UiState update.
      * */
     protected fun setState(
@@ -70,8 +71,10 @@ abstract class UiStateViewModel<T>(
      * Use this to update the state multiple times in a single block. Any unhandled exceptions will automatically
      * update the UiState to [UiState.Error].
      *
-     * @param showLoading Whether or not the loading state should be set at the start of the suspended block. By default it's true
-     * @param block Suspend block which provides the usage of [StateManagerImpl], helper class that allows multiple state updates.
+     * @param showLoading Whether or not the loading state should be set at the start of
+     * the suspended block. By default it's true
+     * @param block Suspend block which provides the usage of [StateManagerImpl], helper class that
+     * allows multiple state updates.
      * */
     protected fun updateState(
         showLoading: Boolean = true,
@@ -96,7 +99,8 @@ abstract class UiStateViewModel<T>(
      * Use this function to run suspend code that won't update the UiState. Any unhandled exceptions will set the
      * UiState to [UiState.Error] automatically.
      *
-     * @param showLoading Whether or not the loading state should be set at the start of the suspended block. By default it's true
+     * @param showLoading Whether or not the loading state should be set at the start of
+     * the suspended block. By default it's true
      * @param block Suspend block to be executed
      * */
     protected fun runSuspendCatching(
