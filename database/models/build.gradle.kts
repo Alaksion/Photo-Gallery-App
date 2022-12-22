@@ -17,6 +17,14 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas"
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -32,18 +40,13 @@ android {
     kotlinOptions {
         jvmTarget = BuildConstants.JVM_TARGET
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidX.compose.compiler.get()
-    }
 }
 
 dependencies {
 
     implementation(libs.androidX.core.ktx)
-    implementation(libs.androidX.lifecycle.runtime)
+
+    implementation(libs.coroutines.core)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
