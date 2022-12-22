@@ -30,8 +30,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mvisample.ui.theme.MviSampleTheme
 
+const val CellAmount = 3
+
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -68,7 +71,7 @@ class MainActivity : ComponentActivity() {
                             Text("Open image pcker")
                         }
                         LazyVerticalGrid(
-                            columns = GridCells.Fixed(3),
+                            columns = GridCells.Fixed(CellAmount),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(it),
