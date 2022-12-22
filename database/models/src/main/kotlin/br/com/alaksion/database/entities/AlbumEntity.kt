@@ -8,6 +8,8 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import br.com.alaksion.database.models.AlbumModel
+import br.com.alaksion.database.utils.dateFormatter
+import java.time.LocalDate
 import java.util.UUID
 
 @Entity(tableName = "album")
@@ -32,8 +34,8 @@ internal data class AlbumEntity(
             id = this.id,
             name = this.name,
             description = this.description,
-            createdAt = this.createdAt,
-            updatedAt = this.updatedAt
+            createdAt = LocalDate.from(dateFormatter.parse(this.createdAt)),
+            updatedAt = LocalDate.from(dateFormatter.parse(this.createdAt))
         )
     }
 
@@ -41,8 +43,8 @@ internal data class AlbumEntity(
         fun createFromModel(model: AlbumModel): AlbumEntity {
             return AlbumEntity(
                 id = model.id,
-                createdAt = model.createdAt,
-                updatedAt = model.updatedAt,
+                createdAt = model.createdAt.format(dateFormatter),
+                updatedAt = model.updatedAt.format(dateFormatter),
                 name = model.name,
                 description = model.description
             )
