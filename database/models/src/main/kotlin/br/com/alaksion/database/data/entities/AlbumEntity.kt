@@ -1,4 +1,4 @@
-package br.com.alaksion.database.entities
+package br.com.alaksion.database.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Dao
@@ -7,7 +7,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
-import br.com.alaksion.database.models.AlbumModel
+import br.com.alaksion.database.domain.models.AlbumModel
 import br.com.alaksion.database.utils.dateFormatter
 import java.time.LocalDate
 import java.util.UUID
@@ -49,6 +49,14 @@ internal data class AlbumEntity(
                 description = model.description
             )
         }
+
+        val fixture = AlbumEntity(
+            id = 0,
+            name = "sample value",
+            description = "sample description",
+            createdAt = "22-12-2022",
+            updatedAt = "22-12-2022"
+        )
     }
 }
 

@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidX.core.ktx)
 
     implementation(libs.coroutines.core)
+    testImplementation(libs.coroutines.test)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
@@ -58,8 +59,7 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidX.test.espresso)
-    androidTestImplementation(libs.androidX.test.junit)
+    testImplementation(libs.truth)
 }
 
 kapt {

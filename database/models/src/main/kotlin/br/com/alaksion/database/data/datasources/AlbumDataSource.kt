@@ -1,8 +1,8 @@
-package br.com.alaksion.database.datasources
+package br.com.alaksion.database.data.datasources
 
-import br.com.alaksion.database.entities.AlbumEntity
-import br.com.alaksion.database.entities.AlbumEntityDao
-import br.com.alaksion.database.models.AlbumModel
+import br.com.alaksion.database.data.entities.AlbumEntity
+import br.com.alaksion.database.data.entities.AlbumEntityDao
+import br.com.alaksion.database.domain.models.AlbumModel
 import java.util.UUID
 import javax.inject.Inject
 

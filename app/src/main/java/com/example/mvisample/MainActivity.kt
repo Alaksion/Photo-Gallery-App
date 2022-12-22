@@ -11,8 +11,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import br.com.alaksion.database.datasources.AlbumDataSource
-import br.com.alaksion.database.models.AlbumModel
+import br.com.alaksion.database.data.datasources.AlbumDataSource
+import br.com.alaksion.database.domain.models.AlbumModel
 import com.example.mvisample.ui.theme.MviSampleTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
