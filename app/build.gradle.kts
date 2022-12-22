@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidX.lifecycle.runtime)
     implementation(libs.androidX.compose.activity)
     implementation(libs.bundles.compose.ui)
+    implementation(libs.coil)
 
     testImplementation(libs.junit)
 
