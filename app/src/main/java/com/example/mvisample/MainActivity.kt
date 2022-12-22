@@ -26,14 +26,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import br.com.alaksion.database.datasources.AlbumDataSource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mvisample.ui.theme.MviSampleTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 const val CellAmount = 3
 
 @ExperimentalMaterial3Api
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var dataSource: AlbumDataSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

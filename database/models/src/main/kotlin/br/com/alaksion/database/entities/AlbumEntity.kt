@@ -1,4 +1,4 @@
-package br.com.alaksion.database.models
+package br.com.alaksion.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Dao
@@ -7,12 +7,13 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import br.com.alaksion.database.models.AlbumModel
 import java.util.UUID
 
 @Entity(tableName = "album")
-data class AlbumEntity(
+internal data class AlbumEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: UUID,
+    val id: Int,
 
     @ColumnInfo(name = "name")
     val name: String,
@@ -25,10 +26,32 @@ data class AlbumEntity(
 
     @ColumnInfo(name = "updated_at")
     val updatedAt: String
-)
+) {
+    internal fun mapToModel(): AlbumModel {
+        return AlbumModel(
+            id = this.id,
+            name = this.name,
+            description = this.description,
+            createdAt = this.createdAt,
+            updatedAt = this.updatedAt
+        )
+    }
+
+    companion object {
+        fun createFromModel(model: AlbumModel): AlbumEntity {
+            return AlbumEntity(
+                id = model.id,
+                createdAt = model.createdAt,
+                updatedAt = model.updatedAt,
+                name = model.name,
+                description = model.description
+            )
+        }
+    }
+}
 
 @Dao
-interface AlbumEntityDao {
+internal interface AlbumEntityDao {
 
     @Query("SELECT * FROM album")
     suspend fun getAll(): List<AlbumEntity>
