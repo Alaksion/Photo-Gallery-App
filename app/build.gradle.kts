@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -57,6 +59,9 @@ dependencies {
     implementation(libs.bundles.compose.ui)
     implementation(libs.coil)
 
+    implementation(libs.hilt.core)
+    kapt(libs.hilt.compiler)
+
     testImplementation(libs.junit)
 
     androidTestImplementation(platform(libs.androidX.compose.bom))
@@ -65,4 +70,8 @@ dependencies {
     androidTestImplementation(libs.androidX.test.junit)
 
     debugImplementation(libs.bundles.compose.debug)
+}
+
+kapt {
+    correctErrorTypes = true
 }
