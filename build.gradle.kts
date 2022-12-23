@@ -1,7 +1,6 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
-import org.gradle.accessors.dm.LibrariesForLibs
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -12,6 +11,7 @@ plugins {
     alias(libs.plugins.detekt) apply (false)
     alias(libs.plugins.ksp) apply (false)
     alias(libs.plugins.hilt) apply (false)
+    alias(libs.plugins.gradle.versions)
 }
 
 subprojects {
