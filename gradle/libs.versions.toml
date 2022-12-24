@@ -83,3 +83,4 @@ gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-
 [bundles]
 compose-debug = ["androidX-compose-debug-tooling", "androidX-compose-debug-manifest"]
 compose-ui = ["androidX-compose-ui", "androidX-compose-graphics", "androidX-compose-tooling-preview", "androidX-compose-material3"]
+voyager = ["voyager-navigator", "voyager-transitions", "voyager-hilt", "voyager-viewModel"]
