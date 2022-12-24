@@ -26,6 +26,7 @@ coil = "2.2.2"
 room = "2.5.0-rc01"
 
 hilt = "2.44.2"
+voyager = "1.0.0-RC03"
 
 [libraries]
 
@@ -63,6 +64,11 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 hilt-core = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
+voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voyager" }
+voyager-viewModel = { module = "cafe.adriel.voyager:voyager-androidx", version.ref = "voyager" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
