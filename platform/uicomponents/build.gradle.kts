@@ -41,6 +41,7 @@ android {
 
 dependencies {
 
+    implementation(projects.platform.error)
     implementation(platform(libs.androidX.compose.bom))
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.lifecycle.runtime)

@@ -1,4 +1,4 @@
-package com.example.uicomponents.components.spacers
+package platform.uicomponents.components.spacers
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope

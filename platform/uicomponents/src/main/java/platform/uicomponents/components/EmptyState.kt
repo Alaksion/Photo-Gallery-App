@@ -1,4 +1,4 @@
-package com.example.uicomponents.components
+package platform.uicomponents.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.uicomponents.MviSampleSizes
-import com.example.uicomponents.components.spacers.VerticalSpacer
-import com.example.uicomponents.theme.MviSampleTheme
+import platform.uicomponents.MviSampleSizes
+import platform.uicomponents.components.spacers.VerticalSpacer
+import platform.uicomponents.theme.MviSampleTheme
 
 @Composable
 fun EmptyState(

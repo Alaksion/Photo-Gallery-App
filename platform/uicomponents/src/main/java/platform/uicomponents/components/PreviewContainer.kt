@@ -1,4 +1,4 @@
-package com.example.uicomponents.components
+package platform.uicomponents.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.uicomponents.MviSampleSizes
+import platform.uicomponents.MviSampleSizes
 
 @Composable
 fun PreviewContainer(

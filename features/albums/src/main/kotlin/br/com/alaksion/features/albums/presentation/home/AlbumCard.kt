@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import database.models.models.AlbumModel
-import com.example.uicomponents.MviSampleSizes
-import com.example.uicomponents.components.PreviewContainer
+import platform.uicomponents.MviSampleSizes
+import platform.uicomponents.components.PreviewContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
