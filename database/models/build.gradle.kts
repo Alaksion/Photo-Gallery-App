@@ -46,6 +46,7 @@ android {
 
 dependencies {
 
+    implementation(projects.platform.error)
     implementation(libs.androidX.core.ktx)
 
     implementation(libs.coroutines.core)

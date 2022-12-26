@@ -8,6 +8,7 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import br.com.alaksion.database.domain.models.AlbumModel
+import br.com.alaksion.database.domain.models.CreateAlbumModel
 import br.com.alaksion.database.utils.dateFormatter
 import java.time.LocalDate
 import java.util.UUID
@@ -40,11 +41,11 @@ internal data class AlbumEntity(
     }
 
     companion object {
-        fun createFromModel(model: AlbumModel): AlbumEntity {
+        fun createFromModel(model: CreateAlbumModel): AlbumEntity {
             return AlbumEntity(
-                id = model.id,
-                createdAt = model.createdAt.format(dateFormatter),
-                updatedAt = model.updatedAt.format(dateFormatter),
+                id = 0,
+                createdAt = LocalDate.now().format(dateFormatter),
+                updatedAt = LocalDate.now().format(dateFormatter),
                 name = model.name,
                 description = model.description
             )
