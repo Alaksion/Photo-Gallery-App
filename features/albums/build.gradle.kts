@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.platform.uistate)
     implementation(projects.database.models)
     implementation(projects.platform.navigation)
+    implementation(projects.platform.injection)
 
     // Navigation
     implementation(libs.bundles.voyager)
