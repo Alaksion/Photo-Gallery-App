@@ -5,6 +5,7 @@ import androidx.room.Room
 import br.com.alaksion.database.AppDatabase
 import br.com.alaksion.database.data.datasources.AlbumDataSource
 import br.com.alaksion.database.data.datasources.AlbumDataSourceImplementation
+import br.com.alaksion.database.data.validator.AlbumDataSourceValidator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,9 +29,17 @@ internal object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideAlbumDataSource(database: AppDatabase): AlbumDataSource {
+    fun provideAlbumValidator() = AlbumDataSourceValidator
+
+    @Provides
+    @Singleton
+    fun provideAlbumDataSource(
+        database: AppDatabase,
+        validator: AlbumDataSourceValidator
+    ): AlbumDataSource {
         return AlbumDataSourceImplementation(
-            albumDao = database.albumDao()
+            albumDao = database.albumDao(),
+            validator = validator
         )
     }
 

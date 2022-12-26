@@ -6,4 +6,8 @@ sealed class InternalException : Throwable() {
         val text: String
     ) : InternalException()
 
+    data class Untreated(
+        val originalError: Throwable
+    ) : InternalException()
+
 }
