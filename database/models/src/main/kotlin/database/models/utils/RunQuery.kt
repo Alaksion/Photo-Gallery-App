@@ -2,6 +2,7 @@ package database.models.utils
 
 import com.example.error.InternalException
 
+@Suppress("TooGenericExceptionCaught")
 internal suspend fun <T> runQuery(block: suspend () -> T): T {
     return try {
         block()
