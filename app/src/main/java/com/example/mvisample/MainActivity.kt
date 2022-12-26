@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.navigation.NavigationProvider
-import com.example.uicomponents.theme.MviSampleTheme
+import platform.uicomponents.theme.MviSampleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

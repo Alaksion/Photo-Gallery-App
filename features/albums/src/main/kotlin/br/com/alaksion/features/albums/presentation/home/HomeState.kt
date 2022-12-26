@@ -1,6 +1,6 @@
 package br.com.alaksion.features.albums.presentation.home
 
-import br.com.alaksion.database.domain.models.AlbumModel
+import database.models.models.AlbumModel
 
 internal data class HomeState(
     val isInitialized: Boolean = false,

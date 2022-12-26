@@ -1,6 +1,6 @@
 package br.com.alaksion.features.albums.domain.repository
 
-import br.com.alaksion.database.domain.models.AlbumModel
+import database.models.models.AlbumModel
 
 internal interface AlbumRepository {
 
