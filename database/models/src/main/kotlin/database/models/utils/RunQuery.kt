@@ -1,4 +1,4 @@
-package br.com.alaksion.database.utils
+package database.models.utils
 
 import com.example.error.InternalException
 

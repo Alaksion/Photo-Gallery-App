@@ -1,4 +1,4 @@
-package br.com.alaksion.database.domain.models
+package database.models.models
 
 data class CreateAlbumModel(
     val name: String,

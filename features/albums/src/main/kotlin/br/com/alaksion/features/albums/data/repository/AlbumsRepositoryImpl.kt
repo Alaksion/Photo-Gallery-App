@@ -1,7 +1,7 @@
 package br.com.alaksion.features.albums.data.repository
 
-import br.com.alaksion.database.data.datasources.AlbumDataSource
-import br.com.alaksion.database.domain.models.AlbumModel
+import database.models.data.datasources.AlbumDataSource
+import database.models.models.AlbumModel
 import br.com.alaksion.features.albums.domain.repository.AlbumRepository
 import javax.inject.Inject
 

@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.alaksion.database.domain.models.AlbumModel
+import database.models.models.AlbumModel
 import com.example.uicomponents.MviSampleSizes
 import com.example.uicomponents.components.PreviewContainer
 

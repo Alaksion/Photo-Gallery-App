@@ -1,7 +1,7 @@
-package br.com.alaksion.database.domain.models
+package database.models.models
 
-import br.com.alaksion.database.data.entities.AlbumEntity
-import br.com.alaksion.database.utils.dateFormatter
+import database.models.data.entities.AlbumEntity
+import database.models.utils.dateFormatter
 import java.time.LocalDate
 
 data class AlbumModel(

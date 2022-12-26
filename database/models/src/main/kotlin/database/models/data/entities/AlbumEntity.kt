@@ -1,4 +1,4 @@
-package br.com.alaksion.database.data.entities
+package database.models.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Dao
@@ -7,9 +7,9 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
-import br.com.alaksion.database.domain.models.AlbumModel
-import br.com.alaksion.database.domain.models.CreateAlbumModel
-import br.com.alaksion.database.utils.dateFormatter
+import database.models.models.AlbumModel
+import database.models.models.CreateAlbumModel
+import database.models.utils.dateFormatter
 import java.time.LocalDate
 import java.util.UUID
 

@@ -1,6 +1,6 @@
-package br.com.alaksion.database.data.validator
+package database.models.data.validator
 
-import br.com.alaksion.database.domain.models.CreateAlbumModel
+import database.models.models.CreateAlbumModel
 import com.example.error.InternalException
 
 internal object AlbumDataSourceValidator {

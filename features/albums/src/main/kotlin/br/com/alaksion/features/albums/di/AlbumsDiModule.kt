@@ -1,6 +1,6 @@
 package br.com.alaksion.features.albums.di
 
-import br.com.alaksion.database.data.datasources.AlbumDataSource
+import database.models.data.datasources.AlbumDataSource
 import br.com.alaksion.features.albums.data.repository.AlbumsRepositoryImpl
 import br.com.alaksion.features.albums.domain.repository.AlbumRepository
 import dagger.Module

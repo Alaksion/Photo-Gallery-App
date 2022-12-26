@@ -1,11 +1,11 @@
-package br.com.alaksion.database.di
+package database.models.di
 
 import android.content.Context
 import androidx.room.Room
-import br.com.alaksion.database.AppDatabase
-import br.com.alaksion.database.data.datasources.AlbumDataSource
-import br.com.alaksion.database.data.datasources.AlbumDataSourceImplementation
-import br.com.alaksion.database.data.validator.AlbumDataSourceValidator
+import database.models.AppDatabase
+import database.models.data.datasources.AlbumDataSource
+import database.models.data.datasources.AlbumDataSourceImplementation
+import database.models.data.validator.AlbumDataSourceValidator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

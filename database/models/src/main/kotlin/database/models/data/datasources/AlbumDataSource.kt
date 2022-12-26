@@ -1,11 +1,11 @@
-package br.com.alaksion.database.data.datasources
+package database.models.data.datasources
 
-import br.com.alaksion.database.data.entities.AlbumEntity
-import br.com.alaksion.database.data.entities.AlbumEntityDao
-import br.com.alaksion.database.data.validator.AlbumDataSourceValidator
-import br.com.alaksion.database.domain.models.AlbumModel
-import br.com.alaksion.database.domain.models.CreateAlbumModel
-import br.com.alaksion.database.utils.runQuery
+import database.models.data.entities.AlbumEntity
+import database.models.data.entities.AlbumEntityDao
+import database.models.data.validator.AlbumDataSourceValidator
+import database.models.models.AlbumModel
+import database.models.models.CreateAlbumModel
+import database.models.utils.runQuery
 import java.util.UUID
 import javax.inject.Inject
 
