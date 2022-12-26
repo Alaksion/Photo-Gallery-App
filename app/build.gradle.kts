@@ -50,8 +50,8 @@ android {
 
 dependencies {
 
-    implementation(projects.platform.uistate)
-    implementation(projects.database.models)
+    implementation(projects.features.albums)
+    implementation(projects.platform.navigation)
 
     implementation(platform(libs.androidX.compose.bom))
     implementation(libs.androidX.core.ktx)
@@ -59,6 +59,10 @@ dependencies {
     implementation(libs.androidX.compose.activity)
     implementation(libs.bundles.compose.ui)
     implementation(libs.coil)
+
+    // Navigation
+    implementation(libs.bundles.voyager)
+
 
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)

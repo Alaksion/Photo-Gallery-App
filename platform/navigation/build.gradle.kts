@@ -42,12 +42,6 @@ android {
 dependencies {
 
     implementation(projects.platform.uicomponents)
-    implementation(projects.platform.uistate)
-    implementation(projects.database.models)
-    implementation(projects.platform.navigation)
-
-    // Navigation
-    implementation(libs.bundles.voyager)
 
     // coroutines
     implementation(libs.coroutines.core)
@@ -62,18 +56,9 @@ dependencies {
     implementation(libs.androidX.lifecycle.runtime)
     implementation(libs.androidX.lifecycle.viewmodel)
 
-    // Tests
-    testImplementation(libs.junit)
-    testImplementation(libs.turbine)
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.truth)
-
-    // Android Tests
-    androidTestImplementation(platform(libs.androidX.compose.bom))
-    androidTestImplementation(libs.androidX.compose.test.junit)
-    androidTestImplementation(libs.androidX.test.espresso)
-    androidTestImplementation(libs.androidX.test.junit)
 
     // Debug
     debugImplementation(libs.bundles.compose.debug)
+
+    implementation(libs.bundles.voyager)
 }
