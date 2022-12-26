@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -45,12 +47,17 @@ dependencies {
     implementation(projects.platform.uistate)
     implementation(projects.database.models)
     implementation(projects.platform.navigation)
+    implementation(projects.platform.injection)
 
     // Navigation
     implementation(libs.bundles.voyager)
 
     // coroutines
     implementation(libs.coroutines.core)
+
+    // DI
+    implementation(libs.hilt.core)
+    kapt(libs.hilt.compiler)
 
     // Compose
     implementation(platform(libs.androidX.compose.bom))
@@ -76,4 +83,8 @@ dependencies {
 
     // Debug
     debugImplementation(libs.bundles.compose.debug)
+}
+
+kapt {
+    correctErrorTypes = true
 }

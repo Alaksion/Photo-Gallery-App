@@ -10,7 +10,7 @@ data class AlbumModel(
     val updatedAt: LocalDate,
 ) {
     companion object {
-        internal val fixture = AlbumModel(
+        val fixture = AlbumModel(
             id = 0,
             name = "some name",
             description = "some descritption",
