@@ -32,7 +32,7 @@ subprojects {
             reports {
                 sarif {
                     required.set(true)
-                    outputLocation.set(file("$rootDir/build/report/detekt/detekt.sarif"))
+                    outputLocation.set(file("${project.buildDir}/build/report/detekt/detekt.sarif"))
                 }
                 html {
                     required.set(true)
