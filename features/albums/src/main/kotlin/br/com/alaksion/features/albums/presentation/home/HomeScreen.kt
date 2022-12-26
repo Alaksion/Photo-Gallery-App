@@ -70,7 +70,11 @@ private fun StateContent(
                     contentPadding = PaddingValues(horizontal = MviSampleSizes.medium)
                 ) {
                     items(state.albums) { album ->
-                        Text(album.name)
+                        AlbumCard(
+                            data = album,
+                            onClick = {},
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
             } else {
