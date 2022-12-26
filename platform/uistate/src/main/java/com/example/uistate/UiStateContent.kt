@@ -3,7 +3,7 @@ package com.example.uistate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.uicomponents.DefaultLoadingView
+import com.example.uicomponents.components.DefaultLoadingView
 
 @Composable
 fun <T> UiState<T>.UiStateContent(

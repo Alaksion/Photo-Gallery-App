@@ -17,8 +17,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
-import com.example.uicomponents.EmptyState
 import com.example.uicomponents.MviSampleSizes
+import com.example.uicomponents.components.EmptyState
 import com.example.uistate.UiStateContent
 
 internal object HomeScreen : AndroidScreen() {
