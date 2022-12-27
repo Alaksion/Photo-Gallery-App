@@ -14,7 +14,6 @@ configure<BaseLibraryPluginExtension> {
     useCompose.set(true)
 }
 
-
 dependencies {
 
     implementation(projects.platform.uicomponents)
@@ -35,8 +34,9 @@ dependencies {
 
     // Compose
     implementation(platform(libs.androidX.compose.bom))
-    implementation(libs.bundles.compose.ui)
+    debugImplementation(libs.bundles.compose.debug)
 
+    // AndroidX
     implementation(libs.androidX.core.ktx)
 
     // Lifecycle
@@ -55,8 +55,7 @@ dependencies {
     androidTestImplementation(libs.androidX.test.espresso)
     androidTestImplementation(libs.androidX.test.junit)
 
-    // Debug
-    debugImplementation(libs.bundles.compose.debug)
+
 }
 
 kapt {

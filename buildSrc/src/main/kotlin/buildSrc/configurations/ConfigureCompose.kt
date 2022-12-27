@@ -14,11 +14,19 @@ import org.gradle.kotlin.dsl.dependencies
 internal fun Project.configureCompose() = baseExtension().run {
 
     composeOptions {
-//        val compilerVersion =
-//            versionCatalog.findVersion("androidX-compose-compiler").get().preferredVersion
+        val compilerVersion =
+            versionCatalog.findVersion("androidX-compose-compiler").get()
 
-        kotlinCompilerExtensionVersion = "1.4.0-alpha02"
+        kotlinCompilerExtensionVersion = compilerVersion.toString()
 
+    }
+
+    tasks.register("sample") {
+        doLast {
+            val compilerVersion =
+                project.library("androidX-compose-ui")
+            print(compilerVersion)
+        }
     }
 
     libraryExtension().run {
@@ -27,10 +35,14 @@ internal fun Project.configureCompose() = baseExtension().run {
         }
     }
 
-//    dependencies { dependencies.installCompose(this@configureCompose) }
+    dependencies.installCompose(
+        project = this@configureCompose,
+    )
 }
 
-private fun DependencyHandler.installCompose(project: Project) {
+private fun DependencyHandler.installCompose(
+    project: Project
+) {
 
     // TODO -> Find a way to add Compose BOM to this setup
 
@@ -39,8 +51,9 @@ private fun DependencyHandler.installCompose(project: Project) {
     implementation(project.library("androidX-compose-tooling-preview"))
     implementation(project.library("androidX-compose-material3"))
 
-    debug("androidX-compose-debug-tooling")
-    debug("androidX-compose-debug-manifest")
-
-    androidTest("androidX-compose-test-junit")
+    // Find out why debug and androidTest configurations are not working
+//    debug("androidX-compose-debug-tooling")
+//    debug("androidX-compose-debug-manifest")
+//
+//    androidTest("androidX-compose-test-junit")
 }

@@ -12,7 +12,10 @@ private fun DependencyHandler.addDependency(
     notation: Any,
     type: DependencyType
 ) {
-    add(type.label, notation.toString())
+    add(
+        type.label,
+        notation,
+    )
 }
 
 internal fun DependencyHandler.implementation(
