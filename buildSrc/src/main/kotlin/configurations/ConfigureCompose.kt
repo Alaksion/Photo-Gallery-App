@@ -1,5 +1,6 @@
 package configurations
 
+import extensions.androidTest
 import extensions.baseExtension
 import extensions.debug
 import extensions.implementation
@@ -40,4 +41,6 @@ private fun DependencyHandler.installCompose(project: Project) {
 
     debug("androidX-compose-debug-tooling")
     debug("androidX-compose-debug-manifest")
+
+    androidTest("androidX-compose-test-junit")
 }

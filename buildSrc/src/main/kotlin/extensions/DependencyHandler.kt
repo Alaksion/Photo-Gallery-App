@@ -4,7 +4,8 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 
 internal enum class DependencyType(val label: String) {
     Implementation("implementation"),
-    Debug("debugImplementation");
+    Debug("debugImplementation"),
+    AndroidTest("androidTestImplementation");
 }
 
 private fun DependencyHandler.addDependency(
@@ -21,3 +22,7 @@ internal fun DependencyHandler.implementation(
 internal fun DependencyHandler.debug(
     notation: Any
 ) = addDependency(notation, DependencyType.Debug)
+
+internal fun DependencyHandler.androidTest(
+    notation: Any
+) = addDependency(notation, DependencyType.AndroidTest)
