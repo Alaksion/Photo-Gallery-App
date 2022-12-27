@@ -70,6 +70,9 @@ voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", vers
 voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voyager" }
 voyager-viewModel = { module = "cafe.adriel.voyager:voyager-androidx", version.ref = "voyager" }
 
+customPlugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+customPlugin-kotlinGradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
