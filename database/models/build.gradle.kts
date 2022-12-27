@@ -45,7 +45,6 @@ android {
 }
 
 dependencies {
-
     implementation(projects.platform.error)
     implementation(libs.androidX.core.ktx)
 

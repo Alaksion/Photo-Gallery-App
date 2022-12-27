@@ -1,10 +1,10 @@
 package br.com.alaksion.features.albums.presentation.home
 
 import br.com.alaksion.features.albums.domain.repository.AlbumRepository
-import com.example.injection.IODispatcher
-import platform.uistate.uistate.UiStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import platform.injection.IODispatcher
+import platform.uistate.uistate.UiStateViewModel
 import javax.inject.Inject
 
 internal sealed class HomeIntent {
