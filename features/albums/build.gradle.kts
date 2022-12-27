@@ -5,6 +5,12 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+//apply<BasePlugin>()
+//
+//configure<BasePluginConfiguration> {
+//    useCompose.set(true)
+//}
+
 android {
 
     namespace = "com.example.mvisample"
