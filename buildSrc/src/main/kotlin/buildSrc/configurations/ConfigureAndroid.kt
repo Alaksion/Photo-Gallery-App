@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 internal fun Project.configureAndroid() = baseExtension().run {
 
     libraryExtension().run {
+        // TODO -> See if this namespace can be shared or if it must be unique for every module
         namespace = "com.example.mvisample"
 
         compileSdk = BuildConstants.COMPILE_SDK

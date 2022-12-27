@@ -17,6 +17,7 @@ interface BaseLibraryPluginExtension {
 class BaseLibraryPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
+        // TOD0 -> Configuration is not working yet
         val configuration = target.extensions.create<BaseLibraryPluginExtension>("config")
         configuration.useCompose.convention(false)
 
