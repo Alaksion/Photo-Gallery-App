@@ -1,4 +1,4 @@
-package com.example.uistate
+package platform.uistate.uistate
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

@@ -1,6 +1,6 @@
 package database.models.data.validator
 
-import com.example.error.InternalException
+import platform.error.InternalException
 import database.models.models.CreateAlbumModel
 import org.junit.Test
 

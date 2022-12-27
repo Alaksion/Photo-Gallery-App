@@ -9,10 +9,10 @@ android {
 
     namespace = "com.example.mvisample"
 
-    compileSdk = BuildConstants.COMPILE_SDK
+    compileSdk = buildSrc.BuildConstants.COMPILE_SDK
 
     defaultConfig {
-        minSdk = BuildConstants.MIN_SDK
+        minSdk = buildSrc.BuildConstants.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -28,11 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = BuildConstants.JAVA_VERSION
-        targetCompatibility = BuildConstants.JAVA_VERSION
+        sourceCompatibility = buildSrc.BuildConstants.JAVA_VERSION
+        targetCompatibility = buildSrc.BuildConstants.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = BuildConstants.JVM_TARGET
+        jvmTarget = buildSrc.BuildConstants.JVM_TARGET
     }
 }
 

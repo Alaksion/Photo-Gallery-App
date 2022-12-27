@@ -1,4 +1,4 @@
-package com.example.uievent
+package platform.uistate.uievent
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

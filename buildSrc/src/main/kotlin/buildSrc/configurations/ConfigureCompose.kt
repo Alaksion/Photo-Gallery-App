@@ -1,12 +1,12 @@
-package configurations
+package buildSrc.configurations
 
-import extensions.androidTest
-import extensions.baseExtension
-import extensions.debug
-import extensions.implementation
-import extensions.library
-import extensions.libraryExtension
-import extensions.versionCatalog
+import buildSrc.extensions.androidTest
+import buildSrc.extensions.baseExtension
+import buildSrc.extensions.debug
+import buildSrc.extensions.implementation
+import buildSrc.extensions.library
+import buildSrc.extensions.libraryExtension
+import buildSrc.extensions.versionCatalog
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.dependencies

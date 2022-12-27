@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.example.mvisample"
-    compileSdk = BuildConstants.COMPILE_SDK
+    compileSdk = buildSrc.BuildConstants.COMPILE_SDK
 
     defaultConfig {
         applicationId = "com.example.mvisample"
-        minSdk = BuildConstants.MIN_SDK
-        targetSdk = BuildConstants.TARGET_SDK
-        versionCode = BuildConstants.VERSION_CODE
-        versionName = BuildConstants.VERSION_NAME
+        minSdk = buildSrc.BuildConstants.MIN_SDK
+        targetSdk = buildSrc.BuildConstants.TARGET_SDK
+        versionCode = buildSrc.BuildConstants.VERSION_CODE
+        versionName = buildSrc.BuildConstants.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -29,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = BuildConstants.JAVA_VERSION
-        targetCompatibility = BuildConstants.JAVA_VERSION
+        sourceCompatibility = buildSrc.BuildConstants.JAVA_VERSION
+        targetCompatibility = buildSrc.BuildConstants.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = BuildConstants.JVM_TARGET
+        jvmTarget = buildSrc.BuildConstants.JVM_TARGET
     }
     buildFeatures {
         compose = true

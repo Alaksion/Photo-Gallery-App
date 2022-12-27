@@ -1,6 +1,7 @@
 package com.example.uistate
 
 import kotlinx.coroutines.CoroutineDispatcher
+import platform.uistate.uistate.UiStateViewModel
 
 internal class SampleException : Throwable(message = "This is a sample error")
 

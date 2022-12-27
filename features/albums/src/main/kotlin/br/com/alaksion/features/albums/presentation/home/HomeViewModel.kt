@@ -2,7 +2,7 @@ package br.com.alaksion.features.albums.presentation.home
 
 import br.com.alaksion.features.albums.domain.repository.AlbumRepository
 import com.example.injection.IODispatcher
-import com.example.uistate.UiStateViewModel
+import platform.uistate.uistate.UiStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject

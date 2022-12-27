@@ -12,6 +12,8 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import platform.uistate.uistate.UiStateType
+import platform.uistate.uistate.filterForData
 
 @ExperimentalCoroutinesApi
 internal class UiStateViewModelTest {

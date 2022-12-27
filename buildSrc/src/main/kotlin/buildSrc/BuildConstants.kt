@@ -1,3 +1,5 @@
+package buildSrc
+
 import org.gradle.api.JavaVersion
 
 object BuildConstants {

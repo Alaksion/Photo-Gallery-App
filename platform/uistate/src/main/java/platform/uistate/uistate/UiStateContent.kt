@@ -1,4 +1,4 @@
-package com.example.uistate
+package platform.uistate.uistate
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable

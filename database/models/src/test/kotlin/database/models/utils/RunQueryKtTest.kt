@@ -1,6 +1,6 @@
 package database.models.utils
 
-import com.example.error.InternalException
+import platform.error.InternalException
 import com.google.common.truth.Truth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
