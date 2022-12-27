@@ -14,10 +14,10 @@ import org.gradle.kotlin.dsl.dependencies
 internal fun Project.configureCompose() = baseExtension().run {
 
     composeOptions {
-        val compilerVersion =
-            versionCatalog.findVersion("androidX-compose-compiler").get().preferredVersion
+//        val compilerVersion =
+//            versionCatalog.findVersion("androidX-compose-compiler").get().preferredVersion
 
-        kotlinCompilerExtensionVersion = compilerVersion
+        kotlinCompilerExtensionVersion = "1.4.0-alpha02"
 
     }
 
@@ -27,7 +27,7 @@ internal fun Project.configureCompose() = baseExtension().run {
         }
     }
 
-    dependencies { dependencies.installCompose(this@configureCompose) }
+//    dependencies { dependencies.installCompose(this@configureCompose) }
 }
 
 private fun DependencyHandler.installCompose(project: Project) {
