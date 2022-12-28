@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import com.example.error.InternalException
+import platform.error.InternalException
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.PreviewContainer
 import platform.uicomponents.components.spacers.VerticalSpacer

@@ -1,4 +1,4 @@
-package com.example.navigation
+package platform.navigation
 
 import cafe.adriel.voyager.core.registry.ScreenProvider
 

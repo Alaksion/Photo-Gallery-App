@@ -11,6 +11,9 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import platform.uistate.uievent.UiEvent
+import platform.uistate.uievent.UiEventHandler
+import platform.uistate.uievent.UiEventHandlerImpl
 import java.util.UUID
 
 private sealed class SampleEvents(override val eventId: UUID) : UiEvent {

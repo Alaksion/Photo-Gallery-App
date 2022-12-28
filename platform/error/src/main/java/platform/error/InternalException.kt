@@ -1,4 +1,4 @@
-package com.example.error
+package platform.error
 
 sealed class InternalException : Throwable() {
 

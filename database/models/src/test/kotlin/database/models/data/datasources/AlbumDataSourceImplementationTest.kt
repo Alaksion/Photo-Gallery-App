@@ -1,6 +1,6 @@
 package database.models.data.datasources
 
-import com.example.error.InternalException
+import platform.error.InternalException
 import com.google.common.truth.Truth
 import database.models.data.validator.AlbumDataSourceValidator
 import database.models.models.AlbumModel

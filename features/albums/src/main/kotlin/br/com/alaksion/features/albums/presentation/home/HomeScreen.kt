@@ -19,7 +19,7 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
-import com.example.uistate.UiStateContent
+import platform.uistate.uistate.UiStateContent
 
 internal object HomeScreen : AndroidScreen() {
 

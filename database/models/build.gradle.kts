@@ -1,24 +1,14 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("com.mvisample.library")
+    id("com.mvisample.hilt")
     id("com.google.devtools.ksp")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
 
-    namespace = "com.example.mvisample"
-
-    compileSdk = BuildConstants.COMPILE_SDK
+    namespace = "database.models"
 
     defaultConfig {
-        minSdk = BuildConstants.MIN_SDK
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -29,23 +19,9 @@ android {
         }
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            setProguardFiles(listOf(getDefaultProguardFile("proguard-android-optimize.txt")))
-        }
-    }
-    compileOptions {
-        sourceCompatibility = BuildConstants.JAVA_VERSION
-        targetCompatibility = BuildConstants.JAVA_VERSION
-    }
-    kotlinOptions {
-        jvmTarget = BuildConstants.JVM_TARGET
-    }
 }
 
 dependencies {
-
     implementation(projects.platform.error)
     implementation(libs.androidX.core.ktx)
 
@@ -56,13 +32,6 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    implementation(libs.hilt.core)
-    kapt(libs.hilt.compiler)
-
     testImplementation(libs.junit)
     testImplementation(libs.truth)
-}
-
-kapt {
-    correctErrorTypes = true
 }

@@ -1,4 +1,4 @@
-package com.example.injection
+package platform.injection
 
 import dagger.Module
 import dagger.Provides

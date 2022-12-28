@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.example.mvisample"
-    compileSdk = BuildConstants.COMPILE_SDK
+    compileSdk = buildSrc.BuildConstants.COMPILE_SDK
 
     defaultConfig {
         applicationId = "com.example.mvisample"
-        minSdk = BuildConstants.MIN_SDK
-        targetSdk = BuildConstants.TARGET_SDK
-        versionCode = BuildConstants.VERSION_CODE
-        versionName = BuildConstants.VERSION_NAME
+        minSdk = buildSrc.BuildConstants.MIN_SDK
+        targetSdk = buildSrc.BuildConstants.TARGET_SDK
+        versionCode = buildSrc.BuildConstants.VERSION_CODE
+        versionName = buildSrc.BuildConstants.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -29,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = BuildConstants.JAVA_VERSION
-        targetCompatibility = BuildConstants.JAVA_VERSION
+        sourceCompatibility = buildSrc.BuildConstants.JAVA_VERSION
+        targetCompatibility = buildSrc.BuildConstants.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = BuildConstants.JVM_TARGET
+        jvmTarget = buildSrc.BuildConstants.JVM_TARGET
     }
     buildFeatures {
         compose = true
@@ -54,7 +54,6 @@ dependencies {
     implementation(projects.platform.navigation)
     implementation(projects.platform.uicomponents)
 
-    implementation(platform(libs.androidX.compose.bom))
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.lifecycle.runtime)
     implementation(libs.androidX.compose.activity)
@@ -72,8 +71,7 @@ dependencies {
 
     implementation(libs.coroutines.core)
     testImplementation(libs.coroutines.test)
-
-    androidTestImplementation(platform(libs.androidX.compose.bom))
+    
     androidTestImplementation(libs.androidX.compose.test.junit)
     androidTestImplementation(libs.androidX.test.espresso)
     androidTestImplementation(libs.androidX.test.junit)

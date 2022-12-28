@@ -4,6 +4,9 @@ import com.google.common.truth.Truth
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Test
+import platform.uistate.uistate.StateManagerImpl
+import platform.uistate.uistate.UiState
+import platform.uistate.uistate.UiStateType
 
 internal class StateManagerImplTest {
 

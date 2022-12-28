@@ -1,4 +1,4 @@
-package com.example.uievent
+package platform.uistate.uievent
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

@@ -1,4 +1,4 @@
-package com.example.uistate
+package platform.uistate.uistate
 
 sealed class UiStateType {
 

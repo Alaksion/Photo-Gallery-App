@@ -1,7 +1,7 @@
 package database.models.data.validator
 
 import database.models.models.CreateAlbumModel
-import com.example.error.InternalException
+import platform.error.InternalException
 
 internal object AlbumDataSourceValidator {
 
