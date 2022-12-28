@@ -37,15 +37,17 @@ private fun DependencyHandler.installCompose(
     project: Project
 ) {
 
-    implementationPlatform(project.library("androidx.compose:compose-bom"))
+    implementationPlatform(project.library("androidX-compose-bom"))
     implementation(project.library("androidX-compose-ui"))
     implementation(project.library("androidX-compose-graphics"))
     implementation(project.library("androidX-compose-tooling-preview"))
     implementation(project.library("androidX-compose-material3"))
 
-    debug(project.library("androidX-compose-debug-tooling"))
-    debug("androidX-compose-debug-manifest")
+    // TODO -> Find out why debug and androidTest are not working
 
-    androidTest(project.library("androidX-compose-test-junit"))
-    androidTestPlatform(project.library("androidx.compose:compose-bom"))
+//    debug(project.library("androidX-compose-debug-tooling"))
+//    debug(project.library("androidX-compose-debug-manifest"))
+
+//    androidTest(project.library("androidX-compose-test-junit"))
+//    androidTestPlatform(project.library("androidX-compose-bom"))
 }
