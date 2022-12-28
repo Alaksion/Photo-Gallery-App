@@ -23,10 +23,6 @@ internal fun DependencyHandler.implementation(
     notation: Any
 ) = addDependency(notation, DependencyType.Implementation)
 
-internal fun DependencyHandler.implementationPlatform(
-    notation: Any
-) = addDependency(notation, DependencyType.Implementation)
-
 internal fun DependencyHandler.kapt(
     notation: Any
 ) = addDependency(notation, DependencyType.Kapt)

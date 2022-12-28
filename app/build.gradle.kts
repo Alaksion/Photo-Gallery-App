@@ -54,7 +54,6 @@ dependencies {
     implementation(projects.platform.navigation)
     implementation(projects.platform.uicomponents)
 
-    implementation(platform(libs.androidX.compose.bom))
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.lifecycle.runtime)
     implementation(libs.androidX.compose.activity)
@@ -72,8 +71,7 @@ dependencies {
 
     implementation(libs.coroutines.core)
     testImplementation(libs.coroutines.test)
-
-    androidTestImplementation(platform(libs.androidX.compose.bom))
+    
     androidTestImplementation(libs.androidX.compose.test.junit)
     androidTestImplementation(libs.androidX.test.espresso)
     androidTestImplementation(libs.androidX.test.junit)

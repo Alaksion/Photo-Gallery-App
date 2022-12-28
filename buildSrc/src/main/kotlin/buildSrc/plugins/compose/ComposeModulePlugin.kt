@@ -6,7 +6,9 @@ import org.gradle.api.Project
 class ComposeModulePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
-        target.configureCompose()
+        with(target) {
+            configureCompose()
+        }
     }
 
 }

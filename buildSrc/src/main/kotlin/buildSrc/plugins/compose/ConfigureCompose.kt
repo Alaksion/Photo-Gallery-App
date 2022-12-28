@@ -3,7 +3,6 @@ package buildSrc.plugins.compose
 import buildSrc.extensions.DependencyType
 import buildSrc.extensions.baseExtension
 import buildSrc.extensions.implementation
-import buildSrc.extensions.implementationPlatform
 import buildSrc.extensions.library
 import buildSrc.extensions.libraryExtension
 import buildSrc.extensions.versionCatalog
@@ -34,7 +33,6 @@ internal fun Project.configureCompose() = baseExtension().run {
 private fun DependencyHandler.installCompose(
     project: Project
 ) {
-    implementationPlatform(project.library("androidX-compose-bom"))
     implementation(project.library("androidX-compose-ui"))
     implementation(project.library("androidX-compose-graphics"))
     implementation(project.library("androidX-compose-tooling-preview"))
@@ -45,5 +43,4 @@ private fun DependencyHandler.installCompose(
     add(DependencyType.Debug.label, project.library("androidX-compose-debug-manifest"))
 
     add(DependencyType.AndroidTest.label, project.library("androidX-compose-test-junit"))
-    add(DependencyType.AndroidTest.label, platform(project.library("androidX-compose-bom")))
 }
