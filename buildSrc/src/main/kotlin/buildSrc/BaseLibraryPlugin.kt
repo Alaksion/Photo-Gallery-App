@@ -2,7 +2,8 @@ package buildSrc
 
 
 import buildSrc.configurations.configureAndroid
-import buildSrc.configurations.configureCompose
+import buildSrc.plugins.compose.configureCompose
+import buildSrc.configurations.configureHilt
 import buildSrc.configurations.configurePlugins
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -23,8 +24,10 @@ class BaseLibraryPlugin : Plugin<Project> {
 
         target.configurePlugins()
         target.configureAndroid()
-        // TODO -> Make this function conditional to useCompose configuration
+
+        // TODO -> Make this function conditional to configuration
         target.configureCompose()
+        target.configureHilt()
 
     }
 

@@ -1,5 +1,4 @@
-import buildSrc.BaseLibraryPlugin
-import buildSrc.BaseLibraryPluginExtension
+import buildSrc.BuildConstants
 
 plugins {
     id("com.android.library")
@@ -8,10 +7,40 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
-apply<BaseLibraryPlugin>()
+android {
 
-configure<BaseLibraryPluginExtension> {
-    useCompose.set(true)
+    namespace = "com.example.mvisample"
+
+    compileSdk = BuildConstants.COMPILE_SDK
+
+    defaultConfig {
+        minSdk = BuildConstants.MIN_SDK
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            setProguardFiles(listOf(getDefaultProguardFile("proguard-android-optimize.txt")))
+        }
+    }
+    compileOptions {
+        sourceCompatibility = BuildConstants.JAVA_VERSION
+        targetCompatibility = BuildConstants.JAVA_VERSION
+    }
+    kotlinOptions {
+        jvmTarget = BuildConstants.JVM_TARGET
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidX.compose.compiler.get()
+    }
 }
 
 dependencies {
@@ -34,9 +63,8 @@ dependencies {
 
     // Compose
     implementation(platform(libs.androidX.compose.bom))
-    debugImplementation(libs.bundles.compose.debug)
+    implementation(libs.bundles.compose.ui)
 
-    // AndroidX
     implementation(libs.androidX.core.ktx)
 
     // Lifecycle
@@ -55,7 +83,8 @@ dependencies {
     androidTestImplementation(libs.androidX.test.espresso)
     androidTestImplementation(libs.androidX.test.junit)
 
-
+    // Debug
+    debugImplementation(libs.bundles.compose.debug)
 }
 
 kapt {
