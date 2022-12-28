@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
@@ -43,5 +44,12 @@ subprojects {
             }
         }
     }
+}
 
+// Configuration for ./gradlew dependencyUpdates
+tasks.withType<DependencyUpdatesTask>() {
+    checkForGradleUpdate = false
+    outputFormatter = "json"
+    outputDir = "build/dependencyReports"
+    reportfileName = "report"
 }
