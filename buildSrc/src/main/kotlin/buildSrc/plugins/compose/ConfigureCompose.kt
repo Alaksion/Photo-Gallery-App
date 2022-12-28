@@ -1,9 +1,7 @@
 package buildSrc.plugins.compose
 
-import buildSrc.extensions.androidTest
-import buildSrc.extensions.androidTestPlatform
+import buildSrc.extensions.DependencyType
 import buildSrc.extensions.baseExtension
-import buildSrc.extensions.debug
 import buildSrc.extensions.implementation
 import buildSrc.extensions.implementationPlatform
 import buildSrc.extensions.library
@@ -36,18 +34,16 @@ internal fun Project.configureCompose() = baseExtension().run {
 private fun DependencyHandler.installCompose(
     project: Project
 ) {
-
     implementationPlatform(project.library("androidX-compose-bom"))
     implementation(project.library("androidX-compose-ui"))
     implementation(project.library("androidX-compose-graphics"))
     implementation(project.library("androidX-compose-tooling-preview"))
     implementation(project.library("androidX-compose-material3"))
 
-    // TODO -> Find out why debug and androidTest are not working
+    // Manual add because androidTest and debug extensions are not working for unknown reasons
+    add(DependencyType.Debug.label, project.library("androidX-compose-debug-tooling"))
+    add(DependencyType.Debug.label, project.library("androidX-compose-debug-manifest"))
 
-//    debug(project.library("androidX-compose-debug-tooling"))
-//    debug(project.library("androidX-compose-debug-manifest"))
-
-//    androidTest(project.library("androidX-compose-test-junit"))
-//    androidTestPlatform(project.library("androidX-compose-bom"))
+    add(DependencyType.AndroidTest.label, project.library("androidX-compose-test-junit"))
+    add(DependencyType.AndroidTest.label, platform(project.library("androidX-compose-bom")))
 }

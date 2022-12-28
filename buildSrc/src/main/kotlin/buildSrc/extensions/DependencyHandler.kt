@@ -27,18 +27,6 @@ internal fun DependencyHandler.implementationPlatform(
     notation: Any
 ) = addDependency(notation, DependencyType.Implementation)
 
-internal fun DependencyHandler.debug(
-    notation: Any
-) = addDependency(platform(notation), DependencyType.Debug)
-
-internal fun DependencyHandler.androidTest(
-    notation: Any
-) = addDependency(notation, DependencyType.AndroidTest)
-
-internal fun DependencyHandler.androidTestPlatform(
-    notation: Any
-) = addDependency(platform(notation), DependencyType.AndroidTest)
-
 internal fun DependencyHandler.kapt(
     notation: Any
 ) = addDependency(notation, DependencyType.Kapt)
