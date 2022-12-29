@@ -34,7 +34,7 @@ internal object HomeScreen : AndroidScreen() {
 
         state.UiStateContent(
             stateContent = {
-                StateContent(
+                HomeScreenContent(
                     state = it,
                     intentHandler = model::handleIntent
                 )
@@ -48,7 +48,7 @@ internal object HomeScreen : AndroidScreen() {
 @Suppress("UnusedPrivateMember")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun StateContent(
+private fun HomeScreenContent(
     state: HomeState,
     intentHandler: (HomeIntent) -> Unit
 ) {
