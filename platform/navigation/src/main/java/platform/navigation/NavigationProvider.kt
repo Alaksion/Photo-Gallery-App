@@ -6,5 +6,7 @@ sealed class NavigationProvider : ScreenProvider {
 
     sealed class Albums : NavigationProvider() {
         object Home : Albums()
+
+        object Create: Albums()
     }
 }
