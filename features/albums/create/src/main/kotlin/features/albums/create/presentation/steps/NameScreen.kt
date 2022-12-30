@@ -22,9 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
+import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import features.albums.create.presentation.CreateAlbumFlowProvider
 import features.albums.create.presentation.CreateAlbumIntent
 import features.albums.create.presentation.CreateViewModel
 import platform.uicomponents.MviSampleSizes
@@ -32,7 +34,8 @@ import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
-internal object NameScreen : Screen {
+internal object NameScreen : Screen,
+    ScreenLifecycleProvider by CreateAlbumFlowProvider() {
 
     @Composable
     override fun Content() {
@@ -63,7 +66,7 @@ internal object NameScreen : Screen {
                 TopAppBar(
                     title = { Text("Create a new album") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator?.popAll() }) {
+                        IconButton(onClick = { navigator?.popUntilRoot() }) {
                             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)
                         }
                     }
