@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import br.com.alaksion.features.albums.presentation.create.CreateAlbumScreen
+import br.com.alaksion.features.albums.presentation.create.NameScreen
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -45,7 +46,7 @@ internal object HomeScreen : AndroidScreen() {
                 HomeScreenContent(
                     state = it,
                     intentHandler = model::handleIntent,
-                    goToCreateAlbum = { navigator?.push(CreateAlbumScreen) }
+                    goToCreateAlbum = { navigator?.push(NameScreen) }
                 )
             },
             errorState = {}
