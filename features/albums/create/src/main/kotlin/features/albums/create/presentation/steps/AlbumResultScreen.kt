@@ -11,8 +11,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import features.albums.create.presentation.CreateAlbumFlowProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.WeightSpacer
 
@@ -24,7 +26,8 @@ internal enum class AlbumResult(
     Error("Something went wrong", "Please try again in few minutes");
 }
 
-internal data class AlbumResultScreen(val result: AlbumResult) : Screen {
+internal data class AlbumResultScreen(val result: AlbumResult) : Screen,
+    ScreenLifecycleProvider by CreateAlbumFlowProvider() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
