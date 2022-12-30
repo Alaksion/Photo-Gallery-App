@@ -6,7 +6,7 @@ plugins {
 
 android {
 
-    namespace = "features.albums"
+    namespace = "features.albums.create"
 
 }
 
