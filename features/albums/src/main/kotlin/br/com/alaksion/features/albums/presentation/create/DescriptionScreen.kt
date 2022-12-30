@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import cafe.adriel.voyager.androidx.AndroidScreen
+import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import platform.uicomponents.MviSampleSizes
@@ -33,7 +34,7 @@ import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
-internal object DescriptionScreen : AndroidScreen() {
+internal object DescriptionScreen : Screen {
 
     @Composable
     override fun Content() {
