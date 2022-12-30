@@ -23,7 +23,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -32,6 +31,7 @@ import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
+import platform.uistate.uievent.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 
 internal object CreateAlbumScreen : Screen {
@@ -41,6 +41,10 @@ internal object CreateAlbumScreen : Screen {
         val model = getViewModel<CreateViewModel>()
         val state by model.collectUiState()
         val navigator = LocalNavigator.current
+
+        UiEventEffect(eventHandler = model) {
+            navigator?.push(AlbumResultScreen(it.result))
+        }
 
         state.UiStateContent(
             stateContent = {

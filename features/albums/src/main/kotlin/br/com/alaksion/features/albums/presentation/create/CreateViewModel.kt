@@ -5,7 +5,11 @@ import br.com.alaksion.features.albums.domain.repository.AlbumRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import platform.injection.IODispatcher
+import platform.uistate.uievent.UiEvent
+import platform.uistate.uievent.UiEventHandler
+import platform.uistate.uievent.UiEventHandlerImpl
 import platform.uistate.uistate.UiStateViewModel
+import java.util.UUID
 import javax.inject.Inject
 
 internal sealed class CreateAlbumIntent {
@@ -14,11 +18,19 @@ internal sealed class CreateAlbumIntent {
     object CreateAlbum : CreateAlbumIntent()
 }
 
+internal sealed class CreateAlbumEvents(val result: AlbumResult) : UiEvent {
+    class Result(
+        result: AlbumResult,
+        override val eventId: UUID
+    ) : CreateAlbumEvents(result)
+}
+
 @HiltViewModel
 internal class CreateViewModel @Inject constructor(
     @IODispatcher dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository
-) : UiStateViewModel<CreateAlbumState>(CreateAlbumState(), dispatcher) {
+) : UiStateViewModel<CreateAlbumState>(CreateAlbumState(), dispatcher),
+    UiEventHandler<CreateAlbumEvents> by UiEventHandlerImpl() {
 
     fun handleIntent(intent: CreateAlbumIntent) {
         when (intent) {
@@ -42,12 +54,19 @@ internal class CreateViewModel @Inject constructor(
 
     private fun createAlbum() {
         runSuspendCatching {
-            repository.createAlbum(
-                data = CreateAlbumDTO(
-                    name = stateData.name,
-                    description = stateData.description
+            val result = kotlin.runCatching {
+                repository.createAlbum(
+                    data = CreateAlbumDTO(
+                        name = stateData.name,
+                        description = stateData.description
+                    )
                 )
+            }.fold(
+                onSuccess = { CreateAlbumEvents.Result(AlbumResult.Success, UUID.randomUUID()) },
+                onFailure = { CreateAlbumEvents.Result(AlbumResult.Error, UUID.randomUUID()) },
             )
+
+            enqueueEvent(result)
         }
     }
 
