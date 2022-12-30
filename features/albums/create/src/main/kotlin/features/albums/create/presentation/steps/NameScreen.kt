@@ -1,4 +1,4 @@
-package features.albums.create.presentation
+package features.albums.create.presentation.steps
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,7 +7,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,12 +25,14 @@ import androidx.compose.ui.text.input.ImeAction
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import features.albums.create.presentation.CreateAlbumIntent
+import features.albums.create.presentation.CreateViewModel
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
-internal object DescriptionScreen : Screen {
+internal object NameScreen : Screen {
 
     @Composable
     override fun Content() {
@@ -40,7 +42,7 @@ internal object DescriptionScreen : Screen {
         state.UiStateContent(
             stateContent = {
                 StateContent(
-                    description = it.description,
+                    name = it.name,
                     onNameChange = model::handleIntent
                 )
             },
@@ -51,7 +53,7 @@ internal object DescriptionScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     internal fun StateContent(
-        description: String,
+        name: String,
         onNameChange: (CreateAlbumIntent) -> Unit
     ) {
         val navigator = LocalNavigator.current
@@ -61,7 +63,7 @@ internal object DescriptionScreen : Screen {
                 TopAppBar(
                     title = { Text("Create a new album") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator?.pop() }) {
+                        IconButton(onClick = { navigator?.popAll() }) {
                             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)
                         }
                     }
@@ -74,29 +76,29 @@ internal object DescriptionScreen : Screen {
                     .padding(MviSampleSizes.medium)
             ) {
                 Text(
-                    text = "Tell us how this place is special to you",
+                    text = "How is this album named?",
                     style = MaterialTheme.typography.headlineSmall,
                 )
                 VerticalSpacer(height = MviSampleSizes.xLarge)
                 OutlinedTextField(
-                    value = description,
-                    onValueChange = { onNameChange(CreateAlbumIntent.UpdateDescription(it)) },
+                    value = name,
+                    onValueChange = { onNameChange(CreateAlbumIntent.UpdateName(it)) },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Album's description") },
+                    placeholder = { Text("Grandma's cabin in the woods") },
+                    label = { Text("Album's name") },
                     keyboardActions = KeyboardActions(
                         onDone = { focus.clearFocus() }
                     ),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Outlined.List, contentDescription = null)
+                        Icon(imageVector = Icons.Outlined.LocationOn, contentDescription = null)
                     },
-                    maxLines = 20
                 )
                 WeightSpacer(weight = 1f)
                 Button(
-                    onClick = { navigator?.push(CreateAlbumScreen) },
+                    onClick = { navigator?.push(DescriptionScreen) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = description.isNotEmpty()
+                    enabled = name.isNotEmpty()
                 ) {
                     Text("Continue")
                 }

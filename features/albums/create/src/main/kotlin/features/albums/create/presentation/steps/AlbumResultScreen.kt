@@ -1,4 +1,4 @@
-package features.albums.create.presentation
+package features.albums.create.presentation.steps
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
