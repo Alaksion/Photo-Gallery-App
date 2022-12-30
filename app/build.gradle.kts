@@ -50,9 +50,10 @@ android {
 
 dependencies {
 
-    implementation(projects.features.albums)
     implementation(projects.platform.navigation)
     implementation(projects.platform.uicomponents)
+    implementation(projects.features.albums.home)
+    implementation(projects.features.albums.create)
 
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.lifecycle.runtime)

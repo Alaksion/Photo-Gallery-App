@@ -1,9 +1,10 @@
 package com.example.mvisample
 
 import android.app.Application
-import br.com.alaksion.features.albums.di.albumScreenDI
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import dagger.hilt.android.HiltAndroidApp
+import features.albums.create.di.createAlbumStepDi
+import features.albums.home.di.albumHomeStepDi
 
 @HiltAndroidApp
 class MviSampleApplication : Application() {
@@ -11,7 +12,8 @@ class MviSampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         ScreenRegistry {
-            albumScreenDI()
+            createAlbumStepDi()
+            albumHomeStepDi()
         }
     }
 
