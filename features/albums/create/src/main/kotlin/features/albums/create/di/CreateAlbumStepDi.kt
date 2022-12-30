@@ -1,7 +1,7 @@
 package features.albums.create.di
 
 import cafe.adriel.voyager.core.registry.screenModule
-import features.albums.create.presentation.NameScreen
+import features.albums.create.presentation.steps.NameScreen
 import platform.navigation.NavigationProvider
 
 val createAlbumStepDi = screenModule {

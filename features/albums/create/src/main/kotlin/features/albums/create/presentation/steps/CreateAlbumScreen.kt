@@ -1,4 +1,4 @@
-package features.albums.create.presentation
+package features.albums.create.presentation.steps
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +26,9 @@ import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import features.albums.create.presentation.CreateAlbumIntent
+import features.albums.create.presentation.CreateAlbumState
+import features.albums.create.presentation.CreateViewModel
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions

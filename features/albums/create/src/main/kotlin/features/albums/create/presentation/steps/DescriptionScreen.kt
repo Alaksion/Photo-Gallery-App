@@ -1,4 +1,4 @@
-package features.albums.create.presentation
+package features.albums.create.presentation.steps
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,7 +7,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,12 +25,14 @@ import androidx.compose.ui.text.input.ImeAction
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import features.albums.create.presentation.CreateAlbumIntent
+import features.albums.create.presentation.CreateViewModel
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
-internal object NameScreen : Screen {
+internal object DescriptionScreen : Screen {
 
     @Composable
     override fun Content() {
@@ -40,7 +42,7 @@ internal object NameScreen : Screen {
         state.UiStateContent(
             stateContent = {
                 StateContent(
-                    name = it.name,
+                    description = it.description,
                     onNameChange = model::handleIntent
                 )
             },
@@ -51,7 +53,7 @@ internal object NameScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     internal fun StateContent(
-        name: String,
+        description: String,
         onNameChange: (CreateAlbumIntent) -> Unit
     ) {
         val navigator = LocalNavigator.current
@@ -74,29 +76,29 @@ internal object NameScreen : Screen {
                     .padding(MviSampleSizes.medium)
             ) {
                 Text(
-                    text = "How is this album named?",
+                    text = "Tell us how this place is special to you",
                     style = MaterialTheme.typography.headlineSmall,
                 )
                 VerticalSpacer(height = MviSampleSizes.xLarge)
                 OutlinedTextField(
-                    value = name,
-                    onValueChange = { onNameChange(CreateAlbumIntent.UpdateName(it)) },
+                    value = description,
+                    onValueChange = { onNameChange(CreateAlbumIntent.UpdateDescription(it)) },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Grandma's cabin in the woods") },
-                    label = { Text("Album's name") },
+                    label = { Text("Album's description") },
                     keyboardActions = KeyboardActions(
                         onDone = { focus.clearFocus() }
                     ),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Outlined.LocationOn, contentDescription = null)
+                        Icon(imageVector = Icons.Outlined.List, contentDescription = null)
                     },
+                    maxLines = 20
                 )
                 WeightSpacer(weight = 1f)
                 Button(
-                    onClick = { navigator?.push(DescriptionScreen) },
+                    onClick = { navigator?.push(CreateAlbumScreen) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = name.isNotEmpty()
+                    enabled = description.isNotEmpty()
                 ) {
                     Text("Continue")
                 }

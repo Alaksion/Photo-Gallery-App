@@ -1,6 +1,7 @@
 package features.albums.create.presentation
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import features.albums.create.presentation.steps.AlbumResult
 import features.albums.shared.domain.model.CreateAlbumDTO
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
