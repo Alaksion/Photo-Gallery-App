@@ -63,7 +63,7 @@ internal object NameScreen : Screen {
                 TopAppBar(
                     title = { Text("Create a new album") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator?.popAll() }) {
+                        IconButton(onClick = { navigator?.popUntilRoot() }) {
                             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)
                         }
                     }
