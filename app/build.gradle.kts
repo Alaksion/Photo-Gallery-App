@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -72,7 +73,7 @@ dependencies {
 
     implementation(libs.coroutines.core)
     testImplementation(libs.coroutines.test)
-    
+
     androidTestImplementation(libs.androidX.compose.test.junit)
     androidTestImplementation(libs.androidX.test.espresso)
     androidTestImplementation(libs.androidX.test.junit)
