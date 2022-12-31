@@ -3,10 +3,8 @@ package platform.uistate.uievent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -38,12 +36,11 @@ fun <T : UiEvent> StateFlow<List<T>>.collectEvents(
     lifecycleOwner: LifecycleOwner
 ) {
     lifecycleOwner.lifecycleScope.launch {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            this@collectEvents.collect { eventQueue ->
-                eventQueue.firstOrNull()?.let { event ->
-                    onEventReceived(event)
-                }
+        this@collectEvents.collect { eventQueue ->
+            eventQueue.firstOrNull()?.let { event ->
+                onEventReceived(event)
             }
         }
     }
 }
+
