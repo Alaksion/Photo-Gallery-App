@@ -27,6 +27,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import platform.navigation.NavigationProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
+import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uistate.uistate.UiStateContent
 
 internal object HomeScreen : AndroidScreen() {
@@ -95,6 +96,9 @@ private fun HomeScreenContent(
                             onClick = {},
                             modifier = Modifier.fillMaxWidth()
                         )
+                    }
+                    item {
+                        VerticalSpacer(height = MviSampleSizes.medium)
                     }
                 }
             } else {
