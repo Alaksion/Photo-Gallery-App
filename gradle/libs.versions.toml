@@ -30,6 +30,10 @@ room = "2.5.0-rc01"
 hilt = "2.44.2"
 voyager = "1.0.0-rc03"
 
+compose-maps = "2.8.0"
+playService-maps = "18.1.0"
+maps-secret = "2.0.1"
+
 [libraries]
 
 androidX-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidX-compose-activity" }
@@ -73,6 +77,9 @@ voyager-viewModel = { module = "cafe.adriel.voyager:voyager-androidx", version.r
 customPlugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 customPlugin-kotlinGradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "compose-maps" }
+maps-playService = { module = "com.google.android.gms:play-services-maps", version.ref = "playService-maps" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -82,8 +89,10 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions" }
+map-secret = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "maps-secret" }
 
 [bundles]
 compose-debug = ["androidX-compose-debug-tooling", "androidX-compose-debug-manifest"]
 compose-ui = ["androidX-compose-ui", "androidX-compose-graphics", "androidX-compose-tooling-preview", "androidX-compose-material3"]
 voyager = ["voyager-navigator", "voyager-transitions", "voyager-hilt", "voyager-viewModel"]
+maps = ["maps-compose", "maps-playService"]

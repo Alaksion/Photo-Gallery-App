@@ -31,6 +31,9 @@ dependencies {
     implementation(libs.androidX.lifecycle.runtime)
     implementation(libs.androidX.lifecycle.viewmodel)
 
+    // Maps
+    implementation(libs.bundles.maps)
+
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.turbine)

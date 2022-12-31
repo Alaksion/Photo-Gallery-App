@@ -8,14 +8,14 @@ import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
-import features.albums.create.presentation.steps.NameScreen
+import features.albums.create.presentation.steps.LocationScreen
 
 internal object CreateAlbumFlow : Screen {
 
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
     override fun Content() {
-        Navigator(screen = NameScreen) {
+        Navigator(screen = LocationScreen) {
             SlideTransition(navigator = it)
         }
     }
