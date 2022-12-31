@@ -8,7 +8,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.zIndex
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
@@ -37,7 +36,6 @@ internal object LocationScreen : Screen, ScreenLifecycleProvider by CreateAlbumF
                 StateContent(
                     goBack = { navigator?.pop() },
                     handleIntent = model::handleIntent,
-                    location = it.location
                 )
             },
             errorState = {}
@@ -47,13 +45,12 @@ internal object LocationScreen : Screen, ScreenLifecycleProvider by CreateAlbumF
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     internal fun StateContent(
-        location: LatLng,
         handleIntent: (CreateAlbumIntent) -> Unit,
         goBack: () -> Unit
     ) {
 
         val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(location, 10f)
+            position = CameraPosition.fromLatLngZoom(LatLng(1.35, 103.87), 10f)
         }
 
         Scaffold() {
@@ -63,15 +60,10 @@ internal object LocationScreen : Screen, ScreenLifecycleProvider by CreateAlbumF
                     .padding(it)
             ) {
                 GoogleMap(
-                    modifier = Modifier
-                        .weight(1f)
-                        .zIndex(0f),
+                    modifier = Modifier.weight(1f),
                     cameraPositionState = cameraPositionState,
-                    onMapClick = { position ->
-                        handleIntent(CreateAlbumIntent.UpdateLocation(position))
-                    }
                 ) {
-                    Marker(MarkerState(location))
+                    Marker(MarkerState(LatLng(1.35, 103.87)))
                 }
             }
         }
