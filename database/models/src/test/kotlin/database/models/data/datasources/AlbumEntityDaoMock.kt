@@ -2,7 +2,6 @@ package database.models.data.datasources
 
 import database.models.data.entities.AlbumEntity
 import database.models.data.entities.AlbumEntityDao
-import java.util.UUID
 
 
 internal class AlbumEntityDaoMock : AlbumEntityDao {
@@ -21,7 +20,7 @@ internal class AlbumEntityDaoMock : AlbumEntityDao {
         return albumListResponse
     }
 
-    override suspend fun getById(albumId: UUID): AlbumEntity {
+    override suspend fun getById(albumId: Int): AlbumEntity {
         getByIdCalls++
         return albumResponse
     }

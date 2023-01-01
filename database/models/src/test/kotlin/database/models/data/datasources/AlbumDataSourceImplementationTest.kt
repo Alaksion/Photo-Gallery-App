@@ -47,7 +47,7 @@ internal class AlbumDataSourceImplementationTest {
 
     @Test
     fun `Should call DAO when get by id is called`() = runTest(testDispatcher) {
-        dataSource.getById(UUID.randomUUID())
+        dataSource.getById(10)
 
         Truth.assertThat(albumDao.getByIdCalls).isEqualTo(1)
     }
