@@ -54,6 +54,7 @@ dependencies {
     implementation(projects.platform.uicomponents)
     implementation(projects.features.albums.home)
     implementation(projects.features.albums.create)
+    implementation(projects.features.albums.details)
 
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.lifecycle.runtime)
@@ -72,7 +73,7 @@ dependencies {
 
     implementation(libs.coroutines.core)
     testImplementation(libs.coroutines.test)
-    
+
     androidTestImplementation(libs.androidX.compose.test.junit)
     androidTestImplementation(libs.androidX.test.espresso)
     androidTestImplementation(libs.androidX.test.junit)
