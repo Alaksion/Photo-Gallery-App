@@ -6,14 +6,13 @@ import database.models.data.validator.AlbumDataSourceValidator
 import database.models.models.AlbumModel
 import database.models.models.CreateAlbumModel
 import database.models.utils.runQuery
-import java.util.UUID
 import javax.inject.Inject
 
 interface AlbumDataSource {
 
     suspend fun getAll(): List<AlbumModel>
 
-    suspend fun getById(albumId: UUID): AlbumModel
+    suspend fun getById(albumId: Int): AlbumModel
 
     suspend fun create(album: CreateAlbumModel)
 
@@ -30,7 +29,7 @@ internal class AlbumDataSourceImplementation @Inject constructor(
         return runQuery { albumDao.getAll().map { it.mapToModel() } }
     }
 
-    override suspend fun getById(albumId: UUID): AlbumModel {
+    override suspend fun getById(albumId: Int): AlbumModel {
         return runQuery { albumDao.getById(albumId).mapToModel() }
     }
 

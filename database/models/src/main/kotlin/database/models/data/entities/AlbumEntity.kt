@@ -11,7 +11,6 @@ import database.models.models.AlbumModel
 import database.models.models.CreateAlbumModel
 import database.models.utils.dateFormatter
 import java.time.LocalDate
-import java.util.UUID
 
 @Entity(tableName = "album")
 internal data class AlbumEntity(
@@ -68,7 +67,7 @@ internal interface AlbumEntityDao {
     suspend fun getAll(): List<AlbumEntity>
 
     @Query("SELECT * FROM album where id = :albumId")
-    suspend fun getById(albumId: UUID): AlbumEntity
+    suspend fun getById(albumId: Int): AlbumEntity
 
     @Insert
     suspend fun create(album: AlbumEntity)

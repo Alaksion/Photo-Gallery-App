@@ -7,6 +7,8 @@ sealed class NavigationProvider : ScreenProvider {
     sealed class Albums : NavigationProvider() {
         object Home : Albums()
 
-        object Create: Albums()
+        object Create : Albums()
+
+        data class Details(val albumId: Int) : Albums()
     }
 }

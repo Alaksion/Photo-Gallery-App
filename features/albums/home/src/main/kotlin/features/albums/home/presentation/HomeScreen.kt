@@ -46,10 +46,14 @@ internal object HomeScreen : AndroidScreen() {
             stateContent = {
                 HomeScreenContent(
                     state = it,
-                    intentHandler = model::handleIntent,
                     goToCreateAlbum = {
                         navigator?.push(
                             ScreenRegistry.get(NavigationProvider.Albums.Create)
+                        )
+                    },
+                    goToAlbumDetail = { albumId ->
+                        navigator?.push(
+                            ScreenRegistry.get(NavigationProvider.Albums.Details(albumId))
                         )
                     }
                 )
@@ -65,7 +69,7 @@ internal object HomeScreen : AndroidScreen() {
 @Composable
 private fun HomeScreenContent(
     state: HomeState,
-    intentHandler: (HomeIntent) -> Unit,
+    goToAlbumDetail: (Int) -> Unit,
     goToCreateAlbum: () -> Unit
 ) {
     Scaffold(
@@ -93,7 +97,7 @@ private fun HomeScreenContent(
                     items(state.albums) { album ->
                         AlbumCard(
                             data = album,
-                            onClick = {},
+                            onClick = goToAlbumDetail,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
