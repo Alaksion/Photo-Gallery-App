@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import platform.uicomponents.MviSampleSizes
@@ -42,7 +42,7 @@ import platform.uistate.uistate.UiStateContent
 
 internal data class AlbumDetailsScreen(
     private val albumId: Int
-) : Screen {
+) : AndroidScreen() {
 
     @Composable
     override fun Content() {
