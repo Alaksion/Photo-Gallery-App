@@ -1,6 +1,7 @@
 package features.albums.details.presentation
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import database.models.models.PhotoModel
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import platform.injection.IODispatcher
@@ -34,6 +35,11 @@ internal class AlbumDetailsViewModel @Inject constructor(
                 val response = repository.getAlbumById(albumId)
                 currentState.copy(
                     album = response.album,
+                    photos = listOf(
+                        PhotoModel.Remote("https://via.placeholder.com/150"),
+                        PhotoModel.Remote("https://via.placeholder.com/150"),
+                        PhotoModel.Remote("https://via.placeholder.com/150")
+                    ),
                     isInitialized = true
                 )
             }
