@@ -2,13 +2,14 @@ package database.models.data.datasources
 
 import database.models.data.entities.AlbumEntity
 import database.models.data.entities.AlbumEntityDao
+import database.models.data.entities.AlbumWithPhotosEntity
 
 
 internal class AlbumEntityDaoMock : AlbumEntityDao {
 
     var albumListResponse = listOf<AlbumEntity>()
 
-    var albumResponse = AlbumEntity.fixture
+    var albumResponse = AlbumWithPhotosEntity.fixture
 
     var getAllCalls = 0
     var getByIdCalls = 0
@@ -20,7 +21,7 @@ internal class AlbumEntityDaoMock : AlbumEntityDao {
         return albumListResponse
     }
 
-    override suspend fun getById(albumId: Int): AlbumEntity {
+    override suspend fun getById(albumId: Int): AlbumWithPhotosEntity {
         getByIdCalls++
         return albumResponse
     }

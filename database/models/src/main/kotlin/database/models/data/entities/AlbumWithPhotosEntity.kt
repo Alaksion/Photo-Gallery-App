@@ -10,4 +10,11 @@ internal data class AlbumWithPhotosEntity(
         entityColumn = "hostAlbumId"
     )
     val photos: List<PhotoEntity>
-)
+) {
+    companion object {
+        val fixture = AlbumWithPhotosEntity(
+            album = AlbumEntity.fixture,
+            photos = listOf()
+        )
+    }
+}
