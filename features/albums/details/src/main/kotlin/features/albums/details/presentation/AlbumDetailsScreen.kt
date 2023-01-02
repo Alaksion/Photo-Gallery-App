@@ -1,6 +1,7 @@
 package features.albums.details.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,10 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,19 +31,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import coil.compose.AsyncImage
+import database.models.models.PhotoModel
 import platform.uicomponents.MviSampleSizes
+import platform.uicomponents.components.EmptyState
 import platform.uicomponents.components.PreviewContainer
 import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uistate.uistate.UiStateContent
+
+private const val GridCellsCount = 3
 
 internal data class AlbumDetailsScreen(
     private val albumId: Int
@@ -100,31 +111,71 @@ internal data class AlbumDetailsScreen(
                 })
             }
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(it)
+            Column(
+                Modifier
                     .fillMaxSize()
+                    .padding(it)
+                    .padding(horizontal = MviSampleSizes.medium)
             ) {
-                item {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(180.dp)
+                            .clip(CircleShape)
+                            .background(Color.Red)
+                    )
+                    VerticalSpacer(height = MviSampleSizes.medium)
+                    Text(
+                        text = state.album.name,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = state.album.description,
+                    )
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(180.dp)
-                                .clip(CircleShape)
-                                .background(Color.Red)
-                        )
-                        VerticalSpacer(height = MviSampleSizes.medium)
-                        Text(
-                            text = state.album.name,
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(
-                            text = state.album.description,
-                        )
+                        Text("Add photos to album")
+                    }
+                }
+
+                VerticalSpacer(height = MviSampleSizes.small)
+                Divider()
+                VerticalSpacer(height = MviSampleSizes.small)
+
+                if (state.photos.isEmpty()) {
+                    EmptyState(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        title = "Nothing to see here",
+                        description = "Add photos to this album to see them here"
+                    )
+                } else {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        columns = GridCells.Fixed(GridCellsCount),
+                        verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
+                        horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
+                    ) {
+                        items(state.photos) { photo ->
+                            AsyncImage(
+                                model = when (photo) {
+                                    is PhotoModel.Local -> photo.uri
+                                    is PhotoModel.Remote -> photo.url
+                                },
+                                contentDescription = null,
+                                contentScale = ContentScale.FillWidth,
+                                alignment = Alignment.Center
+                            )
+                        }
                     }
                 }
             }

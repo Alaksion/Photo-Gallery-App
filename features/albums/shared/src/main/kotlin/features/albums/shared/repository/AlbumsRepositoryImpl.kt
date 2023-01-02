@@ -2,6 +2,7 @@ package features.albums.shared.repository
 
 import database.models.data.datasources.AlbumDataSource
 import database.models.models.AlbumModel
+import database.models.models.AlbumWithPhotosModel
 import database.models.models.CreateAlbumModel
 import features.albums.shared.domain.model.CreateAlbumDTO
 import features.albums.shared.domain.repository.AlbumRepository
@@ -15,7 +16,7 @@ internal class AlbumsRepositoryImpl @Inject constructor(
         return albumDataSource.getAll()
     }
 
-    override suspend fun getAlbumById(id: Int): AlbumModel {
+    override suspend fun getAlbumById(id: Int): AlbumWithPhotosModel {
         return albumDataSource.getById(id)
     }
 
