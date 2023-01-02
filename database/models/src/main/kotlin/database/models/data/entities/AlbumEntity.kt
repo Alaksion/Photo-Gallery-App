@@ -15,6 +15,7 @@ import java.time.LocalDate
 @Entity(tableName = "album")
 internal data class AlbumEntity(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "albumId")
     val id: Int,
 
     @ColumnInfo(name = "name")
@@ -27,7 +28,7 @@ internal data class AlbumEntity(
     val createdAt: String,
 
     @ColumnInfo(name = "updated_at")
-    val updatedAt: String
+    val updatedAt: String,
 ) {
     internal fun mapToModel(): AlbumModel {
         return AlbumModel(
@@ -66,8 +67,8 @@ internal interface AlbumEntityDao {
     @Query("SELECT * FROM album")
     suspend fun getAll(): List<AlbumEntity>
 
-    @Query("SELECT * FROM album where id = :albumId")
-    suspend fun getById(albumId: Int): AlbumEntity
+    @Query("SELECT * FROM album where albumId = :albumId")
+    suspend fun getById(albumId: Int): AlbumWithPhotosEntity
 
     @Insert
     suspend fun create(album: AlbumEntity)

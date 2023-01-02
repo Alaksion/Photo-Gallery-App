@@ -31,9 +31,9 @@ internal class AlbumDetailsViewModel @Inject constructor(
     ) {
         if (stateData.isInitialized.not() || forceLoad) {
             setState { currentState ->
-                val album = repository.getAlbumById(albumId)
+                val response = repository.getAlbumById(albumId)
                 currentState.copy(
-                    album = album,
+                    album = response.album,
                     isInitialized = true
                 )
             }
