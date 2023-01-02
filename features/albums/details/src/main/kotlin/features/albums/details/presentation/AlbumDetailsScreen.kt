@@ -49,6 +49,8 @@ import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uistate.uistate.UiStateContent
 
+private const val GridCellsCount = 3
+
 internal data class AlbumDetailsScreen(
     private val albumId: Int
 ) : AndroidScreen() {
@@ -159,7 +161,7 @@ internal data class AlbumDetailsScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth(),
-                        columns = GridCells.Fixed(3),
+                        columns = GridCells.Fixed(GridCellsCount),
                         verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
                         horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
                     ) {
