@@ -35,6 +35,7 @@ internal data class PhotoAddTypeScreen(
                     title = { Text("Add photos") },
                     navigationIcon = {
                         IconButton(onClick = { /*TODO*/ }) {
+                            albumId
                             Icon(imageVector = Icons.Outlined.ArrowBack, null)
                         }
                     }
