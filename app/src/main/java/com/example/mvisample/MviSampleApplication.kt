@@ -6,6 +6,7 @@ import dagger.hilt.android.HiltAndroidApp
 import features.albums.create.di.createAlbumStepDi
 import features.albums.details.di.albumDetailsScreenDi
 import features.albums.home.di.albumHomeStepDi
+import features.photos.di.photoScreenModule
 
 @HiltAndroidApp
 class MviSampleApplication : Application() {
@@ -16,6 +17,7 @@ class MviSampleApplication : Application() {
             createAlbumStepDi()
             albumHomeStepDi()
             albumDetailsScreenDi()
+            photoScreenModule()
         }
     }
 

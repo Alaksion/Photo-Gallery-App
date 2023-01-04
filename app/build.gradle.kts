@@ -55,6 +55,7 @@ dependencies {
     implementation(projects.features.albums.home)
     implementation(projects.features.albums.create)
     implementation(projects.features.albums.details)
+    implementation(projects.features.photos)
 
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.lifecycle.runtime)

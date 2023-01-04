@@ -11,4 +11,8 @@ sealed class NavigationProvider : ScreenProvider {
 
         data class Details(val albumId: Int) : Albums()
     }
+
+    sealed class Photos : NavigationProvider() {
+        data class PickPhotoSource(val albumId: Int) : Photos()
+    }
 }

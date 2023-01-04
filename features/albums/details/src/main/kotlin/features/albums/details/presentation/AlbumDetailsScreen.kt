@@ -36,10 +36,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
+import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
 import database.models.models.PhotoModel
+import platform.navigation.NavigationProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
 import platform.uicomponents.components.PreviewContainer
@@ -67,7 +69,16 @@ internal data class AlbumDetailsScreen(
                     state = it,
                     albumId = albumId,
                     handleIntent = model::handleIntent,
-                    goBack = { navigator?.pop() }
+                    goBack = { navigator?.pop() },
+                    goToAddPhotos = {
+                        navigator?.push(
+                            ScreenRegistry.get(
+                                NavigationProvider.Photos.PickPhotoSource(
+                                    albumId
+                                )
+                            )
+                        )
+                    }
                 )
             },
             errorState = {
@@ -95,6 +106,7 @@ internal data class AlbumDetailsScreen(
         handleIntent: (AlbumDetailsIntent) -> Unit,
         albumId: Int,
         goBack: () -> Unit,
+        goToAddPhotos: () -> Unit
     ) {
         LaunchedEffect(Unit) {
             handleIntent(AlbumDetailsIntent.LoadAlbumData(albumId))
@@ -137,7 +149,7 @@ internal data class AlbumDetailsScreen(
                         text = state.album.description,
                     )
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = goToAddPhotos,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Add photos to album")
@@ -191,7 +203,8 @@ private fun Preview() {
             albumId = 1,
             goBack = {},
             handleIntent = {},
-            state = AlbumDetailsState()
+            state = AlbumDetailsState(),
+            goToAddPhotos = {}
         )
     }
 }
