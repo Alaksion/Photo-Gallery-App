@@ -1,4 +1,4 @@
-package features.photos.presentation
+package features.photos.presentation.picktype
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -18,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import features.photos.presentation.gallerypick.GalleryPhotoPickerScreen
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.PreviewContainer
 import platform.uicomponents.components.spacers.VerticalSpacer
@@ -29,12 +31,14 @@ internal data class PhotoAddTypeScreen(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.current
+
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("Add photos") },
                     navigationIcon = {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             albumId
                             Icon(imageVector = Icons.Outlined.ArrowBack, null)
                         }
@@ -56,7 +60,7 @@ internal data class PhotoAddTypeScreen(
                     title = "Pick from gallery",
                     description = "Open your phone's gallery and select photos from it",
                     icon = Icons.Outlined.PhotoAlbum,
-                    onClick = {}
+                    onClick = { navigator?.push(GalleryPhotoPickerScreen(albumId)) }
                 )
                 Divider()
                 PickAddTypeCard(

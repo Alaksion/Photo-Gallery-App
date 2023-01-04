@@ -148,6 +148,7 @@ internal data class AlbumDetailsScreen(
                     Text(
                         text = state.album.description,
                     )
+                    VerticalSpacer(height = MviSampleSizes.medium)
                     Button(
                         onClick = goToAddPhotos,
                         modifier = Modifier.fillMaxWidth()

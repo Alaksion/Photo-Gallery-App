@@ -84,14 +84,10 @@ abstract class UiStateViewModel<T>(
             runCatching {
                 if (showLoading) stateUpdater.updateStateType(UiStateType.Loading)
                 block(stateUpdater)
-            }.fold(
-                onFailure = {
-                    stateUpdater.updateStateType(UiStateType.Error(it))
-                },
-                onSuccess = {
-                    stateUpdater.updateStateType(UiStateType.Content)
-                }
-            )
+                stateUpdater.updateStateType(UiStateType.Content)
+            }.onFailure {
+                stateUpdater.updateStateType(UiStateType.Error(it))
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package features.albums.home.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -58,7 +59,9 @@ internal object HomeScreen : AndroidScreen() {
                     }
                 )
             },
-            errorState = {}
+            errorState = {
+                Log.d("error 1", it.toString())
+            }
         )
     }
 
