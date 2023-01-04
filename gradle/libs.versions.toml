@@ -40,6 +40,7 @@ androidX-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmode
 androidX-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidX-ktx-core" }
 
 androidX-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidX-compose-core" }
+androidX-compose-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidX-compose-core" }
 androidX-compose-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "androidX-compose-core" }
 androidX-compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidX-compose-core" }
 androidX-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidX-compose-material3" }

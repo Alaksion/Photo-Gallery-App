@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/features/albums/details" />
             <option value="$PROJECT_DIR$/features/albums/home" />
             <option value="$PROJECT_DIR$/features/albums/shared" />
+            <option value="$PROJECT_DIR$/features/photos" />
             <option value="$PROJECT_DIR$/platform" />
             <option value="$PROJECT_DIR$/platform/error" />
             <option value="$PROJECT_DIR$/platform/injection" />
