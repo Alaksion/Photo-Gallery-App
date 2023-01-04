@@ -46,6 +46,9 @@ import platform.uicomponents.components.spacers.HorizontalSpacer
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uistate.uistate.UiStateContent
 
+private const val MaxSelectionSize = 20
+
+@Suppress("UnusedPrivateMember")
 internal data class GalleryPhotoPickerScreen(
     private val albumInt: Int
 ) : AndroidScreen() {
@@ -84,7 +87,7 @@ internal data class GalleryPhotoPickerScreen(
     ) {
         val navigator = LocalNavigator.current
         val launcher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickMultipleVisualMedia(20),
+            contract = ActivityResultContracts.PickMultipleVisualMedia(MaxSelectionSize),
             onResult = { imageUri ->
                 imageUri.let {
                     handleIntent(GalleryPhotoPickerIntent.AddPhoto(it))
