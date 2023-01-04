@@ -1,6 +1,5 @@
 package features.photos.presentation.gallerypick
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,39 +27,67 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.androidx.AndroidScreen
+import cafe.adriel.voyager.hilt.getViewModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
 import platform.uicomponents.components.PreviewContainer
+import platform.uicomponents.components.errorview.DefaultErrorView
+import platform.uicomponents.components.errorview.DefaultErrorViewButton
+import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.HorizontalSpacer
 import platform.uicomponents.components.spacers.VerticalSpacer
+import platform.uistate.uistate.UiStateContent
 
 internal data class GalleryPhotoPickerScreen(
     private val albumInt: Int
-) : Screen {
+) : AndroidScreen() {
+
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.current
+        val viewModel = getViewModel<GalleryPhotoPickerViewModel>()
+        val state by viewModel.collectUiState()
+
+        state.UiStateContent(
+            stateContent = {
+                StateContent(state = it, handleIntent = viewModel::handleIntent)
+            },
+            errorState = {
+                DefaultErrorView(
+                    error = it,
+                    options = DefaultErrorViewOptions(
+                        primaryButton = DefaultErrorViewButton(
+                            title = "Go back to home",
+                            onClick = { navigator?.pop() }
+                        ),
+                        secondaryButton = null
+                    )
+                )
+            }
+        )
+
+    }
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
     @Composable
-    override fun Content() {
-
-        var uris by remember {
-            mutableStateOf(listOf<Uri>())
-        }
-
+    fun StateContent(
+        state: GalleryPhotoPickerState,
+        handleIntent: (GalleryPhotoPickerIntent) -> Unit
+    ) {
+        val navigator = LocalNavigator.current
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickMultipleVisualMedia(20),
             onResult = { imageUri ->
                 imageUri.let {
-                    uris = uris + it
+                    handleIntent(GalleryPhotoPickerIntent.AddPhoto(it))
                 }
             }
         )
@@ -70,7 +97,7 @@ internal data class GalleryPhotoPickerScreen(
                 TopAppBar(
                     title = { Text("Pick Photos from gallery") },
                     navigationIcon = {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             Icon(imageVector = Icons.Outlined.ArrowBack, null)
                         }
                     }
@@ -105,7 +132,8 @@ internal data class GalleryPhotoPickerScreen(
                     }
                     Button(
                         onClick = { },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        enabled = state.photos.isNotEmpty()
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text("Finish")
@@ -117,7 +145,7 @@ internal data class GalleryPhotoPickerScreen(
 
                 VerticalSpacer(height = MviSampleSizes.medium)
 
-                if (uris.isNotEmpty()) {
+                if (state.photos.isNotEmpty()) {
                     LazyVerticalStaggeredGrid(
                         columns = StaggeredGridCells.Fixed(2),
                         horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall),
@@ -126,7 +154,7 @@ internal data class GalleryPhotoPickerScreen(
                             .clip(MaterialTheme.shapes.medium)
                             .weight(1f)
                     ) {
-                        items(uris) { Uri ->
+                        items(state.photos) { Uri ->
                             AsyncImage(
                                 model = Uri,
                                 contentDescription = null,
@@ -142,7 +170,8 @@ internal data class GalleryPhotoPickerScreen(
                     EmptyState(
                         modifier = Modifier.weight(1f),
                         title = "Nothing to see here",
-                        description = "Add photos from your gallery to have a preview of which photos will be add to this album"
+                        description = "Add photos from your gallery to have a preview of which" +
+                                " photos will be add to this album"
                     )
                 }
                 VerticalSpacer(height = MviSampleSizes.medium)
