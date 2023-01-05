@@ -2,7 +2,9 @@ package platform.database.models.data.entities
 
 import android.net.Uri
 import androidx.room.ColumnInfo
+import androidx.room.Dao
 import androidx.room.Entity
+import androidx.room.Insert
 import androidx.room.PrimaryKey
 import platform.database.models.models.PhotoModel
 
@@ -23,4 +25,12 @@ internal data class PhotoEntity(
 internal enum class PhotoEntitySource {
     Remote,
     Local;
+}
+
+@Dao
+internal interface PhotoEntityDao {
+
+    @Insert
+    suspend fun addPhotos(list: PhotoEntity)
+
 }

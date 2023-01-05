@@ -2,6 +2,7 @@ package platform.database.models.data.datasources
 
 import platform.database.models.data.entities.AlbumEntity
 import platform.database.models.data.entities.AlbumEntityDao
+import platform.database.models.data.entities.PhotoEntityDao
 import platform.database.models.data.validator.AlbumDataSourceValidator
 import platform.database.models.models.AlbumModel
 import platform.database.models.models.AlbumWithPhotosModel
@@ -23,6 +24,7 @@ interface AlbumDataSource {
 
 internal class AlbumDataSourceImplementation @Inject constructor(
     private val albumDao: AlbumEntityDao,
+    private val photoDao: PhotoEntityDao,
     private val validator: AlbumDataSourceValidator
 ) : AlbumDataSource {
 
