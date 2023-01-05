@@ -39,7 +39,6 @@ internal object DatabaseModule {
     ): AlbumDataSource {
         return AlbumDataSourceImplementation(
             albumDao = database.albumDao(),
-            photoDao = database.photoDao(),
             validator = validator
         )
     }

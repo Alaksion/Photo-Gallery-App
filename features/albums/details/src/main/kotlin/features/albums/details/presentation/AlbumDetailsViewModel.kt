@@ -3,7 +3,7 @@ package features.albums.details.presentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import platform.database.models.models.PhotoModel
+import platform.database.models.models.PhotoModelData
 import platform.injection.IODispatcher
 import platform.uistate.uistate.UiStateViewModel
 import javax.inject.Inject
@@ -36,9 +36,9 @@ internal class AlbumDetailsViewModel @Inject constructor(
                 currentState.copy(
                     album = response.album,
                     photos = listOf(
-                        PhotoModel.Remote("https://via.placeholder.com/150"),
-                        PhotoModel.Remote("https://via.placeholder.com/150"),
-                        PhotoModel.Remote("https://via.placeholder.com/150")
+                        PhotoModelData.Remote("https://via.placeholder.com/150"),
+                        PhotoModelData.Remote("https://via.placeholder.com/150"),
+                        PhotoModelData.Remote("https://via.placeholder.com/150")
                     ),
                     isInitialized = true
                 )
