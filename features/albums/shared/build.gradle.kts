@@ -12,7 +12,7 @@ android {
 
 dependencies {
 
-    implementation(projects.database.models)
+    implementation(projects.platform.database.models)
     implementation(projects.platform.injection)
 
     // coroutines

@@ -1,6 +1,6 @@
 package features.albums.shared.di
 
-import database.models.data.datasources.AlbumDataSource
+import platform.database.models.data.datasources.AlbumDataSource
 import features.albums.shared.repository.AlbumsRepositoryImpl
 import features.albums.shared.domain.repository.AlbumRepository
 import dagger.Module
@@ -15,7 +15,7 @@ internal object AlbumsDiModule {
 
     @Provides
     @Singleton
-    fun provideAlbumRepository(dataSource: AlbumDataSource): AlbumRepository {
+    fun provideAlbumRepository(dataSource: platform.database.models.data.datasources.AlbumDataSource): AlbumRepository {
         return AlbumsRepositoryImpl(dataSource)
     }
 

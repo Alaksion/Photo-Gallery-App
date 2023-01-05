@@ -1,15 +1,14 @@
 package features.albums.shared.repository
 
-import database.models.data.datasources.AlbumDataSource
-import database.models.models.AlbumModel
-import database.models.models.AlbumWithPhotosModel
-import database.models.models.CreateAlbumModel
 import features.albums.shared.domain.model.CreateAlbumDTO
 import features.albums.shared.domain.repository.AlbumRepository
+import platform.database.models.models.AlbumModel
+import platform.database.models.models.AlbumWithPhotosModel
+import platform.database.models.models.CreateAlbumModel
 import javax.inject.Inject
 
 internal class AlbumsRepositoryImpl @Inject constructor(
-    private val albumDataSource: AlbumDataSource
+    private val albumDataSource: platform.database.models.data.datasources.AlbumDataSource
 ) : AlbumRepository {
 
     override suspend fun getAlbums(): List<AlbumModel> {

@@ -13,8 +13,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/database" />
-            <option value="$PROJECT_DIR$/database/models" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/albums" />
             <option value="$PROJECT_DIR$/features/albums/create" />
@@ -23,6 +21,8 @@
             <option value="$PROJECT_DIR$/features/albums/shared" />
             <option value="$PROJECT_DIR$/features/photos" />
             <option value="$PROJECT_DIR$/platform" />
+            <option value="$PROJECT_DIR$/platform/database" />
+            <option value="$PROJECT_DIR$/platform/database/models" />
             <option value="$PROJECT_DIR$/platform/error" />
             <option value="$PROJECT_DIR$/platform/injection" />
             <option value="$PROJECT_DIR$/platform/navigation" />

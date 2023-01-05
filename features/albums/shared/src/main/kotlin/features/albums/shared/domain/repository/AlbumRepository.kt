@@ -1,7 +1,7 @@
 package features.albums.shared.domain.repository
 
-import database.models.models.AlbumModel
-import database.models.models.AlbumWithPhotosModel
+import platform.database.models.models.AlbumModel
+import platform.database.models.models.AlbumWithPhotosModel
 import features.albums.shared.domain.model.CreateAlbumDTO
 
 interface AlbumRepository {
