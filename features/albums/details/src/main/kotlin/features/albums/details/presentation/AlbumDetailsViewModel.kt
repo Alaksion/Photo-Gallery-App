@@ -1,9 +1,9 @@
 package features.albums.details.presentation
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import database.models.models.PhotoModel
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import platform.database.models.models.PhotoModel
 import platform.injection.IODispatcher
 import platform.uistate.uistate.UiStateViewModel
 import javax.inject.Inject
