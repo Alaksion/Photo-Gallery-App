@@ -9,7 +9,7 @@ import platform.injection.IODispatcher
 import platform.uistate.uievent.UiEvent
 import platform.uistate.uievent.UiEventHandler
 import platform.uistate.uievent.UiEventHandlerImpl
-import platform.uistate.uistate.UiStateViewModel
+import platform.uistate.uistate.UiStateHandler
 import java.util.UUID
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ internal sealed class CreateAlbumEvents(val result: AlbumResult) : UiEvent {
 internal class CreateViewModel @Inject constructor(
     @IODispatcher dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository
-) : UiStateViewModel<CreateAlbumState>(CreateAlbumState(), dispatcher),
+) : UiStateHandler<CreateAlbumState>(CreateAlbumState(), dispatcher),
     UiEventHandler<CreateAlbumEvents> by UiEventHandlerImpl() {
 
     fun handleIntent(intent: CreateAlbumIntent) {

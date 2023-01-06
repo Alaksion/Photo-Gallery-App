@@ -7,14 +7,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import platform.injection.IODispatcher
 import platform.uistate.uievent.UiEventHandler
 import platform.uistate.uievent.UiEventHandlerImpl
-import platform.uistate.uistate.UiStateViewModel
+import platform.uistate.uistate.UiStateHandler
 import javax.inject.Inject
 
 @HiltViewModel
 internal class GalleryPhotoPickerViewModel @Inject constructor(
     @IODispatcher dispatcher: CoroutineDispatcher,
     private val photoRepo: PhotoRepository
-) : UiStateViewModel<GalleryPhotoPickerState>(
+) : UiStateHandler<GalleryPhotoPickerState>(
     GalleryPhotoPickerState(), dispatcher
 ), UiEventHandler<GalleryPhotoPickerEvents> by UiEventHandlerImpl() {
 

@@ -3,9 +3,8 @@ package features.albums.details.presentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import platform.database.models.models.PhotoModelData
 import platform.injection.IODispatcher
-import platform.uistate.uistate.UiStateViewModel
+import platform.uistate.uistate.UiStateHandler
 import javax.inject.Inject
 
 internal sealed class AlbumDetailsIntent {
@@ -17,7 +16,7 @@ internal sealed class AlbumDetailsIntent {
 internal class AlbumDetailsViewModel @Inject constructor(
     @IODispatcher dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository,
-) : UiStateViewModel<AlbumDetailsState>(AlbumDetailsState(), dispatcher) {
+) : UiStateHandler<AlbumDetailsState>(AlbumDetailsState(), dispatcher) {
 
     fun handleIntent(intent: AlbumDetailsIntent) {
         when (intent) {

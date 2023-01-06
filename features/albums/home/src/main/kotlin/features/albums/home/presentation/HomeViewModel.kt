@@ -4,7 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import platform.injection.IODispatcher
-import platform.uistate.uistate.UiStateViewModel
+import platform.uistate.uistate.UiStateHandler
 import javax.inject.Inject
 
 internal sealed class HomeIntent {
@@ -15,7 +15,7 @@ internal sealed class HomeIntent {
 internal class HomeViewModel @Inject constructor(
     @IODispatcher dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository,
-) : UiStateViewModel<HomeState>(HomeState(), dispatcher) {
+) : UiStateHandler<HomeState>(HomeState(), dispatcher) {
 
     fun handleIntent(intent: HomeIntent) {
         when (intent) {
