@@ -35,11 +35,7 @@ internal class AlbumDetailsViewModel @Inject constructor(
                 val response = repository.getAlbumById(albumId)
                 currentState.copy(
                     album = response.album,
-                    photos = listOf(
-                        PhotoModelData.Remote("https://via.placeholder.com/150"),
-                        PhotoModelData.Remote("https://via.placeholder.com/150"),
-                        PhotoModelData.Remote("https://via.placeholder.com/150")
-                    ),
+                    photos = response.photos,
                     isInitialized = true
                 )
             }

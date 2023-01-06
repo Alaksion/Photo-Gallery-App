@@ -180,9 +180,9 @@ internal data class AlbumDetailsScreen(
                     ) {
                         items(state.photos) { photo ->
                             AsyncImage(
-                                model = when (photo) {
-                                    is PhotoModelData.Local -> photo.uri
-                                    is PhotoModelData.Remote -> photo.url
+                                model = when (val data = photo.data) {
+                                    is PhotoModelData.Local -> data.uri
+                                    is PhotoModelData.Remote -> data.url
                                 },
                                 contentDescription = null,
                                 contentScale = ContentScale.FillWidth,
