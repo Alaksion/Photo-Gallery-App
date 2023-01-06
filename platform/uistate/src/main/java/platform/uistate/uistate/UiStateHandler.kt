@@ -1,11 +1,5 @@
 package platform.uistate.uistate
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +29,7 @@ interface UiStateOwner<T> {
 
     /**
      * Provides a [StateManager] scope to allow asynchronous state updates. Unhandled exceptions will
-     * automatically update the UiState to [UiState.Error].
+     * automatically update the UiState to [UiStateType.Error].
      *
      * @param showLoading Whether or not the [UiStateType] should be updated to [UiStateType.Loading]
      * during the block execution. By default this value is set to true.
@@ -46,6 +40,15 @@ interface UiStateOwner<T> {
     suspend fun asyncUpdateState(
         showLoading: Boolean = true,
         block: suspend StateManagerImpl<T>.() -> Unit
+    )
+
+    /**
+     * Run suspend code that won't update the state data, like adding [UiEvent]. Unhandled exceptions
+     * will update the [UiStateType] to [UiStateType.Error] automatically.
+     * */
+    suspend fun asyncRunCatching(
+        showLoading: Boolean = true,
+        block: suspend () -> Unit
     )
 }
 
@@ -62,6 +65,19 @@ class UiStateHandler<T>(initialState: T) : UiStateOwner<T> {
     override val stateData: T
         get() = mutableUiState.value.data
 
+    override suspend fun asyncRunCatching(
+        showLoading: Boolean,
+        block: suspend () -> Unit
+    ) {
+        kotlin.runCatching {
+            if (showLoading) stateUpdater.updateStateType(UiStateType.Loading)
+            block()
+            stateUpdater.updateStateType(UiStateType.Content)
+        }.onFailure {
+            stateUpdater.updateStateType(UiStateType.Error(it))
+        }
+    }
+
     private val stateUpdater by lazy { StateManagerImpl(mutableUiState) }
 
     override suspend fun asyncUpdateState(
@@ -69,6 +85,7 @@ class UiStateHandler<T>(initialState: T) : UiStateOwner<T> {
         block: suspend StateManagerImpl<T>.() -> Unit
     ) {
         kotlin.runCatching {
+            if (showLoading) stateUpdater.updateStateType(UiStateType.Loading)
             block(stateUpdater)
             stateUpdater.updateStateType(UiStateType.Content)
         }.onFailure {
