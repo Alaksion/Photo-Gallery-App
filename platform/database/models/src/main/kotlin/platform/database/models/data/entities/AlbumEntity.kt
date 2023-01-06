@@ -7,6 +7,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import androidx.room.Transaction
 import platform.database.models.models.AlbumModel
 import platform.database.models.models.CreateAlbumModel
 import platform.database.models.utils.dateFormatter
@@ -67,6 +68,7 @@ internal interface AlbumEntityDao {
     @Query("SELECT * FROM album")
     suspend fun getAll(): List<AlbumEntity>
 
+    @Transaction
     @Query("SELECT * FROM album where albumId = :albumId")
     suspend fun getById(albumId: Int): AlbumWithPhotosEntity
 
