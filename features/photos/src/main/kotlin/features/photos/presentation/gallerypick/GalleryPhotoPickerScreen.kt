@@ -89,9 +89,7 @@ internal data class GalleryPhotoPickerScreen(
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickMultipleVisualMedia(MaxSelectionSize),
             onResult = { imageUri ->
-                imageUri.let {
-                    handleIntent(GalleryPhotoPickerIntent.AddPhoto(it))
-                }
+                handleIntent(GalleryPhotoPickerIntent.AddPhoto(imageUri))
             }
         )
 
@@ -134,7 +132,7 @@ internal data class GalleryPhotoPickerScreen(
                         }
                     }
                     Button(
-                        onClick = { },
+                        onClick = { handleIntent(GalleryPhotoPickerIntent.ConfirmPhotos(albumInt)) },
                         modifier = Modifier.weight(1f),
                         enabled = state.photos.isNotEmpty()
                     ) {

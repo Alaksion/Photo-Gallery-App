@@ -10,6 +10,8 @@ import dagger.hilt.components.SingletonComponent
 import platform.database.models.AppDatabase
 import platform.database.models.data.datasources.AlbumDataSource
 import platform.database.models.data.datasources.AlbumDataSourceImplementation
+import platform.database.models.data.datasources.PhotoDataSource
+import platform.database.models.data.datasources.PhotoDataSourceImpl
 import platform.database.models.data.validator.AlbumDataSourceValidator
 import javax.inject.Singleton
 
@@ -41,6 +43,14 @@ internal object DatabaseModule {
             albumDao = database.albumDao(),
             validator = validator
         )
+    }
+
+    @Provides
+    @Singleton
+    fun providePhotoDataSource(
+        database: AppDatabase
+    ): PhotoDataSource {
+        return PhotoDataSourceImpl(photoDao = database.photoDao())
     }
 
 }
