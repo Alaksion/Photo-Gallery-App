@@ -1,4 +1,4 @@
-package com.example.uievent
+package platform.uistate.uievent
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
