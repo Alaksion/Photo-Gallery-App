@@ -49,6 +49,7 @@ import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uistate.uistate.UiStateContent
+import java.io.File
 
 private const val GridCellsCount = 3
 
@@ -179,7 +180,7 @@ internal data class AlbumDetailsScreen(
                     ) {
                         items(state.photos) { photo ->
                             AsyncImage(
-                                model = photo.path,
+                                model = File(photo.path),
                                 contentDescription = null,
                                 contentScale = ContentScale.FillWidth,
                                 alignment = Alignment.Center

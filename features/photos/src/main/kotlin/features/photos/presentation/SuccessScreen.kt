@@ -32,7 +32,6 @@ internal object SuccessScreen : Screen {
         Scaffold(
             topBar = { TopAppBar(title = { Text("Add photos") }) }
         ) {
-            val nav = LocalNavigator.current
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
