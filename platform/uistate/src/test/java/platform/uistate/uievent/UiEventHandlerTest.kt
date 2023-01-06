@@ -1,4 +1,4 @@
-package com.example.uievent
+package platform.uistate.uievent
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
@@ -12,8 +12,8 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import platform.uistate.uievent.UiEvent
+import platform.uistate.uievent.UiEventOwner
 import platform.uistate.uievent.UiEventHandler
-import platform.uistate.uievent.UiEventHandlerImpl
 import java.util.UUID
 
 private sealed class SampleEvents(override val eventId: UUID) : UiEvent {
@@ -21,16 +21,16 @@ private sealed class SampleEvents(override val eventId: UUID) : UiEvent {
 }
 
 @ExperimentalCoroutinesApi
-internal class UiEventHandlerImplTest {
+internal class UiEventHandlerTest {
 
-    private lateinit var handler: UiEventHandler<SampleEvents>
+    private lateinit var handler: UiEventOwner<SampleEvents>
 
     private val dispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
-        handler = UiEventHandlerImpl()
+        handler = UiEventHandler()
     }
 
     @After

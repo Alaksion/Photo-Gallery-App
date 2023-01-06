@@ -1,12 +1,10 @@
-package com.example.uistate
+package platform.uistate.uistate
 
 import com.google.common.truth.Truth
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Test
-import platform.uistate.uistate.StateManagerImpl
-import platform.uistate.uistate.UiState
-import platform.uistate.uistate.UiStateType
+import platform.uistate.testData.SampleState
 
 internal class StateManagerImplTest {
 
@@ -33,19 +31,6 @@ internal class StateManagerImplTest {
 
         Truth.assertThat(stateFlow.value.uiState).isEqualTo(UiStateType.Loading)
         Truth.assertThat(stateFlow.value.data).isEqualTo(SampleState())
-    }
-
-    @Test
-    fun `Should update UiStateType and data when updateState is called`() {
-        manager.updateState { state ->
-            state.copy(
-                data = state.data.copy(text = "edited"),
-                uiState = UiStateType.Loading
-            )
-        }
-
-        Truth.assertThat(stateFlow.value.uiState).isEqualTo(UiStateType.Loading)
-        Truth.assertThat(stateFlow.value.data).isEqualTo(SampleState(text = "edited"))
     }
 
 }

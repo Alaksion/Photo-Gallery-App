@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  * */
 @Composable
 fun <T : UiEvent> UiEventEffect(
-    eventHandler: UiEventHandler<T>,
+    eventHandler: UiEventOwner<T>,
     onEventReceived: (T) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current

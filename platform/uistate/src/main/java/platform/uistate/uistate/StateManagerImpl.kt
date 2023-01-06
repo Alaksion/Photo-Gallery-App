@@ -7,8 +7,6 @@ interface StateManager<T> {
     fun updateData(block: (T) -> T)
 
     fun updateStateType(type: UiStateType)
-
-    fun updateState(block: (UiState<T>) -> UiState<T>)
 }
 
 class StateManagerImpl<T>(
@@ -31,7 +29,7 @@ class StateManagerImpl<T>(
         }
     }
 
-    override fun updateState(
+    private fun updateState(
         block: (UiState<T>) -> UiState<T>,
     ) {
         state.update { block(state.value) }

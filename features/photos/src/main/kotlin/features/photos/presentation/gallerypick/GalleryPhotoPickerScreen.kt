@@ -27,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,65 +63,55 @@ internal data class GalleryPhotoPickerScreen(
         val navigator = LocalNavigator.current
         val context = LocalContext.current
         val viewModel = getViewModel<GalleryPhotoPickerViewModel>()
-        val state by viewModel.collectUiState()
+        val state by viewModel.uiState.collectAsState()
 
         UiEventEffect(eventHandler = viewModel) {
             when (it) {
                 GalleryPhotoPickerEvents.Success -> navigator?.push(SuccessScreen)
                 GalleryPhotoPickerEvents.Error -> {
                     Toast.makeText(
-                        context,
-                        "Images could not be saved",
-                        Toast.LENGTH_SHORT
+                        context, "Images could not be saved", Toast.LENGTH_SHORT
                     ).show()
                 }
             }
         }
 
-        state.UiStateContent(
-            stateContent = {
-                StateContent(state = it, handleIntent = viewModel::handleIntent)
-            },
-            errorState = {
-                DefaultErrorView(
-                    error = it,
-                    options = DefaultErrorViewOptions(
-                        primaryButton = DefaultErrorViewButton(
-                            title = "Go back to home",
-                            onClick = { navigator?.pop() }
-                        ),
-                        secondaryButton = null
-                    )
+        state.UiStateContent(stateContent = {
+            StateContent(state = it, handleIntent = viewModel::handleIntent)
+        }, errorState = {
+            DefaultErrorView(
+                error = it,
+                options = DefaultErrorViewOptions(
+                    primaryButton = DefaultErrorViewButton(title = "Go back to home",
+                        onClick = { navigator?.pop() }),
+                    secondaryButton = null
                 )
-            }
-        )
+            )
+        })
 
     }
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
     @Composable
     fun StateContent(
-        state: GalleryPhotoPickerState,
-        handleIntent: (GalleryPhotoPickerIntent) -> Unit
+        state: GalleryPhotoPickerState, handleIntent: (GalleryPhotoPickerIntent) -> Unit
     ) {
         val navigator = LocalNavigator.current
-        val launcher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickMultipleVisualMedia(MaxSelectionSize),
-            onResult = { imageUri ->
-                handleIntent(GalleryPhotoPickerIntent.AddPhoto(imageUri))
-            }
-        )
+        val launcher =
+            rememberLauncherForActivityResult(contract = ActivityResultContracts.PickMultipleVisualMedia(
+                MaxSelectionSize
+            ),
+                onResult = { imageUri ->
+                    handleIntent(GalleryPhotoPickerIntent.AddPhoto(imageUri))
+                })
 
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text("Pick Photos from gallery") },
-                    navigationIcon = {
-                        IconButton(onClick = { navigator?.pop() }) {
-                            Icon(imageVector = Icons.Outlined.ArrowBack, null)
-                        }
+                TopAppBar(title = { Text("Pick Photos from gallery") }, navigationIcon = {
+                    IconButton(onClick = { navigator?.pop() }) {
+                        Icon(imageVector = Icons.Outlined.ArrowBack, null)
                     }
-                )
+                })
             },
         ) {
             Column(
@@ -140,8 +131,7 @@ internal data class GalleryPhotoPickerScreen(
                                     mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
                                 )
                             )
-                        },
-                        modifier = Modifier.weight(1f)
+                        }, modifier = Modifier.weight(1f)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text("Open Gallery")

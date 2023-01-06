@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-interface UiEventHandler<T : UiEvent> {
+interface UiEventOwner<T : UiEvent> {
 
     /**
      * Events held by this handler
@@ -24,7 +24,7 @@ interface UiEventHandler<T : UiEvent> {
 
 }
 
-class UiEventHandlerImpl<T : UiEvent> : UiEventHandler<T> {
+class UiEventHandler<T : UiEvent> : UiEventOwner<T> {
 
     private val eventQueue = MutableStateFlow<List<T>>(listOf())
 
