@@ -23,7 +23,7 @@ interface AlbumDataSource {
 
 internal class AlbumDataSourceImplementation @Inject constructor(
     private val albumDao: AlbumEntityDao,
-    private val validator: AlbumDataSourceValidator
+    private val validator: AlbumDataSourceValidator,
 ) : AlbumDataSource {
 
     override suspend fun getAll(): List<AlbumModel> {

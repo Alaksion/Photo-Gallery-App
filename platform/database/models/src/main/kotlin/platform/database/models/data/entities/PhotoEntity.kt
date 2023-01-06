@@ -1,8 +1,9 @@
 package platform.database.models.data.entities
 
-import android.net.Uri
 import androidx.room.ColumnInfo
+import androidx.room.Dao
 import androidx.room.Entity
+import androidx.room.Insert
 import androidx.room.PrimaryKey
 import platform.database.models.models.PhotoModel
 
@@ -12,15 +13,18 @@ internal data class PhotoEntity(
     @ColumnInfo(name = "hostAlbumId")
     val albumId: Int,
     val path: String,
-    val source: PhotoEntitySource
 ) {
-    fun mapToModel() = when (this.source) {
-        PhotoEntitySource.Remote -> PhotoModel.Remote(this.path)
-        PhotoEntitySource.Local -> PhotoModel.Local(Uri.parse(this.path))
-    }
+    fun mapToModel() = PhotoModel(
+        albumId = this.albumId,
+        photoId = this.id,
+        path = this.path
+    )
 }
 
-internal enum class PhotoEntitySource {
-    Remote,
-    Local;
+@Dao
+internal interface PhotoEntityDao {
+
+    @Insert
+    suspend fun addPhotos(list: List<PhotoEntity>)
+
 }

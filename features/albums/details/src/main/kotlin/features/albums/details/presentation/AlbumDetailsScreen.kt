@@ -40,7 +40,6 @@ import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
-import platform.database.models.models.PhotoModel
 import platform.navigation.NavigationProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
@@ -50,6 +49,7 @@ import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uistate.uistate.UiStateContent
+import java.io.File
 
 private const val GridCellsCount = 3
 
@@ -180,10 +180,7 @@ internal data class AlbumDetailsScreen(
                     ) {
                         items(state.photos) { photo ->
                             AsyncImage(
-                                model = when (photo) {
-                                    is PhotoModel.Local -> photo.uri
-                                    is PhotoModel.Remote -> photo.url
-                                },
+                                model = File(photo.path),
                                 contentDescription = null,
                                 contentScale = ContentScale.FillWidth,
                                 alignment = Alignment.Center
