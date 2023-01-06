@@ -38,16 +38,17 @@ internal class GalleryPhotoPickerViewModel @Inject constructor(
     }
 
     private fun createPhotos(albumId: Int) {
-
         viewModelScope.launch(dispatcher) {
-            kotlin.runCatching {
-                photoRepo.addPhotos(
-                    photos = stateData.photos,
-                    albumId = albumId
-                )
-                enqueueEvent(GalleryPhotoPickerEvents.Success)
-            }.onFailure {
-                enqueueEvent(GalleryPhotoPickerEvents.Error)
+            asyncRunCatching {
+                kotlin.runCatching {
+                    photoRepo.addPhotos(
+                        photos = stateData.photos,
+                        albumId = albumId
+                    )
+                    enqueueEvent(GalleryPhotoPickerEvents.Success)
+                }.onFailure {
+                    enqueueEvent(GalleryPhotoPickerEvents.Error)
+                }
             }
         }
     }

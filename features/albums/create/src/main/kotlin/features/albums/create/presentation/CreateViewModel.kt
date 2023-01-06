@@ -63,19 +63,26 @@ internal class CreateViewModel @Inject constructor(
 
     private fun createAlbum() {
         viewModelScope.launch(dispatcher) {
-            val result = kotlin.runCatching {
-                repository.createAlbum(
-                    data = CreateAlbumDTO(
-                        name = stateData.name,
-                        description = stateData.description
+            asyncRunCatching {
+                val result = kotlin.runCatching {
+                    repository.createAlbum(
+                        data = CreateAlbumDTO(
+                            name = stateData.name,
+                            description = stateData.description
+                        )
                     )
+                }.fold(
+                    onSuccess = {
+                        CreateAlbumEvents.Result(
+                            AlbumResult.Success,
+                            UUID.randomUUID()
+                        )
+                    },
+                    onFailure = { CreateAlbumEvents.Result(AlbumResult.Error, UUID.randomUUID()) },
                 )
-            }.fold(
-                onSuccess = { CreateAlbumEvents.Result(AlbumResult.Success, UUID.randomUUID()) },
-                onFailure = { CreateAlbumEvents.Result(AlbumResult.Error, UUID.randomUUID()) },
-            )
 
-            enqueueEvent(result)
+                enqueueEvent(result)
+            }
         }
     }
 }
