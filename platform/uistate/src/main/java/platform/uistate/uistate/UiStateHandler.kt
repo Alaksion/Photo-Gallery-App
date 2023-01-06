@@ -31,7 +31,7 @@ interface UiStateOwner<T> {
      * @param block Suspend block which provides the usage of [StateManagerImpl], helper class that
      * allows multiple state updates.
      * */
-    fun updateState(block: StateManagerImpl<T>.(T) -> T)
+    fun updateState(block: StateManagerImpl<T>.() -> Unit)
 
     /**
      * Provides a [StateManager] scope to allow asynchronous state updates. Unhandled exceptions will
@@ -45,7 +45,7 @@ interface UiStateOwner<T> {
      * */
     suspend fun asyncUpdateState(
         showLoading: Boolean = true,
-        block: suspend StateManagerImpl<T>.(T) -> T
+        block: suspend StateManagerImpl<T>.() -> Unit
     )
 }
 
@@ -66,34 +66,22 @@ class UiStateHandler<T>(initialState: T) : UiStateOwner<T> {
 
     override suspend fun asyncUpdateState(
         showLoading: Boolean,
-        block: suspend StateManagerImpl<T>.(T) -> T
+        block: suspend StateManagerImpl<T>.() -> Unit
     ) {
         kotlin.runCatching {
-            block(stateUpdater, stateData)
+            block(stateUpdater)
             stateUpdater.updateStateType(UiStateType.Content)
         }.onFailure {
             stateUpdater.updateStateType(UiStateType.Error(it))
         }
     }
 
-    override fun updateState(block: StateManagerImpl<T>.(T) -> T) {
+    override fun updateState(block: StateManagerImpl<T>.() -> Unit) {
         kotlin.runCatching {
-            block(stateUpdater, stateData)
+            block(stateUpdater)
             stateUpdater.updateStateType(UiStateType.Content)
         }.onFailure {
             stateUpdater.updateStateType(UiStateType.Error(it))
-        }
-    }
-
-    /**
-     * Convenience function to facilitate the collection of UiState using property delegation.
-     * */
-    @Composable
-    fun collectUiState(): State<UiState<T>> {
-        val state by this.mutableUiState.collectAsState()
-
-        return remember(state) {
-            derivedStateOf { state }
         }
     }
 

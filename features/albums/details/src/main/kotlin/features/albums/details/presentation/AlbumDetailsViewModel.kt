@@ -1,10 +1,14 @@
 package features.albums.details.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import platform.injection.IODispatcher
 import platform.uistate.uistate.UiStateHandler
+import platform.uistate.uistate.UiStateOwner
 import javax.inject.Inject
 
 internal sealed class AlbumDetailsIntent {
@@ -14,9 +18,9 @@ internal sealed class AlbumDetailsIntent {
 
 @HiltViewModel
 internal class AlbumDetailsViewModel @Inject constructor(
-    @IODispatcher dispatcher: CoroutineDispatcher,
+    @IODispatcher private val dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository,
-) : UiStateHandler<AlbumDetailsState>(AlbumDetailsState(), dispatcher) {
+) : ViewModel(), UiStateOwner<AlbumDetailsState> by UiStateHandler(AlbumDetailsState()) {
 
     fun handleIntent(intent: AlbumDetailsIntent) {
         when (intent) {
@@ -30,13 +34,18 @@ internal class AlbumDetailsViewModel @Inject constructor(
         forceLoad: Boolean = false
     ) {
         if (stateData.isInitialized.not() || forceLoad) {
-            setState { currentState ->
-                val response = repository.getAlbumById(albumId)
-                currentState.copy(
-                    album = response.album,
-                    photos = response.photos,
-                    isInitialized = true
-                )
+            viewModelScope.launch(dispatcher) {
+                asyncUpdateState {
+                    val response = repository.getAlbumById(albumId)
+
+                    updateData { currentState ->
+                        currentState.copy(
+                            album = response.album,
+                            photos = response.photos,
+                            isInitialized = true
+                        )
+                    }
+                }
             }
         }
     }
