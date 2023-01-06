@@ -79,10 +79,14 @@ internal data class GalleryPhotoPickerScreen(
         state.UiStateContent(stateContent = {
             StateContent(state = it, handleIntent = viewModel::handleIntent)
         }, errorState = {
-            DefaultErrorView(error = it,
-                options = DefaultErrorViewOptions(primaryButton = DefaultErrorViewButton(title = "Go back to home",
-                    onClick = { navigator?.pop() }),
-                    secondaryButton = null))
+            DefaultErrorView(
+                error = it,
+                options = DefaultErrorViewOptions(
+                    primaryButton = DefaultErrorViewButton(title = "Go back to home",
+                        onClick = { navigator?.pop() }),
+                    secondaryButton = null
+                )
+            )
         })
 
     }
@@ -175,7 +179,8 @@ internal data class GalleryPhotoPickerScreen(
                     EmptyState(
                         modifier = Modifier.weight(1f),
                         title = "Nothing to see here",
-                        description = "Add photos from your gallery to have a preview of which" + " photos will be add to this album"
+                        description = "Add photos from your gallery to have a preview of which" +
+                                " photos will be add to this album"
                     )
                 }
                 VerticalSpacer(height = MviSampleSizes.medium)
