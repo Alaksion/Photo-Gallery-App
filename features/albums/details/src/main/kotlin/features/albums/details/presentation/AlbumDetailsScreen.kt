@@ -40,7 +40,6 @@ import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
-import platform.database.models.models.PhotoModelData
 import platform.navigation.NavigationProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
@@ -180,10 +179,7 @@ internal data class AlbumDetailsScreen(
                     ) {
                         items(state.photos) { photo ->
                             AsyncImage(
-                                model = when (val data = photo.data) {
-                                    is PhotoModelData.Local -> data.uri
-                                    is PhotoModelData.Remote -> data.url
-                                },
+                                model = photo.path,
                                 contentDescription = null,
                                 contentScale = ContentScale.FillWidth,
                                 alignment = Alignment.Center

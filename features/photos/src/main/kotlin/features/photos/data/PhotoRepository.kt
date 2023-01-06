@@ -3,7 +3,6 @@ package features.photos.data
 import android.net.Uri
 import platform.database.models.data.datasources.PhotoDataSource
 import platform.database.models.models.PhotoModel
-import platform.database.models.models.PhotoModelData
 import javax.inject.Inject
 
 internal interface PhotoRepository {
@@ -19,7 +18,7 @@ internal class PhotoRepositoryImpl @Inject constructor(
             PhotoModel(
                 photoId = 0,
                 albumId = albumId,
-                data = PhotoModelData.Local(it)
+                path = it.path ?: throw IllegalArgumentException("image path could not be resolved")
             )
         }
         dataSource.addPhotos(photoModels)
