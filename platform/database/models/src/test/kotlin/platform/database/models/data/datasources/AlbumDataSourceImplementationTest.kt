@@ -13,6 +13,7 @@ import org.junit.Test
 import platform.database.models.models.album.AlbumModel
 import platform.database.models.models.album.CreateAlbumModel
 import platform.error.InternalException
+import platform.test.fixtures.TestLogger
 
 @ExperimentalCoroutinesApi
 internal class AlbumDataSourceImplementationTest {
@@ -27,9 +28,10 @@ internal class AlbumDataSourceImplementationTest {
     fun setUp() {
         albumDao = AlbumEntityDaoMock()
 
-        dataSource = platform.database.models.data.datasources.AlbumDataSourceImplementation(
+        dataSource = AlbumDataSourceImplementation(
             albumDao,
-            validator
+            validator,
+            TestLogger()
         )
         Dispatchers.setMain(testDispatcher)
     }

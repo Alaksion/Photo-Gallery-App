@@ -12,6 +12,7 @@ android {
 dependencies {
 
     implementation(projects.platform.uicomponents)
+    implementation(projects.platform.logs)
 
     // coroutines
     implementation(libs.coroutines.core)

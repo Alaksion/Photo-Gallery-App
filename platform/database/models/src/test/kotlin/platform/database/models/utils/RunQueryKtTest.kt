@@ -1,17 +1,18 @@
 package platform.database.models.utils
 
-import platform.error.InternalException
 import com.google.common.truth.Truth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import platform.error.InternalException
+import platform.test.fixtures.TestLogger
 
 @ExperimentalCoroutinesApi
 internal class RunQueryKtTest {
 
     @Test(expected = InternalException::class)
     fun `Should throw internal exception when Generic type is captured`() = runTest {
-        platform.database.models.utils.runQuery {
+        runQuery(TestLogger()) {
             throw InternalException.Generic("aaa")
         }
     }
@@ -19,7 +20,7 @@ internal class RunQueryKtTest {
     @Test
     fun `Should propagate unhandled exception when Throwable is captured`() = runTest {
         try {
-            platform.database.models.utils.runQuery {
+            runQuery(TestLogger()) {
                 throw IllegalArgumentException()
             }
         } catch (e: Throwable) {
