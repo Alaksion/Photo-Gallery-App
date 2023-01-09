@@ -17,8 +17,9 @@ ksp {
 dependencies {
     implementation(projects.platform.error)
     implementation(projects.platform.logs)
-    implementation(libs.androidX.core.ktx)
+    implementation(projects.platform.test.fixtures)
 
+    implementation(libs.androidX.core.ktx)
     implementation(libs.coroutines.core)
     testImplementation(libs.coroutines.test)
 

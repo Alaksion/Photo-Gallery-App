@@ -27,6 +27,8 @@
             <option value="$PROJECT_DIR$/platform/injection" />
             <option value="$PROJECT_DIR$/platform/logs" />
             <option value="$PROJECT_DIR$/platform/navigation" />
+            <option value="$PROJECT_DIR$/platform/test" />
+            <option value="$PROJECT_DIR$/platform/test/fixtures" />
             <option value="$PROJECT_DIR$/platform/uicomponents" />
             <option value="$PROJECT_DIR$/platform/uistate" />
           </set>
