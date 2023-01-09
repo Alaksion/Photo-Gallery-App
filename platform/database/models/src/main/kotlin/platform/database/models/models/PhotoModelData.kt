@@ -1,11 +1,12 @@
 package platform.database.models.models
 
+import android.net.Uri
 import platform.database.models.data.entities.PhotoEntity
 
 data class PhotoModel(
     val photoId: Int,
     val albumId: Int,
-    val path: String,
+    val location: Uri,
 )
 
 sealed class PhotoModelData {
@@ -18,7 +19,7 @@ internal fun PhotoModel.mapToEntity(): PhotoEntity {
     return PhotoEntity(
         id = this.photoId,
         albumId = this.albumId,
-        path = this.path
+        path = this.location.toString()
     )
 
 }

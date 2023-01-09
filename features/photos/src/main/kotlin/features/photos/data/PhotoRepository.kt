@@ -18,7 +18,7 @@ internal class PhotoRepositoryImpl @Inject constructor(
             PhotoModel(
                 photoId = 0,
                 albumId = albumId,
-                path = it.path ?: throw IllegalArgumentException("image path could not be resolved")
+                location = it
             )
         }
         dataSource.addPhotos(photoModels)
