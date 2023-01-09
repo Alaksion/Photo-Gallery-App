@@ -2,11 +2,13 @@ package features.photos.data
 
 import android.net.Uri
 import platform.database.models.data.datasources.PhotoDataSource
-import platform.database.models.models.album.PhotoModel
+import platform.database.models.models.photo.PhotoModel
 import javax.inject.Inject
 
 internal interface PhotoRepository {
     suspend fun addPhotos(albumId: Int, photos: List<Uri>)
+
+    suspend fun getPhotoById(photoId: Int): PhotoModel
 }
 
 internal class PhotoRepositoryImpl @Inject constructor(
@@ -22,6 +24,10 @@ internal class PhotoRepositoryImpl @Inject constructor(
             )
         }
         dataSource.addPhotos(photoModels)
+    }
+
+    override suspend fun getPhotoById(photoId: Int): PhotoModel {
+        return dataSource.getPhotoById(photoId)
     }
 
 }

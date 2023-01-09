@@ -10,6 +10,8 @@ interface PhotoDataSource {
 
     suspend fun addPhotos(photos: List<PhotoModel>)
 
+    suspend fun getPhotoById(photoId: Int): PhotoModel
+
 }
 
 internal class PhotoDataSourceImpl @Inject constructor(
@@ -22,6 +24,10 @@ internal class PhotoDataSourceImpl @Inject constructor(
                 photos.map { it.mapToEntity() }
             )
         }
+    }
+
+    override suspend fun getPhotoById(photoId: Int): PhotoModel {
+        return runQuery { photoDao.getPhoto(photoId).mapToModel() }
     }
 
 }

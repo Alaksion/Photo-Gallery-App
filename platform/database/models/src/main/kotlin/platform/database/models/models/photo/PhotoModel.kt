@@ -7,7 +7,12 @@ data class PhotoModel(
     val photoId: Int,
     val albumId: Int,
     val location: Uri,
-)
+) {
+    companion object {
+        val fixture = PhotoModel(photoId = 0, albumId = 0, location = Uri.EMPTY)
+    }
+}
+
 internal fun PhotoModel.mapToEntity(): PhotoEntity {
 
     return PhotoEntity(

@@ -29,4 +29,7 @@ internal interface PhotoEntityDao {
     @Insert
     suspend fun addPhotos(list: List<PhotoEntity>)
 
+    @Query("SELECT * FROM PHOTOS WHERE id=:photoId")
+    suspend fun getPhoto(photoId: Int): PhotoEntity
+
 }

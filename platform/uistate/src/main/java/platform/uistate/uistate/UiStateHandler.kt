@@ -1,5 +1,8 @@
 package platform.uistate.uistate
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -102,6 +105,14 @@ class UiStateHandler<T>(initialState: T) : UiStateOwner<T> {
         }
     }
 
+}
+
+/**
+ * Convenience function to collect UiState using property delegation
+ * */
+@Composable
+fun <T> UiStateOwner<T>.collectState(): State<UiState<T>> {
+    return uiState.collectAsState()
 }
 
 /**
