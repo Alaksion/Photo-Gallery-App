@@ -1,5 +1,6 @@
 package platform.database.models.data.entities
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Entity
@@ -17,7 +18,7 @@ internal data class PhotoEntity(
     fun mapToModel() = PhotoModel(
         albumId = this.albumId,
         photoId = this.id,
-        path = this.path
+        location = Uri.parse(this.path)
     )
 }
 
