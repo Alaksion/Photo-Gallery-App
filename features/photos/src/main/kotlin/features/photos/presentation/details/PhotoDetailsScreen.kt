@@ -1,10 +1,21 @@
 package features.photos.presentation.details
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import coil.compose.AsyncImage
 import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
@@ -22,7 +33,12 @@ internal data class PhotoDetailsScreen(
         val navigator = LocalNavigator.current
 
         state.UiStateContent(
-            stateContent = { StateContent(state = it) },
+            stateContent = {
+                StateContent(
+                    state = it,
+                    goBack = { navigator?.pop() }
+                )
+            },
             errorState = {
                 DefaultErrorView(
                     error = it,
@@ -46,11 +62,35 @@ internal data class PhotoDetailsScreen(
 
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun StateContent(
-        state: PhotoDetailsState
+        state: PhotoDetailsState,
+        goBack: () -> Unit
     ) {
-
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {},
+                    navigationIcon = {
+                        IconButton(onClick = goBack) {
+                            Icon(
+                                imageVector = Icons.Outlined.ArrowBack,
+                                null
+                            )
+                        }
+                    }
+                )
+            }
+        ) {
+            Column(Modifier.padding(it)) {
+                AsyncImage(
+                    model = state.photo.location,
+                    contentDescription = null,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
     }
 
 }
