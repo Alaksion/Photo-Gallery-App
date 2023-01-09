@@ -4,6 +4,7 @@ import platform.database.models.data.entities.PhotoEntityDao
 import platform.database.models.models.photo.PhotoModel
 import platform.database.models.models.photo.mapToEntity
 import platform.database.models.utils.runQuery
+import platform.logs.loggers.AppLogger
 import javax.inject.Inject
 
 interface PhotoDataSource {
@@ -15,11 +16,12 @@ interface PhotoDataSource {
 }
 
 internal class PhotoDataSourceImpl @Inject constructor(
-    private val photoDao: PhotoEntityDao
+    private val photoDao: PhotoEntityDao,
+    private val logger: AppLogger,
 ) : PhotoDataSource {
 
     override suspend fun addPhotos(photos: List<PhotoModel>) {
-        runQuery {
+        runQuery(logger) {
             photoDao.addPhotos(
                 photos.map { it.mapToEntity() }
             )
@@ -27,7 +29,7 @@ internal class PhotoDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getPhotoById(photoId: Int): PhotoModel {
-        return runQuery { photoDao.getPhoto(photoId).mapToModel() }
+        return runQuery(logger) { photoDao.getPhoto(photoId).mapToModel() }
     }
 
 }

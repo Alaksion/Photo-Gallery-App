@@ -16,6 +16,7 @@ ksp {
 
 dependencies {
     implementation(projects.platform.error)
+    implementation(projects.platform.logs)
     implementation(libs.androidX.core.ktx)
 
     implementation(libs.coroutines.core)
