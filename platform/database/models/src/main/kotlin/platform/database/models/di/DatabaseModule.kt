@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import platform.database.models.AppDatabase
+import platform.database.models.UriPermissionHandler
 import platform.database.models.data.datasources.AlbumDataSource
 import platform.database.models.data.datasources.AlbumDataSourceImplementation
 import platform.database.models.data.datasources.PhotoDataSource
@@ -41,16 +42,26 @@ internal object DatabaseModule {
     ): AlbumDataSource {
         return AlbumDataSourceImplementation(
             albumDao = database.albumDao(),
-            validator = validator
+            validator = validator,
         )
     }
 
     @Provides
     @Singleton
     fun providePhotoDataSource(
-        database: AppDatabase
+        database: AppDatabase,
+        uriHandler: UriPermissionHandler
     ): PhotoDataSource {
-        return PhotoDataSourceImpl(photoDao = database.photoDao())
+        return PhotoDataSourceImpl(
+            photoDao = database.photoDao(),
+            uriPermission = uriHandler
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun providePersistentUriManager(@ApplicationContext context: Context): UriPermissionHandler {
+        return UriPermissionHandler(context)
     }
 
 }

@@ -1,5 +1,6 @@
 package features.photos.presentation.details
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
@@ -87,7 +89,15 @@ internal data class PhotoDetailsScreen(
                 AsyncImage(
                     model = state.photo.location,
                     contentDescription = null,
-                    modifier = Modifier.weight(1f)
+                    onState = { state ->
+                        when (state) {
+                            is AsyncImagePainter.State.Error -> {
+                                Log.d("ImageError", state.result.throwable.toString())
+                            }
+
+                            else -> Unit
+                        }
+                    }
                 )
             }
         }
