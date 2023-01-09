@@ -14,6 +14,7 @@ import platform.database.models.data.datasources.AlbumDataSourceImplementation
 import platform.database.models.data.datasources.PhotoDataSource
 import platform.database.models.data.datasources.PhotoDataSourceImpl
 import platform.database.models.data.validator.AlbumDataSourceValidator
+import platform.logs.loggers.AppLogger
 import javax.inject.Singleton
 
 @Module
@@ -38,11 +39,13 @@ internal object DatabaseModule {
     @Singleton
     fun provideAlbumDataSource(
         database: AppDatabase,
-        validator: AlbumDataSourceValidator
+        validator: AlbumDataSourceValidator,
+        logger: AppLogger,
     ): AlbumDataSource {
         return AlbumDataSourceImplementation(
             albumDao = database.albumDao(),
             validator = validator,
+            logger = logger
         )
     }
 
@@ -50,11 +53,13 @@ internal object DatabaseModule {
     @Singleton
     fun providePhotoDataSource(
         database: AppDatabase,
-        uriHandler: UriPermissionHandler
+        uriHandler: UriPermissionHandler,
+        logger: AppLogger,
     ): PhotoDataSource {
         return PhotoDataSourceImpl(
             photoDao = database.photoDao(),
-            uriPermission = uriHandler
+            uriPermission = uriHandler,
+            logger = logger
         )
     }
 

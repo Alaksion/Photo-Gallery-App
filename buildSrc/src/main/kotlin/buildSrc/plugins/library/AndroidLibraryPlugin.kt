@@ -52,11 +52,11 @@ class AndroidLibraryPlugin : Plugin<Project> {
             buildTypes {
                 getByName("release") {
                     isMinifyEnabled = false
-                    buildConfigField(type = "String", name = "label", "release")
+                    buildConfigField(type = "String", name = "label", "\"release\"")
                 }
 
                 getByName("debug") {
-                    buildConfigField(type = "String", name = "label", "debug")
+                    buildConfigField(type = "String", name = "label", "\"debug\"")
                 }
             }
 
