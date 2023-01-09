@@ -25,6 +25,7 @@
             <option value="$PROJECT_DIR$/platform/database/models" />
             <option value="$PROJECT_DIR$/platform/error" />
             <option value="$PROJECT_DIR$/platform/injection" />
+            <option value="$PROJECT_DIR$/platform/logs" />
             <option value="$PROJECT_DIR$/platform/navigation" />
             <option value="$PROJECT_DIR$/platform/uicomponents" />
             <option value="$PROJECT_DIR$/platform/uistate" />

@@ -45,9 +45,18 @@ class AndroidLibraryPlugin : Plugin<Project> {
                 targetCompatibility = BuildConstants.JAVA_VERSION
             }
 
+            buildFeatures {
+                buildConfig = true
+            }
+
             buildTypes {
                 getByName("release") {
                     isMinifyEnabled = false
+                    buildConfigField(type = "String", name = "label", "release")
+                }
+
+                getByName("debug") {
+                    buildConfigField(type = "String", name = "label", "debug")
                 }
             }
 
