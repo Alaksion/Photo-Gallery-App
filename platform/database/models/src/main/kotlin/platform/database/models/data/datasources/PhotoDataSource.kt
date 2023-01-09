@@ -1,5 +1,6 @@
 package platform.database.models.data.datasources
 
+import platform.database.models.UriPermissionHandler
 import platform.database.models.data.entities.PhotoEntityDao
 import platform.database.models.models.photo.PhotoModel
 import platform.database.models.models.photo.mapToEntity
@@ -18,12 +19,17 @@ interface PhotoDataSource {
 internal class PhotoDataSourceImpl @Inject constructor(
     private val photoDao: PhotoEntityDao,
     private val logger: AppLogger,
+    private val uriPermission: UriPermissionHandler
+
 ) : PhotoDataSource {
 
     override suspend fun addPhotos(photos: List<PhotoModel>) {
         runQuery(logger) {
             photoDao.addPhotos(
-                photos.map { it.mapToEntity() }
+                photos.map { photoModel ->
+                    uriPermission.registerPersistentPermission(photoModel.location)
+                    photoModel.mapToEntity()
+                }
             )
         }
     }
