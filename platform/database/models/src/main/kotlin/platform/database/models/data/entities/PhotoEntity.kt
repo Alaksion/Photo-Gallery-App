@@ -6,7 +6,8 @@ import androidx.room.Dao
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
-import platform.database.models.models.PhotoModel
+import androidx.room.Query
+import platform.database.models.models.photo.PhotoModel
 
 @Entity("photos")
 internal data class PhotoEntity(
@@ -27,5 +28,8 @@ internal interface PhotoEntityDao {
 
     @Insert
     suspend fun addPhotos(list: List<PhotoEntity>)
+
+    @Query("SELECT * FROM PHOTOS WHERE id=:photoId")
+    suspend fun getPhoto(photoId: Int): PhotoEntity
 
 }

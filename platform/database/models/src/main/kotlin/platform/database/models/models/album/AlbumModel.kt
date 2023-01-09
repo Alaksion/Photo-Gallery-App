@@ -1,4 +1,4 @@
-package platform.database.models.models
+package platform.database.models.models.album
 
 import platform.database.models.data.entities.AlbumEntity
 import platform.database.models.utils.dateFormatter

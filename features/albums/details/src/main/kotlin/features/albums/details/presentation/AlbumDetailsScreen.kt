@@ -1,6 +1,7 @@
 package features.albums.details.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,40 +64,37 @@ internal data class AlbumDetailsScreen(
         val state by model.uiState.collectAsState()
         val navigator = LocalNavigator.current
 
-        state.UiStateContent(
-            stateContent = {
-                DetailScreen(
-                    state = it,
-                    albumId = albumId,
-                    handleIntent = model::handleIntent,
-                    goBack = { navigator?.pop() },
-                    goToAddPhotos = {
-                        navigator?.push(
-                            ScreenRegistry.get(
-                                NavigationProvider.Photos.PickPhotoSource(
-                                    albumId
-                                )
+        state.UiStateContent(stateContent = {
+            DetailScreen(state = it,
+                albumId = albumId,
+                handleIntent = model::handleIntent,
+                goBack = { navigator?.pop() },
+                goToAddPhotos = {
+                    navigator?.push(
+                        ScreenRegistry.get(
+                            NavigationProvider.Photos.PickPhotoSource(
+                                albumId
                             )
                         )
-                    }
-                )
-            },
-            errorState = {
-                DefaultErrorView(
-                    error = it,
-                    options = DefaultErrorViewOptions(
-                        primaryButton = DefaultErrorViewButton(
-                            title = "Try again",
-                            onClick = { model.handleIntent(AlbumDetailsIntent.RetryLoad(albumId)) }
-                        ),
-                        secondaryButton = DefaultErrorViewButton(
-                            title = "Return to home screen",
-                            onClick = { navigator?.pop() }
-                        )
                     )
+                },
+                goToPhotoDetails = {photoId ->
+                    navigator?.push(
+                        ScreenRegistry.get(NavigationProvider.Photos.PhotoDetails(photoId))
+                    )
+                }
+            )
+        }, errorState = {
+            DefaultErrorView(
+                error = it,
+                options = DefaultErrorViewOptions(
+                    primaryButton = DefaultErrorViewButton(title = "Try again",
+                        onClick = { model.handleIntent(AlbumDetailsIntent.RetryLoad(albumId)) }),
+                    secondaryButton = DefaultErrorViewButton(title = "Return to home screen",
+                        onClick = { navigator?.pop() })
                 )
-            }
-        )
+            )
+        })
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -106,23 +104,22 @@ internal data class AlbumDetailsScreen(
         handleIntent: (AlbumDetailsIntent) -> Unit,
         albumId: Int,
         goBack: () -> Unit,
-        goToAddPhotos: () -> Unit
+        goToAddPhotos: () -> Unit,
+        goToPhotoDetails: (Int) -> Unit,
     ) {
         LaunchedEffect(Unit) {
             handleIntent(AlbumDetailsIntent.LoadAlbumData(albumId))
         }
 
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text("Go back") }, navigationIcon = {
-                    IconButton(onClick = goBack) {
-                        Icon(
-                            imageVector = Icons.Outlined.ArrowBack, contentDescription = null
-                        )
-                    }
-                })
-            }
-        ) {
+        Scaffold(topBar = {
+            TopAppBar(title = { Text("Go back") }, navigationIcon = {
+                IconButton(onClick = goBack) {
+                    Icon(
+                        imageVector = Icons.Outlined.ArrowBack, contentDescription = null
+                    )
+                }
+            })
+        }) {
             Column(
                 Modifier
                     .fillMaxSize()
@@ -150,8 +147,7 @@ internal data class AlbumDetailsScreen(
                     )
                     VerticalSpacer(height = MviSampleSizes.medium)
                     Button(
-                        onClick = goToAddPhotos,
-                        modifier = Modifier.fillMaxWidth()
+                        onClick = goToAddPhotos, modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Add photos to album")
                     }
@@ -183,7 +179,10 @@ internal data class AlbumDetailsScreen(
                                 model = photo.location,
                                 contentDescription = null,
                                 contentScale = ContentScale.FillWidth,
-                                alignment = Alignment.Center
+                                alignment = Alignment.Center,
+                                modifier = Modifier.clickable(
+                                    onClick = { goToPhotoDetails(photo.photoId) }
+                                )
                             )
                         }
                     }
@@ -197,12 +196,12 @@ internal data class AlbumDetailsScreen(
 @Composable
 private fun Preview() {
     PreviewContainer(contentPaddingValues = PaddingValues(vertical = MviSampleSizes.medium)) {
-        AlbumDetailsScreen(1).DetailScreen(
-            albumId = 1,
+        AlbumDetailsScreen(1).DetailScreen(albumId = 1,
             goBack = {},
             handleIntent = {},
             state = AlbumDetailsState(),
-            goToAddPhotos = {}
+            goToAddPhotos = {},
+            goToPhotoDetails = {}
         )
     }
 }

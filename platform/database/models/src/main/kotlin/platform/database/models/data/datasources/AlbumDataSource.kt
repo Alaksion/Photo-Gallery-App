@@ -3,9 +3,9 @@ package platform.database.models.data.datasources
 import platform.database.models.data.entities.AlbumEntity
 import platform.database.models.data.entities.AlbumEntityDao
 import platform.database.models.data.validator.AlbumDataSourceValidator
-import platform.database.models.models.AlbumModel
+import platform.database.models.models.album.AlbumModel
 import platform.database.models.models.AlbumWithPhotosModel
-import platform.database.models.models.CreateAlbumModel
+import platform.database.models.models.album.CreateAlbumModel
 import platform.database.models.utils.runQuery
 import javax.inject.Inject
 
