@@ -6,7 +6,8 @@ import androidx.room.Dao
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
-import platform.database.models.models.PhotoModel
+import androidx.room.Query
+import platform.database.models.models.photo.PhotoModel
 
 @Entity("photos")
 internal data class PhotoEntity(

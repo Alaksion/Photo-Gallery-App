@@ -10,8 +10,8 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import platform.database.models.models.AlbumModel
-import platform.database.models.models.CreateAlbumModel
+import platform.database.models.models.album.AlbumModel
+import platform.database.models.models.album.CreateAlbumModel
 import platform.error.InternalException
 
 @ExperimentalCoroutinesApi

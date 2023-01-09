@@ -1,8 +1,8 @@
 package platform.database.models.data.datasources
 
 import platform.database.models.data.entities.PhotoEntityDao
-import platform.database.models.models.PhotoModel
-import platform.database.models.models.mapToEntity
+import platform.database.models.models.photo.PhotoModel
+import platform.database.models.models.photo.mapToEntity
 import platform.database.models.utils.runQuery
 import javax.inject.Inject
 

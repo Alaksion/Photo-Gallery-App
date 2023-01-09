@@ -1,4 +1,4 @@
-package platform.database.models.models
+package platform.database.models.models.album
 
 data class CreateAlbumModel(
     val name: String,

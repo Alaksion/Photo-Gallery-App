@@ -8,8 +8,8 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Transaction
-import platform.database.models.models.AlbumModel
-import platform.database.models.models.CreateAlbumModel
+import platform.database.models.models.album.AlbumModel
+import platform.database.models.models.album.CreateAlbumModel
 import platform.database.models.utils.dateFormatter
 import java.time.LocalDate
 

@@ -2,7 +2,7 @@ package features.photos.data
 
 import android.net.Uri
 import platform.database.models.data.datasources.PhotoDataSource
-import platform.database.models.models.PhotoModel
+import platform.database.models.models.album.PhotoModel
 import javax.inject.Inject
 
 internal interface PhotoRepository {

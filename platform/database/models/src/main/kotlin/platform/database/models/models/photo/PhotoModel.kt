@@ -1,4 +1,4 @@
-package platform.database.models.models
+package platform.database.models.models.photo
 
 import android.net.Uri
 import platform.database.models.data.entities.PhotoEntity
@@ -8,12 +8,6 @@ data class PhotoModel(
     val albumId: Int,
     val location: Uri,
 )
-
-sealed class PhotoModelData {
-    data class Remote(val url: String) : PhotoModelData()
-    data class Local(val uri: String) : PhotoModelData()
-}
-
 internal fun PhotoModel.mapToEntity(): PhotoEntity {
 
     return PhotoEntity(
