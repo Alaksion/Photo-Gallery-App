@@ -1,7 +1,7 @@
 package features.albums.details.presentation
 
 import platform.database.models.models.album.AlbumModel
-import platform.database.models.models.album.PhotoModel
+import platform.database.models.models.photo.PhotoModel
 
 internal data class AlbumDetailsState(
     val album: AlbumModel = AlbumModel.fixture,
