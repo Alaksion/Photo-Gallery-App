@@ -39,7 +39,7 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
-import features.photos.presentation.SuccessScreen
+import features.photos.photopicker.presentation.SuccessScreen
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
 import platform.uicomponents.components.PreviewContainer

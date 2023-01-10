@@ -27,6 +27,7 @@ dependencies {
 
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.compose.icons)
+    implementation(libs.androidX.compose.activity)
 
     implementation(libs.coil)
 
