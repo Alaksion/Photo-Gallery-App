@@ -1,5 +1,6 @@
 package features.albums.details.presentation
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +43,7 @@ import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import platform.navigation.NavigationProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
@@ -78,7 +80,7 @@ internal data class AlbumDetailsScreen(
                         )
                     )
                 },
-                goToPhotoDetails = {photoId ->
+                goToPhotoDetails = { photoId ->
                     navigator?.push(
                         ScreenRegistry.get(NavigationProvider.Photos.PhotoDetails(photoId))
                     )
@@ -182,7 +184,17 @@ internal data class AlbumDetailsScreen(
                                 alignment = Alignment.Center,
                                 modifier = Modifier.clickable(
                                     onClick = { goToPhotoDetails(photo.photoId) }
-                                )
+                                ),
+                                onState = { asyncImageState ->
+                                    when (asyncImageState) {
+                                        is AsyncImagePainter.State.Error -> Log.d(
+                                            "image error",
+                                            asyncImageState.result.throwable.toString()
+                                        )
+
+                                        else -> Unit
+                                    }
+                                }
                             )
                         }
                     }
