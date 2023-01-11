@@ -37,6 +37,7 @@ private fun DependencyHandler.installCompose(
     implementation(project.library("androidX-compose-graphics"))
     implementation(project.library("androidX-compose-tooling-preview"))
     implementation(project.library("androidX-compose-material3"))
+    implementation(project.library("androidX-compose-material"))
 
     // Manual add because androidTest and debug extensions are not working for unknown reasons
     add(DependencyType.Debug.label, project.library("androidX-compose-debug-tooling"))
