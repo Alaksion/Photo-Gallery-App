@@ -11,6 +11,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.androidx.AndroidScreen
@@ -33,6 +34,10 @@ internal data class PhotoDetailsScreen(
         val model = getViewModel<PhotoDetailsViewModel>()
         val state by model.collectState()
         val navigator = LocalNavigator.current
+
+        LaunchedEffect(key1 = model) {
+            model.handleIntent(PhotoDetailsIntent.LoadData(photoId))
+        }
 
         state.UiStateContent(
             stateContent = {

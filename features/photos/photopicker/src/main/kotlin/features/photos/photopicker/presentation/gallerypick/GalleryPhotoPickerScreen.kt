@@ -40,6 +40,7 @@ import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
 import features.photos.photopicker.presentation.SuccessScreen
+import features.photos.photopicker.utils.MultiMediaContract
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
 import platform.uicomponents.components.PreviewContainer
@@ -98,7 +99,7 @@ internal data class GalleryPhotoPickerScreen(
     ) {
         val navigator = LocalNavigator.current
         val launcher =
-            rememberLauncherForActivityResult(contract = ActivityResultContracts.PickMultipleVisualMedia(
+            rememberLauncherForActivityResult(contract = MultiMediaContract(
                 MaxSelectionSize
             ),
                 onResult = { imageUri ->
