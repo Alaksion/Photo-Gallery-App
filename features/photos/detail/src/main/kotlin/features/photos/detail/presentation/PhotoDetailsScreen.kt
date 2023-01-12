@@ -34,6 +34,7 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
+import features.photos.detail.presentation.components.DeleteConfirmationDialog
 import kotlinx.coroutines.launch
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.errorview.DefaultErrorView

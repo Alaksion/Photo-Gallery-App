@@ -1,4 +1,4 @@
-package features.photos.detail.presentation
+package features.photos.detail.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
