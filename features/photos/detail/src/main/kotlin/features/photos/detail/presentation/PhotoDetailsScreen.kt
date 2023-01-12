@@ -1,8 +1,13 @@
 package features.photos.detail.presentation
 
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -21,17 +26,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
 import kotlinx.coroutines.launch
+import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
+import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uievent.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 import platform.uistate.uistate.collectState
@@ -125,28 +133,50 @@ internal data class PhotoDetailsScreen(
                                     )
                                 }
                             },
-                            actions = {
-                                IconButton(onClick = { scope.launch { sheetState.show() } }) {
-                                    Icon(Icons.Outlined.Delete, null)
-                                }
-                            }
                         )
                     },
                 ) {
-                    Column(Modifier.padding(it)) {
-                        AsyncImage(
-                            model = state.photo.location,
-                            contentDescription = null,
-                            onState = { state ->
-                                when (state) {
-                                    is AsyncImagePainter.State.Error -> {
-                                        Log.d("ImageError", state.result.throwable.toString())
-                                    }
-
-                                    else -> Unit
+                    Box(Modifier.fillMaxSize()) {
+                        Column(
+                            modifier = Modifier
+                                .padding(it)
+                                .fillMaxSize(),
+                        ) {
+                            WeightSpacer(weight = 1F)
+                            AsyncImage(
+                                model = state.photo.location,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxWidth(),
+                                contentScale = ContentScale.FillWidth,
+                                alignment = Alignment.Center
+                            )
+                            WeightSpacer(weight = 1F)
+                        }
+                        Column(
+                            modifier = Modifier
+                                .padding(it)
+                                .fillMaxSize(),
+                        ) {
+                            WeightSpacer(weight = 1f)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(
+                                        MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                                    )
+                                    .padding(MviSampleSizes.large),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                IconButton(onClick = { scope.launch { sheetState.show() } }) {
+                                    Icon(
+                                        Icons.Outlined.Delete,
+                                        null,
+                                        tint = MaterialTheme.colorScheme.background
+                                    )
                                 }
                             }
-                        )
+                        }
                     }
                 }
             },
