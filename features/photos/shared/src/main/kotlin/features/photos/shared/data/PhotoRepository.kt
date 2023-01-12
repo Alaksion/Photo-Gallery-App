@@ -9,6 +9,8 @@ interface PhotoRepository {
     suspend fun addPhotos(albumId: Int, photos: List<Uri>)
 
     suspend fun getPhotoById(photoId: Int): PhotoModel
+
+    suspend fun deletePhoto(photo: PhotoModel)
 }
 
 internal class PhotoRepositoryImpl @Inject constructor(
@@ -28,6 +30,10 @@ internal class PhotoRepositoryImpl @Inject constructor(
 
     override suspend fun getPhotoById(photoId: Int): PhotoModel {
         return dataSource.getPhotoById(photoId)
+    }
+
+    override suspend fun deletePhoto(photo: PhotoModel) {
+        dataSource.deletePhoto(photo)
     }
 
 }

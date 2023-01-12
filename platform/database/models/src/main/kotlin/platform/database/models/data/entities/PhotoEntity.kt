@@ -3,6 +3,7 @@ package platform.database.models.data.entities
 import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
@@ -31,5 +32,8 @@ internal interface PhotoEntityDao {
 
     @Query("SELECT * FROM PHOTOS WHERE id=:photoId")
     suspend fun getPhoto(photoId: Int): PhotoEntity
+
+    @Delete
+    suspend fun deletePhoto(photo: PhotoEntity)
 
 }

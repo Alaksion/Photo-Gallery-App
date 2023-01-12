@@ -1,6 +1,7 @@
 package features.photos.detail.presentation
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -21,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -30,6 +32,7 @@ import kotlinx.coroutines.launch
 import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
+import platform.uistate.uievent.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 import platform.uistate.uistate.collectState
 
@@ -42,9 +45,23 @@ internal data class PhotoDetailsScreen(
         val model = getViewModel<PhotoDetailsViewModel>()
         val state by model.collectState()
         val navigator = LocalNavigator.current
+        val context = LocalContext.current
 
         LaunchedEffect(key1 = model) {
             model.handleIntent(PhotoDetailsIntent.LoadData(photoId))
+        }
+
+        UiEventEffect(eventHandler = model) { event ->
+            when (event) {
+                PhotoDetailsEvents.DeleteSuccess -> {
+                    Toast.makeText(context, "Photo deleted successfuly", Toast.LENGTH_SHORT).show()
+                    navigator?.pop()
+                }
+
+                is PhotoDetailsEvents.DeleteError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         state.UiStateContent(
@@ -52,6 +69,7 @@ internal data class PhotoDetailsScreen(
                 StateContent(
                     state = it,
                     goBack = { navigator?.pop() },
+                    handleIntent = model::handleIntent
                 )
             },
             errorState = {
@@ -81,17 +99,17 @@ internal data class PhotoDetailsScreen(
     @Composable
     fun StateContent(
         state: PhotoDetailsState,
+        handleIntent: (PhotoDetailsIntent) -> Unit,
         goBack: () -> Unit,
     ) {
         val scope = rememberCoroutineScope()
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
-
         ModalBottomSheetLayout(
             sheetContent = {
                 DeleteConfirmationDialog(
-                    onClickCancel = { /*TODO*/ },
-                    onClickConfirm = { scope.launch { sheetState.hide() } }
+                    onClickCancel = { scope.launch { sheetState.hide() } },
+                    onClickConfirm = { handleIntent(PhotoDetailsIntent.DeletePhoto) }
                 )
             },
             content = {
