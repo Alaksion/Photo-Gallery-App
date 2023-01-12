@@ -14,6 +14,8 @@ interface PhotoDataSource {
 
     suspend fun getPhotoById(photoId: Int): PhotoModel
 
+    suspend fun deletePhoto(photo: PhotoModel)
+
 }
 
 internal class PhotoDataSourceImpl @Inject constructor(
@@ -36,6 +38,12 @@ internal class PhotoDataSourceImpl @Inject constructor(
 
     override suspend fun getPhotoById(photoId: Int): PhotoModel {
         return runQuery(logger) { photoDao.getPhoto(photoId).mapToModel() }
+    }
+
+    override suspend fun deletePhoto(photo: PhotoModel) {
+        runQuery(logger) {
+            photoDao.deletePhoto(photo.mapToEntity())
+        }
     }
 
 }

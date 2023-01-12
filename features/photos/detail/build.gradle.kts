@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.platform.navigation)
     implementation(projects.platform.injection)
     implementation(projects.features.photos.shared)
+    implementation(projects.platform.error)
 
     // Navigation
     implementation(libs.bundles.voyager)
