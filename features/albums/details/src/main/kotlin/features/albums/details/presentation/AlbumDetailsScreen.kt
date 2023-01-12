@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
@@ -38,11 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
-import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.hilt.getViewModel
-import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
-import platform.navigation.NavigationProvider
+import platform.database.models.models.photo.PhotoModel
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
 import platform.uicomponents.components.PreviewContainer
@@ -53,7 +52,7 @@ import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.extensions.header
 import platform.uistate.uistate.UiStateContent
 
-private const val GridCellsCount = 3
+private const val GridCellsCount = 2
 
 internal data class AlbumDetailsScreen(
     private val albumId: Int
@@ -63,27 +62,14 @@ internal data class AlbumDetailsScreen(
     override fun Content() {
         val model = getViewModel<AlbumDetailsViewModel>()
         val state by model.uiState.collectAsState()
-        val navigator = LocalNavigator.current
+        val router = AlbumDetailsRouter.rememberAlbumDetailRouter()
 
         state.UiStateContent(stateContent = {
-            DetailScreen(state = it,
+            DetailScreen(
+                state = it,
                 albumId = albumId,
                 handleIntent = model::handleIntent,
-                goBack = { navigator?.pop() },
-                goToAddPhotos = {
-                    navigator?.push(
-                        ScreenRegistry.get(
-                            NavigationProvider.Photos.PickPhotoSource(
-                                albumId
-                            )
-                        )
-                    )
-                },
-                goToPhotoDetails = { photoId ->
-                    navigator?.push(
-                        ScreenRegistry.get(NavigationProvider.Photos.PhotoDetails(photoId))
-                    )
-                }
+                handleNavigation = router::handleNavigation
             )
         }, errorState = {
             DefaultErrorView(
@@ -92,7 +78,7 @@ internal data class AlbumDetailsScreen(
                     primaryButton = DefaultErrorViewButton(title = "Try again",
                         onClick = { model.handleIntent(AlbumDetailsIntent.RetryLoad(albumId)) }),
                     secondaryButton = DefaultErrorViewButton(title = "Return to home screen",
-                        onClick = { navigator?.pop() })
+                        onClick = { router.handleNavigation(AlbumDetailDestination.GoBack) })
                 )
             )
         })
@@ -104,15 +90,15 @@ internal data class AlbumDetailsScreen(
         state: AlbumDetailsState,
         handleIntent: (AlbumDetailsIntent) -> Unit,
         albumId: Int,
-        goBack: () -> Unit,
-        goToAddPhotos: () -> Unit,
-        goToPhotoDetails: (Int) -> Unit,
+        handleNavigation: (AlbumDetailDestination) -> Unit
     ) {
         LaunchedEffect(Unit) {
             handleIntent(AlbumDetailsIntent.LoadAlbumData(albumId))
         }
 
-        Scaffold(topBar = { TopBar(goBack) }) {
+        Scaffold(topBar = {
+            TopBar(goBack = { handleNavigation(AlbumDetailDestination.GoBack) })
+        }) {
             LazyVerticalGrid(
                 modifier = Modifier
                     .padding(it)
@@ -126,34 +112,53 @@ internal data class AlbumDetailsScreen(
                     AlbumHeader(
                         albumName = state.album.name,
                         albumDescription = state.album.description,
-                        goToAddPhotos = goToAddPhotos,
+                        goToAddPhotos = {
+                            handleNavigation(AlbumDetailDestination.AddPhotos(state.album.id))
+                        },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
 
-                if (state.photos.isEmpty()) {
-                    item {
-                        EmptyState(
-                            modifier = Modifier
-                                .height(300.dp)
-                                .fillMaxWidth(),
-                            title = "Nothing to see here",
-                            description = "Add photos to this album to see them here"
-                        )
-                    }
-                } else {
-                    items(state.photos) { photo ->
-                        AsyncImage(
-                            model = photo.location,
-                            contentDescription = null,
-                            contentScale = ContentScale.FillWidth,
-                            alignment = Alignment.Center,
-                            modifier = Modifier.clickable(
-                                onClick = { goToPhotoDetails(photo.photoId) }
-                            ),
-                        )
-                    }
+                header {
+                    VerticalSpacer(height = MviSampleSizes.medium)
                 }
+
+                content(
+                    photos = state.photos,
+                    onPhotoClick = {
+                        handleNavigation(AlbumDetailDestination.PhotoDetail(it))
+                    }
+                )
+
+            }
+        }
+    }
+
+    private fun LazyGridScope.content(
+        photos: List<PhotoModel>,
+        onPhotoClick: (Int) -> Unit
+    ) {
+        if (photos.isEmpty()) {
+            item {
+                EmptyState(
+                    modifier = Modifier
+                        .height(300.dp)
+                        .fillMaxWidth(),
+                    title = "Nothing to see here",
+                    description = "Add photos to this album to see them here"
+                )
+            }
+        } else {
+            items(photos) { photo ->
+                AsyncImage(
+                    model = photo.location,
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
+                    alignment = Alignment.Center,
+                    modifier = Modifier.clickable(
+                        onClick = { onPhotoClick(photo.photoId) }
+                    ),
+                )
             }
         }
     }
@@ -227,7 +232,6 @@ internal data class AlbumDetailsScreen(
             ) {
                 Text("Add photos to album")
             }
-            VerticalSpacer(height = MviSampleSizes.medium)
         }
     }
 }
@@ -237,11 +241,9 @@ internal data class AlbumDetailsScreen(
 private fun Preview() {
     PreviewContainer(contentPaddingValues = PaddingValues(vertical = MviSampleSizes.medium)) {
         AlbumDetailsScreen(1).DetailScreen(albumId = 1,
-            goBack = {},
             handleIntent = {},
             state = AlbumDetailsState(),
-            goToAddPhotos = {},
-            goToPhotoDetails = {}
+            handleNavigation = {}
         )
     }
 }
