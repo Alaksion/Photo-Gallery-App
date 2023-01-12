@@ -1,6 +1,5 @@
 package features.albums.details.presentation
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,7 +42,6 @@ import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
 import platform.navigation.NavigationProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
@@ -52,6 +50,7 @@ import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
+import platform.uicomponents.extensions.header
 import platform.uistate.uistate.UiStateContent
 
 private const val GridCellsCount = 3
@@ -113,93 +112,122 @@ internal data class AlbumDetailsScreen(
             handleIntent(AlbumDetailsIntent.LoadAlbumData(albumId))
         }
 
-        Scaffold(topBar = {
-            TopAppBar(title = { Text("Go back") }, navigationIcon = {
+        Scaffold(topBar = { TopBar(goBack) }) {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(MviSampleSizes.medium),
+                columns = GridCells.Fixed(GridCellsCount),
+                verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
+                horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
+            ) {
+                header {
+                    AlbumHeader(
+                        albumName = state.album.name,
+                        albumDescription = state.album.description,
+                        goToAddPhotos = goToAddPhotos,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                if (state.photos.isEmpty()) {
+                    item {
+                        EmptyState(
+                            modifier = Modifier
+                                .height(300.dp)
+                                .fillMaxWidth(),
+                            title = "Nothing to see here",
+                            description = "Add photos to this album to see them here"
+                        )
+                    }
+                } else {
+                    items(state.photos) { photo ->
+                        AsyncImage(
+                            model = photo.location,
+                            contentDescription = null,
+                            contentScale = ContentScale.FillWidth,
+                            alignment = Alignment.Center,
+                            modifier = Modifier.clickable(
+                                onClick = { goToPhotoDetails(photo.photoId) }
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun TopBar(
+        goBack: () -> Unit
+    ) {
+        TopAppBar(
+            title = { Text("Go back") },
+            navigationIcon = {
                 IconButton(onClick = goBack) {
                     Icon(
                         imageVector = Icons.Outlined.ArrowBack, contentDescription = null
                     )
                 }
-            })
-        }) {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .padding(it)
-                    .padding(horizontal = MviSampleSizes.medium)
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(180.dp)
-                            .clip(CircleShape)
-                            .background(Color.Red)
-                    )
-                    VerticalSpacer(height = MviSampleSizes.medium)
-                    Text(
-                        text = state.album.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        text = state.album.description,
-                    )
-                    VerticalSpacer(height = MviSampleSizes.medium)
-                    Button(
-                        onClick = goToAddPhotos, modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Add photos to album")
-                    }
-                }
-
-                VerticalSpacer(height = MviSampleSizes.small)
-                Divider()
-                VerticalSpacer(height = MviSampleSizes.small)
-
-                if (state.photos.isEmpty()) {
-                    EmptyState(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        title = "Nothing to see here",
-                        description = "Add photos to this album to see them here"
-                    )
-                } else {
-                    LazyVerticalGrid(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        columns = GridCells.Fixed(GridCellsCount),
-                        verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
-                        horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
-                    ) {
-                        items(state.photos) { photo ->
-                            AsyncImage(
-                                model = photo.location,
-                                contentDescription = null,
-                                contentScale = ContentScale.FillWidth,
-                                alignment = Alignment.Center,
-                                modifier = Modifier.clickable(
-                                    onClick = { goToPhotoDetails(photo.photoId) }
-                                ),
-                                onState = { asyncImageState ->
-                                    when (asyncImageState) {
-                                        is AsyncImagePainter.State.Error -> Log.d(
-                                            "image error",
-                                            asyncImageState.result.throwable.toString()
-                                        )
-
-                                        else -> Unit
-                                    }
-                                }
-                            )
-                        }
-                    }
-                }
             }
+        )
+    }
+
+    @Composable
+    private fun MapLocation(
+        modifier: Modifier = Modifier
+    ) {
+        Box(
+            modifier = modifier
+                .size(180.dp)
+                .clip(CircleShape)
+                .background(Color.Red)
+        )
+    }
+
+    @Composable
+    private fun AlbumInfo(
+        albumName: String,
+        albumDescription: String,
+        modifier: Modifier = Modifier
+    ) {
+        Column(modifier) {
+            Text(
+                text = albumName,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = albumDescription
+            )
+        }
+    }
+
+    @Composable
+    private fun AlbumHeader(
+        modifier: Modifier = Modifier,
+        albumName: String,
+        albumDescription: String,
+        goToAddPhotos: () -> Unit
+    ) {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(MviSampleSizes.medium)
+        ) {
+            MapLocation(Modifier.align(Alignment.CenterHorizontally))
+            AlbumInfo(
+                albumName = albumName,
+                albumDescription = albumDescription,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Button(
+                onClick = goToAddPhotos, modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Add photos to album")
+            }
+            VerticalSpacer(height = MviSampleSizes.medium)
         }
     }
 }
