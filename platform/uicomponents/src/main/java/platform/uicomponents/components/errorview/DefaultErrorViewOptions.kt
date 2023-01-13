@@ -12,7 +12,8 @@ data class DefaultErrorViewButton(
 data class DefaultErrorViewOptions(
     val primaryButton: DefaultErrorViewButton?,
     val secondaryButton: DefaultErrorViewButton?,
-    val contentPadding: PaddingValues = PaddingValues()
+    val contentPadding: PaddingValues = PaddingValues(),
+    val onBackClick: (() -> Unit)? = null
 )
 
 internal class DefaultErrorViewOptionsProvider : PreviewParameterProvider<DefaultErrorViewOptions> {
