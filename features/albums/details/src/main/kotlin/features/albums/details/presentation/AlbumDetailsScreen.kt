@@ -116,13 +116,6 @@ internal data class AlbumDetailsScreen(
                         .fillMaxSize()
                         .padding(it)
                 ) {
-                    SwipeRefreshIndicator(
-                        state = refreshState,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .zIndex(1f),
-                        refreshTriggerDistance = MviSampleSizes.medium
-                    )
 
                     LazyVerticalGrid(
                         modifier = Modifier
