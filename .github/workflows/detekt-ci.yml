@@ -21,6 +21,11 @@ jobs:
           java-version: 17
           distribution: temurin
 
+      - name: SetUp Maps Key
+        env:
+          MAPS_API_KEY: ${{Some Key}}
+        run: echo MAPS_API_KEY="$MAPS_API_KEY" > ./local.properties
+
       - name: Run detekt
         run: ./gradlew detekt
       # TODO -> Solve this
