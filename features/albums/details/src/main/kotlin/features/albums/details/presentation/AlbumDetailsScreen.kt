@@ -45,7 +45,6 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
 import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import platform.database.models.models.photo.PhotoModel
 import platform.uicomponents.MviSampleSizes
@@ -87,7 +86,8 @@ internal data class AlbumDetailsScreen(
                     primaryButton = DefaultErrorViewButton(title = "Try again",
                         onClick = { model.handleIntent(AlbumDetailsIntent.RetryLoad(albumId)) }),
                     secondaryButton = DefaultErrorViewButton(title = "Return to home screen",
-                        onClick = { router.handleNavigation(AlbumDetailDestination.GoBack) })
+                        onClick = { router.handleNavigation(AlbumDetailDestination.GoBack) }),
+                    onBackClick = { router.handleNavigation(AlbumDetailDestination.GoBack) }
                 )
             )
         })
