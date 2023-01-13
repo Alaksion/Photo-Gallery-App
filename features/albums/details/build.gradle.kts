@@ -19,6 +19,9 @@ dependencies {
     implementation(projects.platform.injection)
     implementation(projects.features.albums.shared)
 
+    implementation ("com.google.accompanist:accompanist-swiperefresh:0.28.0")
+
+
     // Navigation
     implementation(libs.bundles.voyager)
 
