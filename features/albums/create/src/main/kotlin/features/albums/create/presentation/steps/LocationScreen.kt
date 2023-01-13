@@ -8,12 +8,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
@@ -52,8 +55,12 @@ internal object LocationScreen : Screen, ScreenLifecycleProvider by CreateAlbumF
         goBack: () -> Unit
     ) {
 
-        val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(state.location, 10f)
+        val location = remember { mutableStateOf(LatLng(-30.033056, -51.230000)) }
+
+        val cameraState = rememberCameraPositionState() {
+            position = CameraPosition.fromLatLngZoom(
+                location.value, 20f
+            )
         }
 
         Scaffold() {
@@ -63,11 +70,9 @@ internal object LocationScreen : Screen, ScreenLifecycleProvider by CreateAlbumF
                     .padding(it)
             ) {
                 GoogleMap(
-                    cameraPositionState = cameraPositionState,
+                    cameraPositionState = cameraState,
                     onMapClick = { coordinates ->
-                        handleIntent(
-                            CreateAlbumIntent.UpdateLocation(coordinates)
-                        )
+                        location.value = coordinates
                     }
                 ) {
                     Marker(
@@ -75,6 +80,7 @@ internal object LocationScreen : Screen, ScreenLifecycleProvider by CreateAlbumF
                     )
                 }
             }
+
         }
     }
 

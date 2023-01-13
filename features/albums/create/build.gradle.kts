@@ -33,6 +33,7 @@ dependencies {
 
     // Maps
     implementation(libs.bundles.maps)
+    implementation(libs.androidX.compose.activity)
 
     // Tests
     testImplementation(libs.junit)
