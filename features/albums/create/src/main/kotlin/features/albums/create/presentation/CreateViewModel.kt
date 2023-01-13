@@ -89,14 +89,13 @@ internal class CreateViewModel @Inject constructor(
             }
         }
     }
-    <<<<<<< HEAD
 
     private fun updateLocation(location: LatLng) {
-        setState(showLoading = false) { state ->
-            state.copy(location = location)
+        updateState {
+            updateData { state ->
+                state.copy(location = location)
+            }
         }
     }
 
-    =======
-    >>>>>>> e4b93ddac4501e9dfaf395560ea7351a0769de88
 }
