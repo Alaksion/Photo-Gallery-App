@@ -23,11 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import features.albums.create.presentation.CreateAlbumFlowProvider
 import features.albums.create.presentation.CreateAlbumIntent
 import features.albums.create.presentation.CreateAlbumState
 import features.albums.create.presentation.CreateViewModel
@@ -39,8 +37,7 @@ import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uievent.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 
-internal object CreateAlbumScreen : Screen,
-    ScreenLifecycleProvider by CreateAlbumFlowProvider() {
+internal object CreateAlbumScreen : Screen {
 
     @Composable
     override fun Content() {

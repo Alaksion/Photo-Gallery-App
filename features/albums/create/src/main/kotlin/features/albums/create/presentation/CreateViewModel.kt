@@ -24,6 +24,7 @@ internal sealed class CreateAlbumIntent {
 
     data class UpdateLocation(val value: LatLng) : CreateAlbumIntent()
     object CreateAlbum : CreateAlbumIntent()
+    object ClearData : CreateAlbumIntent()
 }
 
 internal sealed class CreateAlbumEvents(val result: AlbumResult) : UiEvent {
@@ -46,6 +47,7 @@ internal class CreateViewModel @Inject constructor(
             is CreateAlbumIntent.UpdateDescription -> updateDescription(intent.value)
             CreateAlbumIntent.CreateAlbum -> createAlbum()
             is CreateAlbumIntent.UpdateLocation -> updateLocation(intent.value)
+            CreateAlbumIntent.ClearData -> clearData()
         }
     }
 
@@ -77,6 +79,7 @@ internal class CreateViewModel @Inject constructor(
                     )
                 }.fold(
                     onSuccess = {
+                        clearData()
                         CreateAlbumEvents.Result(
                             AlbumResult.Success,
                             UUID.randomUUID()
@@ -94,6 +97,18 @@ internal class CreateViewModel @Inject constructor(
         updateState {
             updateData { state ->
                 state.copy(location = location)
+            }
+        }
+    }
+
+    private fun clearData() {
+        updateState {
+            updateData { state ->
+                state.copy(
+                    name = "",
+                    description = "",
+                    location = LatLng(0.0, 0.0)
+                )
             }
         }
     }

@@ -23,11 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
-import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import features.albums.create.presentation.CreateAlbumFlowProvider
 import features.albums.create.presentation.CreateAlbumIntent
 import features.albums.create.presentation.CreateViewModel
 import platform.uicomponents.MviSampleSizes
@@ -35,43 +33,36 @@ import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
-internal object NameScreen : Screen,
-    ScreenLifecycleProvider by CreateAlbumFlowProvider() {
+internal object NameScreen : Screen {
 
     @Composable
     override fun Content() {
         val model = getViewModel<CreateViewModel>()
         val state by model.uiState.collectAsState()
 
-        state.UiStateContent(
-            stateContent = {
-                StateContent(
-                    name = it.name,
-                    onNameChange = model::handleIntent
-                )
-            },
-            errorState = {}
-        )
+        state.UiStateContent(stateContent = {
+            StateContent(
+                name = it.name, handleIntent = model::handleIntent
+            )
+        }, errorState = {})
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     internal fun StateContent(
-        name: String,
-        onNameChange: (CreateAlbumIntent) -> Unit
+        name: String, handleIntent: (CreateAlbumIntent) -> Unit
     ) {
         val navigator = LocalNavigator.current
         val focus = LocalFocusManager.current
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text("Create a new album") },
-                    navigationIcon = {
-                        IconButton(onClick = { navigator?.popUntilRoot() }) {
-                            Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)
-                        }
+                TopAppBar(title = { Text("Create a new album") }, navigationIcon = {
+                    IconButton(
+                        onClick = { navigator?.popUntilRoot() }
+                    ) {
+                        Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)
                     }
-                )
+                })
             },
         ) {
             Column(
@@ -86,13 +77,11 @@ internal object NameScreen : Screen,
                 VerticalSpacer(height = MviSampleSizes.xLarge)
                 OutlinedTextField(
                     value = name,
-                    onValueChange = { onNameChange(CreateAlbumIntent.UpdateName(it)) },
+                    onValueChange = { handleIntent(CreateAlbumIntent.UpdateName(it)) },
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text("Grandma's cabin in the woods") },
                     label = { Text("Album's name") },
-                    keyboardActions = KeyboardActions(
-                        onDone = { focus.clearFocus() }
-                    ),
+                    keyboardActions = KeyboardActions(onDone = { focus.clearFocus() }),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     leadingIcon = {
                         Icon(imageVector = Icons.Outlined.LocationOn, contentDescription = null)
