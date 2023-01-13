@@ -43,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
@@ -111,44 +112,55 @@ internal data class AlbumDetailsScreen(
             topBar = {
                 TopBar(goBack = { handleNavigation(AlbumDetailDestination.GoBack) })
             },
+            modifier = Modifier.pullRefresh(refreshState)
         ) {
-            PullRefreshIndicator(
-                refreshing = state.isRefreshing, state = refreshState
-            )
-
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .padding(it)
+            Box(
+                Modifier
                     .fillMaxSize()
-                    .pullRefresh(refreshState),
-                contentPadding = PaddingValues(MviSampleSizes.medium),
-                columns = GridCells.Fixed(GridCellsCount),
-                verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
-                horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
+                    .padding(it)
             ) {
-                header {
-                    AlbumHeader(
-                        albumName = state.album.name,
-                        albumDescription = state.album.description,
-                        goToAddPhotos = {
-                            handleNavigation(AlbumDetailDestination.AddPhotos(state.album.id))
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                header {
-                    VerticalSpacer(height = MviSampleSizes.medium)
-                }
-
-                content(
-                    photos = state.photos,
-                    onPhotoClick = {
-                        handleNavigation(AlbumDetailDestination.PhotoDetail(it))
-                    }
+                PullRefreshIndicator(
+                    refreshing = state.isRefreshing,
+                    state = refreshState,
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .zIndex(1f)
                 )
 
+                LazyVerticalGrid(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .zIndex(0f),
+                    contentPadding = PaddingValues(MviSampleSizes.medium),
+                    columns = GridCells.Fixed(GridCellsCount),
+                    verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
+                    horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
+                ) {
+                    header {
+                        AlbumHeader(
+                            albumName = state.album.name,
+                            albumDescription = state.album.description,
+                            goToAddPhotos = {
+                                handleNavigation(AlbumDetailDestination.AddPhotos(state.album.id))
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                    header {
+                        VerticalSpacer(height = MviSampleSizes.medium)
+                    }
+
+                    content(
+                        photos = state.photos,
+                        onPhotoClick = {
+                            handleNavigation(AlbumDetailDestination.PhotoDetail(it))
+                        }
+                    )
+
+                }
             }
+
         }
     }
 
