@@ -6,5 +6,6 @@ import platform.database.models.models.photo.PhotoModel
 internal data class AlbumDetailsState(
     val album: AlbumModel = AlbumModel.fixture,
     val photos: List<PhotoModel> = listOf(),
-    val isInitialized: Boolean = false
+    val isInitialized: Boolean = false,
+    val isRefreshing: Boolean = false,
 )

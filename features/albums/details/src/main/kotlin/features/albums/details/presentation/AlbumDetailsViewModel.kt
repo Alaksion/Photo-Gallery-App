@@ -14,6 +14,8 @@ import javax.inject.Inject
 internal sealed class AlbumDetailsIntent {
     data class LoadAlbumData(val albumId: Int) : AlbumDetailsIntent()
     data class RetryLoad(val albumId: Int) : AlbumDetailsIntent()
+
+    data class RefreshData(val albumId: Int) : AlbumDetailsIntent()
 }
 
 @HiltViewModel
@@ -26,6 +28,7 @@ internal class AlbumDetailsViewModel @Inject constructor(
         when (intent) {
             is AlbumDetailsIntent.LoadAlbumData -> loadData(intent.albumId)
             is AlbumDetailsIntent.RetryLoad -> loadData(intent.albumId, true)
+            is AlbumDetailsIntent.RefreshData -> refreshData(intent.albumId)
         }
     }
 
@@ -45,6 +48,27 @@ internal class AlbumDetailsViewModel @Inject constructor(
                             isInitialized = true
                         )
                     }
+                }
+            }
+        }
+    }
+
+    private fun refreshData(
+        albumId: Int
+    ) {
+        viewModelScope.launch(dispatcher) {
+            asyncUpdateState(showLoading = false) {
+                updateData { currentState ->
+                    currentState.copy(isRefreshing = true)
+                }
+                val response = repository.getAlbumById(albumId)
+
+                updateData { currentState ->
+                    currentState.copy(
+                        album = response.album,
+                        photos = response.photos,
+                        isRefreshing = false
+                    )
                 }
             }
         }

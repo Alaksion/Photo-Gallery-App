@@ -16,8 +16,12 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -64,10 +68,13 @@ internal data class AlbumDetailsScreen(
         val state by model.uiState.collectAsState()
         val router = AlbumDetailsRouter.rememberAlbumDetailRouter()
 
+        LaunchedEffect(Unit) {
+            model.handleIntent(AlbumDetailsIntent.LoadAlbumData(albumId))
+        }
+
         state.UiStateContent(stateContent = {
             DetailScreen(
                 state = it,
-                albumId = albumId,
                 handleIntent = model::handleIntent,
                 handleNavigation = router::handleNavigation
             )
@@ -84,25 +91,35 @@ internal data class AlbumDetailsScreen(
         })
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
     @Composable
     internal fun DetailScreen(
         state: AlbumDetailsState,
         handleIntent: (AlbumDetailsIntent) -> Unit,
-        albumId: Int,
         handleNavigation: (AlbumDetailDestination) -> Unit
     ) {
-        LaunchedEffect(Unit) {
-            handleIntent(AlbumDetailsIntent.LoadAlbumData(albumId))
-        }
 
-        Scaffold(topBar = {
-            TopBar(goBack = { handleNavigation(AlbumDetailDestination.GoBack) })
-        }) {
+        val refreshState = rememberPullRefreshState(
+            refreshing = state.isRefreshing,
+            onRefresh = {
+                handleIntent(AlbumDetailsIntent.RetryLoad(albumId))
+            }
+        )
+
+        Scaffold(
+            topBar = {
+                TopBar(goBack = { handleNavigation(AlbumDetailDestination.GoBack) })
+            },
+        ) {
+            PullRefreshIndicator(
+                refreshing = state.isRefreshing, state = refreshState
+            )
+
             LazyVerticalGrid(
                 modifier = Modifier
                     .padding(it)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .pullRefresh(refreshState),
                 contentPadding = PaddingValues(MviSampleSizes.medium),
                 columns = GridCells.Fixed(GridCellsCount),
                 verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
@@ -139,7 +156,7 @@ internal data class AlbumDetailsScreen(
         onPhotoClick: (Int) -> Unit
     ) {
         if (photos.isEmpty()) {
-            item {
+            header {
                 EmptyState(
                     modifier = Modifier
                         .height(300.dp)
@@ -155,9 +172,11 @@ internal data class AlbumDetailsScreen(
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     alignment = Alignment.Center,
-                    modifier = Modifier.clickable(
-                        onClick = { onPhotoClick(photo.photoId) }
-                    ),
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.medium)
+                        .clickable(
+                            onClick = { onPhotoClick(photo.photoId) }
+                        ),
                 )
             }
         }
@@ -240,7 +259,7 @@ internal data class AlbumDetailsScreen(
 @Composable
 private fun Preview() {
     PreviewContainer(contentPaddingValues = PaddingValues(vertical = MviSampleSizes.medium)) {
-        AlbumDetailsScreen(1).DetailScreen(albumId = 1,
+        AlbumDetailsScreen(1).DetailScreen(
             handleIntent = {},
             state = AlbumDetailsState(),
             handleNavigation = {}
