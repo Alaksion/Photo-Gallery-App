@@ -55,6 +55,9 @@ dependencies {
     implementation(projects.platform.uicomponents)
     implementation(projects.features.albums.home)
     implementation(projects.features.albums.create)
+    implementation(projects.features.albums.details)
+    implementation(projects.features.photos.detail)
+    implementation(projects.features.photos.photopicker)
 
     implementation(libs.androidX.core.ktx)
     implementation(libs.androidX.lifecycle.runtime)

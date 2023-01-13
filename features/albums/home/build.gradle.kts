@@ -14,7 +14,7 @@ dependencies {
 
     implementation(projects.platform.uicomponents)
     implementation(projects.platform.uistate)
-    implementation(projects.database.models)
+    implementation(projects.platform.database.models)
     implementation(projects.platform.navigation)
     implementation(projects.platform.injection)
     implementation(projects.features.albums.shared)
@@ -30,6 +30,8 @@ dependencies {
     // Lifecycle
     implementation(libs.androidX.lifecycle.runtime)
     implementation(libs.androidX.lifecycle.viewmodel)
+
+    implementation(libs.accompanist.pullRefresh)
 
     // Tests
     testImplementation(libs.junit)

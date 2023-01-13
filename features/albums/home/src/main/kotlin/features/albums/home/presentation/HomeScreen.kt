@@ -1,5 +1,6 @@
 package features.albums.home.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,12 +19,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import platform.navigation.NavigationProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
@@ -35,7 +39,7 @@ internal object HomeScreen : AndroidScreen() {
     @Composable
     override fun Content() {
         val model = getViewModel<HomeViewModel>()
-        val state by model.collectUiState()
+        val state by model.uiState.collectAsState()
         val navigator = LocalNavigator.current
 
         LaunchedEffect(key1 = model) {
@@ -46,15 +50,22 @@ internal object HomeScreen : AndroidScreen() {
             stateContent = {
                 HomeScreenContent(
                     state = it,
-                    intentHandler = model::handleIntent,
                     goToCreateAlbum = {
                         navigator?.push(
                             ScreenRegistry.get(NavigationProvider.Albums.Create)
                         )
-                    }
+                    },
+                    goToAlbumDetail = { albumId ->
+                        navigator?.push(
+                            ScreenRegistry.get(NavigationProvider.Albums.Details(albumId))
+                        )
+                    },
+                    handleIntent = model::handleIntent
                 )
             },
-            errorState = {}
+            errorState = {
+                Log.d("error 1", it.toString())
+            }
         )
     }
 
@@ -65,50 +76,58 @@ internal object HomeScreen : AndroidScreen() {
 @Composable
 private fun HomeScreenContent(
     state: HomeState,
-    intentHandler: (HomeIntent) -> Unit,
+    handleIntent: (HomeIntent) -> Unit,
+    goToAlbumDetail: (Int) -> Unit,
     goToCreateAlbum: () -> Unit
 ) {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = goToCreateAlbum) {
-                Icon(imageVector = Icons.Outlined.Add, contentDescription = null)
-            }
-        },
-        topBar = {
-            TopAppBar(title = { Text(text = "My albums") })
-        }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
-        ) {
+    val swipeState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
 
-            if (state.albums.isNotEmpty()) {
-                LazyColumn(
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(horizontal = MviSampleSizes.medium),
-                    verticalArrangement = Arrangement.spacedBy(MviSampleSizes.small)
-                ) {
-                    items(state.albums) { album ->
-                        AlbumCard(
-                            data = album,
-                            onClick = {},
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    item {
-                        VerticalSpacer(height = MviSampleSizes.medium)
-                    }
+    SwipeRefresh(
+        state = swipeState,
+        onRefresh = { handleIntent(HomeIntent.Refresh) }
+    ) {
+        Scaffold(
+            floatingActionButton = {
+                FloatingActionButton(onClick = goToCreateAlbum) {
+                    Icon(imageVector = Icons.Outlined.Add, contentDescription = null)
                 }
-            } else {
-                EmptyState(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    title = "Nothing to see here",
-                    description = "Create at least one album to see your albums list"
-                )
+            },
+            topBar = {
+                TopAppBar(title = { Text(text = "My albums") })
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it),
+            ) {
+
+                if (state.albums.isNotEmpty()) {
+                    LazyColumn(
+                        modifier = Modifier.weight(1f),
+                        contentPadding = PaddingValues(horizontal = MviSampleSizes.medium),
+                        verticalArrangement = Arrangement.spacedBy(MviSampleSizes.small)
+                    ) {
+                        items(state.albums) { album ->
+                            AlbumCard(
+                                data = album,
+                                onClick = goToAlbumDetail,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        item {
+                            VerticalSpacer(height = MviSampleSizes.medium)
+                        }
+                    }
+                } else {
+                    EmptyState(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        title = "Nothing to see here",
+                        description = "Create at least one album to see your albums list"
+                    )
+                }
             }
         }
     }

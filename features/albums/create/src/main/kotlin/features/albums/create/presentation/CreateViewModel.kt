@@ -1,16 +1,20 @@
 package features.albums.create.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import features.albums.create.presentation.steps.AlbumResult
 import features.albums.shared.domain.model.CreateAlbumDTO
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import platform.injection.IODispatcher
 import platform.uistate.uievent.UiEvent
 import platform.uistate.uievent.UiEventHandler
-import platform.uistate.uievent.UiEventHandlerImpl
-import platform.uistate.uistate.UiStateViewModel
+import platform.uistate.uievent.UiEventOwner
+import platform.uistate.uistate.UiStateHandler
+import platform.uistate.uistate.UiStateOwner
 import java.util.UUID
 import javax.inject.Inject
 
@@ -31,10 +35,10 @@ internal sealed class CreateAlbumEvents(val result: AlbumResult) : UiEvent {
 
 @HiltViewModel
 internal class CreateViewModel @Inject constructor(
-    @IODispatcher dispatcher: CoroutineDispatcher,
+    @IODispatcher private val dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository
-) : UiStateViewModel<CreateAlbumState>(CreateAlbumState(), dispatcher),
-    UiEventHandler<CreateAlbumEvents> by UiEventHandlerImpl() {
+) : ViewModel(), UiStateOwner<CreateAlbumState> by UiStateHandler(CreateAlbumState()),
+    UiEventOwner<CreateAlbumEvents> by UiEventHandler() {
 
     fun handleIntent(intent: CreateAlbumIntent) {
         when (intent) {
@@ -46,34 +50,46 @@ internal class CreateViewModel @Inject constructor(
     }
 
     private fun updateName(value: String) {
-        setState(showLoading = false) { currentState ->
-            currentState.copy(name = value)
+        updateState {
+            updateData { currentState ->
+                currentState.copy(name = value)
+            }
         }
     }
 
     private fun updateDescription(value: String) {
-        setState(showLoading = false) { currentState ->
-            currentState.copy(description = value)
+        updateState {
+            updateData { currentState ->
+                currentState.copy(description = value)
+            }
         }
     }
 
     private fun createAlbum() {
-        runSuspendCatching {
-            val result = kotlin.runCatching {
-                repository.createAlbum(
-                    data = CreateAlbumDTO(
-                        name = stateData.name,
-                        description = stateData.description
+        viewModelScope.launch(dispatcher) {
+            asyncRunCatching {
+                val result = kotlin.runCatching {
+                    repository.createAlbum(
+                        data = CreateAlbumDTO(
+                            name = stateData.name,
+                            description = stateData.description
+                        )
                     )
+                }.fold(
+                    onSuccess = {
+                        CreateAlbumEvents.Result(
+                            AlbumResult.Success,
+                            UUID.randomUUID()
+                        )
+                    },
+                    onFailure = { CreateAlbumEvents.Result(AlbumResult.Error, UUID.randomUUID()) },
                 )
-            }.fold(
-                onSuccess = { CreateAlbumEvents.Result(AlbumResult.Success, UUID.randomUUID()) },
-                onFailure = { CreateAlbumEvents.Result(AlbumResult.Error, UUID.randomUUID()) },
-            )
 
-            enqueueEvent(result)
+                enqueueEvent(result)
+            }
         }
     }
+    <<<<<<< HEAD
 
     private fun updateLocation(location: LatLng) {
         setState(showLoading = false) { state ->
@@ -81,4 +97,6 @@ internal class CreateViewModel @Inject constructor(
         }
     }
 
+    =======
+    >>>>>>> e4b93ddac4501e9dfaf395560ea7351a0769de88
 }

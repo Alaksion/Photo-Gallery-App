@@ -2,6 +2,7 @@ package platform.uicomponents.components.errorview
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import platform.uicomponents.MviSampleSizes
 
 data class DefaultErrorViewButton(
     val title: String,
@@ -12,7 +13,8 @@ data class DefaultErrorViewButton(
 data class DefaultErrorViewOptions(
     val primaryButton: DefaultErrorViewButton?,
     val secondaryButton: DefaultErrorViewButton?,
-    val contentPadding: PaddingValues = PaddingValues()
+    val contentPadding: PaddingValues = PaddingValues(MviSampleSizes.medium),
+    val onBackClick: (() -> Unit)? = null
 )
 
 internal class DefaultErrorViewOptionsProvider : PreviewParameterProvider<DefaultErrorViewOptions> {
