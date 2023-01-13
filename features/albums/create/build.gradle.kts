@@ -31,6 +31,10 @@ dependencies {
     implementation(libs.androidX.lifecycle.runtime)
     implementation(libs.androidX.lifecycle.viewmodel)
 
+    // Maps
+    implementation(libs.bundles.maps)
+    implementation(libs.androidX.compose.activity)
+
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.turbine)
