@@ -18,7 +18,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
       - name: SetUp Maps Key
         env:
-          MAPS_API_KEY: ${{"Some Key"}}
+          MAPS_API_KEY: ${{ secrets.MAPS }}
         run: echo MAPS_API_KEY="$MAPS_API_KEY" > ./local.properties
       - name: Run MVI Sample Gradle Build
         run: ./gradlew build
