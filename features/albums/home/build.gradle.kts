@@ -31,6 +31,8 @@ dependencies {
     implementation(libs.androidX.lifecycle.runtime)
     implementation(libs.androidX.lifecycle.viewmodel)
 
+    implementation(libs.accompanist.pullRefresh)
+
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.turbine)

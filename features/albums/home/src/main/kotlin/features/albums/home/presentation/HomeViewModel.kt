@@ -13,6 +13,7 @@ import javax.inject.Inject
 
 internal sealed class HomeIntent {
     object LoadData : HomeIntent()
+    object Refresh : HomeIntent()
 }
 
 @HiltViewModel
@@ -24,6 +25,7 @@ internal class HomeViewModel @Inject constructor(
     fun handleIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.LoadData -> loadAlbums()
+            is HomeIntent.Refresh -> refreshAlbums()
         }
     }
 
@@ -38,6 +40,23 @@ internal class HomeViewModel @Inject constructor(
                             albums = albums
                         )
                     }
+                }
+            }
+        }
+    }
+
+    private fun refreshAlbums() {
+        viewModelScope.launch(dispatcher) {
+            asyncUpdateState {
+                updateData { state ->
+                    state.copy(isRefreshing = true)
+                }
+                val albums = repository.getAlbums()
+                updateData { currentState ->
+                    currentState.copy(
+                        isRefreshing = false,
+                        albums = albums
+                    )
                 }
             }
         }

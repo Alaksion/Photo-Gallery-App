@@ -26,6 +26,8 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import platform.navigation.NavigationProvider
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
@@ -57,7 +59,8 @@ internal object HomeScreen : AndroidScreen() {
                         navigator?.push(
                             ScreenRegistry.get(NavigationProvider.Albums.Details(albumId))
                         )
-                    }
+                    },
+                    handleIntent = model::handleIntent
                 )
             },
             errorState = {
@@ -73,50 +76,58 @@ internal object HomeScreen : AndroidScreen() {
 @Composable
 private fun HomeScreenContent(
     state: HomeState,
+    handleIntent: (HomeIntent) -> Unit,
     goToAlbumDetail: (Int) -> Unit,
     goToCreateAlbum: () -> Unit
 ) {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = goToCreateAlbum) {
-                Icon(imageVector = Icons.Outlined.Add, contentDescription = null)
-            }
-        },
-        topBar = {
-            TopAppBar(title = { Text(text = "My albums") })
-        }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
-        ) {
+    val swipeState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
 
-            if (state.albums.isNotEmpty()) {
-                LazyColumn(
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(horizontal = MviSampleSizes.medium),
-                    verticalArrangement = Arrangement.spacedBy(MviSampleSizes.small)
-                ) {
-                    items(state.albums) { album ->
-                        AlbumCard(
-                            data = album,
-                            onClick = goToAlbumDetail,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    item {
-                        VerticalSpacer(height = MviSampleSizes.medium)
-                    }
+    SwipeRefresh(
+        state = swipeState,
+        onRefresh = { handleIntent(HomeIntent.Refresh) }
+    ) {
+        Scaffold(
+            floatingActionButton = {
+                FloatingActionButton(onClick = goToCreateAlbum) {
+                    Icon(imageVector = Icons.Outlined.Add, contentDescription = null)
                 }
-            } else {
-                EmptyState(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    title = "Nothing to see here",
-                    description = "Create at least one album to see your albums list"
-                )
+            },
+            topBar = {
+                TopAppBar(title = { Text(text = "My albums") })
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it),
+            ) {
+
+                if (state.albums.isNotEmpty()) {
+                    LazyColumn(
+                        modifier = Modifier.weight(1f),
+                        contentPadding = PaddingValues(horizontal = MviSampleSizes.medium),
+                        verticalArrangement = Arrangement.spacedBy(MviSampleSizes.small)
+                    ) {
+                        items(state.albums) { album ->
+                            AlbumCard(
+                                data = album,
+                                onClick = goToAlbumDetail,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        item {
+                            VerticalSpacer(height = MviSampleSizes.medium)
+                        }
+                    }
+                } else {
+                    EmptyState(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        title = "Nothing to see here",
+                        description = "Create at least one album to see your albums list"
+                    )
+                }
             }
         }
     }
