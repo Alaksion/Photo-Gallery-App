@@ -19,9 +19,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -47,6 +44,9 @@ import androidx.compose.ui.zIndex
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import platform.database.models.models.photo.PhotoModel
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
@@ -101,67 +101,66 @@ internal data class AlbumDetailsScreen(
         handleNavigation: (AlbumDetailDestination) -> Unit
     ) {
 
-        val refreshState = rememberPullRefreshState(
-            refreshing = state.isRefreshing,
-            onRefresh = {
-                handleIntent(AlbumDetailsIntent.RetryLoad(albumId))
-            }
-        )
+        val refreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
 
-        Scaffold(
-            topBar = {
-                TopBar(goBack = { handleNavigation(AlbumDetailDestination.GoBack) })
-            },
-            modifier = Modifier.pullRefresh(refreshState)
-        ) {
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .padding(it)
+        SwipeRefresh(
+            state = refreshState,
+            onRefresh = { handleIntent(AlbumDetailsIntent.RefreshData(albumId)) }) {
+            Scaffold(
+                topBar = {
+                    TopBar(goBack = { handleNavigation(AlbumDetailDestination.GoBack) })
+                },
             ) {
-                PullRefreshIndicator(
-                    refreshing = state.isRefreshing,
-                    state = refreshState,
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .zIndex(1f)
-                )
-
-                LazyVerticalGrid(
-                    modifier = Modifier
+                Box(
+                    Modifier
                         .fillMaxSize()
-                        .zIndex(0f),
-                    contentPadding = PaddingValues(MviSampleSizes.medium),
-                    columns = GridCells.Fixed(GridCellsCount),
-                    verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
-                    horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
+                        .padding(it)
                 ) {
-                    header {
-                        AlbumHeader(
-                            albumName = state.album.name,
-                            albumDescription = state.album.description,
-                            goToAddPhotos = {
-                                handleNavigation(AlbumDetailDestination.AddPhotos(state.album.id))
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-
-                    header {
-                        VerticalSpacer(height = MviSampleSizes.medium)
-                    }
-
-                    content(
-                        photos = state.photos,
-                        onPhotoClick = {
-                            handleNavigation(AlbumDetailDestination.PhotoDetail(it))
-                        }
+                    SwipeRefreshIndicator(
+                        state = refreshState,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .zIndex(1f),
+                        refreshTriggerDistance = MviSampleSizes.medium
                     )
 
-                }
-            }
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .zIndex(0f),
+                        contentPadding = PaddingValues(MviSampleSizes.medium),
+                        columns = GridCells.Fixed(GridCellsCount),
+                        verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
+                        horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
+                    ) {
+                        header {
+                            AlbumHeader(
+                                albumName = state.album.name,
+                                albumDescription = state.album.description,
+                                goToAddPhotos = {
+                                    handleNavigation(AlbumDetailDestination.AddPhotos(state.album.id))
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
 
+                        header {
+                            VerticalSpacer(height = MviSampleSizes.medium)
+                        }
+
+                        content(
+                            photos = state.photos,
+                            onPhotoClick = {
+                                handleNavigation(AlbumDetailDestination.PhotoDetail(it))
+                            }
+                        )
+
+                    }
+                }
+
+            }
         }
+
     }
 
     private fun LazyGridScope.content(
