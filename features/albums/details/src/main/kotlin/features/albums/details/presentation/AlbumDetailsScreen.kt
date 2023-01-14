@@ -105,7 +105,7 @@ internal data class AlbumDetailsScreen(
 
         SwipeRefresh(
             state = refreshState,
-            onRefresh = { handleIntent(AlbumDetailsIntent.RefreshData(albumId)) }) {
+            onRefresh = { handleIntent(AlbumDetailsIntent.RefreshData) }) {
             Scaffold(
                 topBar = {
                     TopBar(goBack = { handleNavigation(AlbumDetailDestination.GoBack) })
