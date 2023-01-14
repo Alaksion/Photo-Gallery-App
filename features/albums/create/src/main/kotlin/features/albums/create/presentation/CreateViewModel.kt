@@ -2,7 +2,6 @@ package features.albums.create.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import features.albums.create.presentation.steps.AlbumResult
 import features.albums.shared.domain.model.CreateAlbumDTO
@@ -21,8 +20,6 @@ import javax.inject.Inject
 internal sealed class CreateAlbumIntent {
     data class UpdateName(val value: String) : CreateAlbumIntent()
     data class UpdateDescription(val value: String) : CreateAlbumIntent()
-
-    data class UpdateLocation(val value: LatLng) : CreateAlbumIntent()
     object CreateAlbum : CreateAlbumIntent()
     object ClearData : CreateAlbumIntent()
 }
@@ -46,7 +43,6 @@ internal class CreateViewModel @Inject constructor(
             is CreateAlbumIntent.UpdateName -> updateName(intent.value)
             is CreateAlbumIntent.UpdateDescription -> updateDescription(intent.value)
             CreateAlbumIntent.CreateAlbum -> createAlbum()
-            is CreateAlbumIntent.UpdateLocation -> updateLocation(intent.value)
             CreateAlbumIntent.ClearData -> clearData()
         }
     }
@@ -93,21 +89,12 @@ internal class CreateViewModel @Inject constructor(
         }
     }
 
-    private fun updateLocation(location: LatLng) {
-        updateState {
-            updateData { state ->
-                state.copy(location = location)
-            }
-        }
-    }
-
     private fun clearData() {
         updateState {
             updateData { state ->
                 state.copy(
                     name = "",
                     description = "",
-                    location = LatLng(0.0, 0.0)
                 )
             }
         }

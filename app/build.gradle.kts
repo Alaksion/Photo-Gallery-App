@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -68,7 +67,6 @@ dependencies {
     // Navigation
     implementation(libs.bundles.voyager)
 
-
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)
 
@@ -82,8 +80,4 @@ dependencies {
     androidTestImplementation(libs.androidX.test.junit)
 
     debugImplementation(libs.bundles.compose.debug)
-}
-
-kapt {
-    correctErrorTypes = true
 }

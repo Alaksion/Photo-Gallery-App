@@ -97,7 +97,7 @@ internal object DescriptionScreen : Screen {
                 )
                 WeightSpacer(weight = 1f)
                 Button(
-                    onClick = { navigator?.push(LocationScreen) },
+                    onClick = { navigator?.push(CreateAlbumScreen) },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = description.isNotEmpty()
                 ) {
