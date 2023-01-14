@@ -17,8 +17,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +51,8 @@ import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import features.albums.details.presentation.components.DeleteBottomSheet
+import kotlinx.coroutines.launch
 import platform.database.models.models.photo.PhotoModel
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
@@ -101,57 +108,87 @@ internal data class AlbumDetailsScreen(
         handleNavigation: (AlbumDetailDestination) -> Unit
     ) {
 
+        val scope = rememberCoroutineScope()
         val refreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
+        val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
         SwipeRefresh(
             state = refreshState,
-            onRefresh = { handleIntent(AlbumDetailsIntent.RefreshData) }) {
-            Scaffold(
-                topBar = {
-                    TopBar(goBack = { handleNavigation(AlbumDetailDestination.GoBack) })
+            onRefresh = { handleIntent(AlbumDetailsIntent.RefreshData) }
+        ) {
+            ModalBottomSheetLayout(
+                sheetContent = {
+                    DeleteBottomSheet(
+                        onCancel = {
+                            scope.launch {
+                                sheetState.hide()
+                            }
+                        },
+                        onContinue = {
+                            scope.launch {
+                                sheetState.hide()
+                            }
+                        }
+                    )
                 },
+                sheetState = sheetState,
+                sheetShape = MaterialTheme.shapes.medium
             ) {
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .padding(it)
-                ) {
-
-                    LazyVerticalGrid(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .zIndex(0f),
-                        contentPadding = PaddingValues(MviSampleSizes.medium),
-                        columns = GridCells.Fixed(GridCellsCount),
-                        verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
-                        horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
-                    ) {
-                        header {
-                            AlbumHeader(
-                                albumName = state.album.name,
-                                albumDescription = state.album.description,
-                                goToAddPhotos = {
-                                    handleNavigation(AlbumDetailDestination.AddPhotos(state.album.id))
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-
-                        header {
-                            VerticalSpacer(height = MviSampleSizes.medium)
-                        }
-
-                        content(
-                            photos = state.photos,
-                            onPhotoClick = {
-                                handleNavigation(AlbumDetailDestination.PhotoDetail(it))
+                Scaffold(
+                    topBar = {
+                        TopBar(
+                            goBack = { handleNavigation(AlbumDetailDestination.GoBack) },
+                            delete = {
+                                scope.launch {
+                                    sheetState.show()
+                                }
                             }
                         )
+                    },
+                ) {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(it)
+                    ) {
 
+                        LazyVerticalGrid(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .zIndex(0f),
+                            contentPadding = PaddingValues(MviSampleSizes.medium),
+                            columns = GridCells.Fixed(GridCellsCount),
+                            verticalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3),
+                            horizontalArrangement = Arrangement.spacedBy(MviSampleSizes.xSmall3)
+                        ) {
+                            header {
+                                AlbumHeader(
+                                    albumName = state.album.name,
+                                    albumDescription = state.album.description,
+                                    goToAddPhotos = {
+                                        handleNavigation(AlbumDetailDestination.AddPhotos(state.album.id))
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+
+                            header {
+                                VerticalSpacer(height = MviSampleSizes.medium)
+                            }
+
+                            content(
+                                photos = state.photos,
+                                onPhotoClick = {
+                                    handleNavigation(AlbumDetailDestination.PhotoDetail(it))
+                                }
+                            )
+
+                        }
                     }
-                }
 
+                }
             }
+
         }
 
     }
@@ -190,7 +227,8 @@ internal data class AlbumDetailsScreen(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun TopBar(
-        goBack: () -> Unit
+        goBack: () -> Unit,
+        delete: () -> Unit
     ) {
         TopAppBar(
             title = { Text("Go back") },
@@ -199,6 +237,11 @@ internal data class AlbumDetailsScreen(
                     Icon(
                         imageVector = Icons.Outlined.ArrowBack, contentDescription = null
                     )
+                }
+            },
+            actions = {
+                IconButton(onClick = delete) {
+                    Icon(imageVector = Icons.Outlined.Delete, null)
                 }
             }
         )
