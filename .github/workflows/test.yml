@@ -1,3 +1,9 @@
+name: Run Unit Tests
+
+on:
+  push:
+
+
 jobs:
   Build-Project:
     runs-on: ubuntu-latest
