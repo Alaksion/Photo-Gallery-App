@@ -2,6 +2,6 @@ package platform.uistate.uievent
 
 import java.util.UUID
 
-abstract class UiEvent {
+open class UiEvent {
     val eventId: UUID = UUID.randomUUID()
 }
