@@ -6,7 +6,7 @@ import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import platform.navigation.NavigationProvider
-import platform.navigation.params.CreateAlbumOperation
+import platform.navigation.params.ManageAlbumOperation
 
 internal sealed class AlbumDetailDestination {
     object GoBack : AlbumDetailDestination()
@@ -40,7 +40,7 @@ internal class AlbumDetailsRouter(private val navigator: Navigator) {
             is AlbumDetailDestination.Edit -> {
                 val screen = ScreenRegistry.get(
                     NavigationProvider.Albums.Manage(
-                        CreateAlbumOperation.Edit(destination.albumId)
+                        ManageAlbumOperation.Edit(destination.albumId)
                     )
                 )
                 navigator.push(screen)

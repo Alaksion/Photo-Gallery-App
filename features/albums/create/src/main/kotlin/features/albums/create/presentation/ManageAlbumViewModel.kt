@@ -9,7 +9,7 @@ import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import platform.injection.IODispatcher
-import platform.navigation.params.CreateAlbumOperation
+import platform.navigation.params.ManageAlbumOperation
 import platform.uistate.uievent.UiEvent
 import platform.uistate.uievent.UiEventHandler
 import platform.uistate.uievent.UiEventOwner
@@ -20,7 +20,7 @@ import javax.inject.Inject
 internal sealed class CreateAlbumIntent {
     data class UpdateName(val value: String) : CreateAlbumIntent()
     data class UpdateDescription(val value: String) : CreateAlbumIntent()
-    data class SubmitAlbum(val operation: CreateAlbumOperation) : CreateAlbumIntent()
+    data class SubmitAlbum(val operation: ManageAlbumOperation) : CreateAlbumIntent()
     object ClearData : CreateAlbumIntent()
     data class LoadAlbumData(val albumInt: Int) : CreateAlbumIntent()
 }
@@ -133,8 +133,8 @@ internal class CreateViewModel @Inject constructor(
         }
     }
 
-    private fun submitAlbum(operation: CreateAlbumOperation) {
-        if (operation is CreateAlbumOperation.Edit) {
+    private fun submitAlbum(operation: ManageAlbumOperation) {
+        if (operation is ManageAlbumOperation.Edit) {
             updateAlbum()
         } else {
             createAlbum()

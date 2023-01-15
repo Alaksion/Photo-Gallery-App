@@ -29,7 +29,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import features.albums.create.presentation.CreateAlbumIntent
 import features.albums.create.presentation.CreateViewModel
 import features.albums.create.presentation.ManageAlbumState
-import platform.navigation.params.CreateAlbumOperation
+import features.albums.create.presentation.extensions.toolbarTitle
+import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
@@ -39,7 +40,7 @@ import platform.uistate.uievent.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 
 internal data class CreateAlbumScreen(
-    private val type: CreateAlbumOperation
+    private val type: ManageAlbumOperation
 ) : Screen {
 
     @Composable
@@ -107,7 +108,7 @@ internal data class CreateAlbumScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Create New Album") },
+                    title = { Text(type.toolbarTitle()) },
                     navigationIcon = {
                         IconButton(onClick = goBack) {
                             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)

@@ -8,10 +8,10 @@ import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import features.albums.create.presentation.steps.NameScreen
-import platform.navigation.params.CreateAlbumOperation
+import platform.navigation.params.ManageAlbumOperation
 
 internal data class ManageAlbumFlow(
-    private val type: CreateAlbumOperation
+    private val type: ManageAlbumOperation
 ) : Screen {
 
     @OptIn(ExperimentalAnimationApi::class)
@@ -21,7 +21,7 @@ internal data class ManageAlbumFlow(
 
         LifecycleEffect(
             onStarted = {
-                if (type is CreateAlbumOperation.Edit) {
+                if (type is ManageAlbumOperation.Edit) {
                     viewModel.handleIntent(
                         CreateAlbumIntent.LoadAlbumData(type.albumId)
                     )

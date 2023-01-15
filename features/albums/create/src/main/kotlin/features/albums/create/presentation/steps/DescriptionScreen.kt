@@ -28,14 +28,15 @@ import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import features.albums.create.presentation.CreateAlbumIntent
 import features.albums.create.presentation.CreateViewModel
-import platform.navigation.params.CreateAlbumOperation
+import features.albums.create.presentation.extensions.toolbarTitle
+import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
 internal data class DescriptionScreen(
-    private val type: CreateAlbumOperation
+    private val type: ManageAlbumOperation
 ) : Screen {
 
     @Composable
@@ -65,7 +66,7 @@ internal data class DescriptionScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Create a new album") },
+                    title = { Text(type.toolbarTitle()) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
                             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)

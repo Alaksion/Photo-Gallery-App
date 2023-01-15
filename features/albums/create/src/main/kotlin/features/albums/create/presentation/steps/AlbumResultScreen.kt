@@ -13,7 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import platform.navigation.params.CreateAlbumOperation
+import features.albums.create.presentation.extensions.toolbarTitle
+import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.WeightSpacer
 
@@ -28,14 +29,14 @@ internal enum class AlbumResult(
 
 internal data class AlbumResultScreen(
     private val result: AlbumResult,
-    private val type: CreateAlbumOperation
+    private val type: ManageAlbumOperation
 ) : Screen {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         Scaffold(
-            topBar = { TopAppBar(title = { Text("Create New Album") }) }
+            topBar = { TopAppBar(title = { Text(type.toolbarTitle()) }) }
         ) {
             val nav = LocalNavigator.current
             Column(
