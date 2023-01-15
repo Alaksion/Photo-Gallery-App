@@ -14,4 +14,6 @@ interface AlbumRepository {
 
     suspend fun deleteAlbum(data: AlbumModel)
 
+    suspend fun updateAlbum(data: AlbumModel)
+
 }

@@ -28,12 +28,15 @@ import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import features.albums.create.presentation.CreateAlbumIntent
 import features.albums.create.presentation.CreateViewModel
+import platform.navigation.params.CreateAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
-internal object NameScreen : Screen {
+internal data class NameScreen(
+    private val type: CreateAlbumOperation
+) : Screen {
 
     @Composable
     override fun Content() {
@@ -42,7 +45,7 @@ internal object NameScreen : Screen {
 
         state.UiStateContent(stateContent = {
             StateContent(
-                name = it.name, handleIntent = model::handleIntent
+                name = it.album.name, handleIntent = model::handleIntent
             )
         }, errorState = {})
     }
@@ -89,7 +92,7 @@ internal object NameScreen : Screen {
                 )
                 WeightSpacer(weight = 1f)
                 Button(
-                    onClick = { navigator?.push(DescriptionScreen) },
+                    onClick = { navigator?.push(DescriptionScreen(type)) },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = name.isNotEmpty()
                 ) {

@@ -32,4 +32,8 @@ internal class AlbumsRepositoryImpl @Inject constructor(
         albumDataSource.delete(data)
     }
 
+    override suspend fun updateAlbum(data: AlbumModel) {
+
+    }
+
 }
