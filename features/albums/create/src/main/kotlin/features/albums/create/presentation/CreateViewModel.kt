@@ -14,7 +14,6 @@ import platform.uistate.uievent.UiEventHandler
 import platform.uistate.uievent.UiEventOwner
 import platform.uistate.uistate.UiStateHandler
 import platform.uistate.uistate.UiStateOwner
-import java.util.UUID
 import javax.inject.Inject
 
 internal sealed class CreateAlbumIntent {
@@ -24,10 +23,9 @@ internal sealed class CreateAlbumIntent {
     object ClearData : CreateAlbumIntent()
 }
 
-internal sealed class CreateAlbumEvents(val result: AlbumResult) : UiEvent {
+internal sealed class CreateAlbumEvents(val result: AlbumResult) : UiEvent() {
     class Result(
         result: AlbumResult,
-        override val eventId: UUID
     ) : CreateAlbumEvents(result)
 }
 
@@ -78,10 +76,9 @@ internal class CreateViewModel @Inject constructor(
                         clearData()
                         CreateAlbumEvents.Result(
                             AlbumResult.Success,
-                            UUID.randomUUID()
                         )
                     },
-                    onFailure = { CreateAlbumEvents.Result(AlbumResult.Error, UUID.randomUUID()) },
+                    onFailure = { CreateAlbumEvents.Result(AlbumResult.Error) },
                 )
 
                 enqueueEvent(result)

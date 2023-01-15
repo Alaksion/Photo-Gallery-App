@@ -7,6 +7,9 @@ import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import platform.injection.IODispatcher
+import platform.uistate.uievent.UiEvent
+import platform.uistate.uievent.UiEventHandler
+import platform.uistate.uievent.UiEventOwner
 import platform.uistate.uistate.UiStateHandler
 import platform.uistate.uistate.UiStateOwner
 import javax.inject.Inject
@@ -18,11 +21,18 @@ internal sealed class AlbumDetailsIntent {
     object Delete : AlbumDetailsIntent()
 }
 
+internal sealed class AlbumDetailsEvents : UiEvent() {
+    object DeleteSuccess : AlbumDetailsEvents()
+    object DeleteError : AlbumDetailsEvents()
+}
+
 @HiltViewModel
 internal class AlbumDetailsViewModel @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository,
-) : ViewModel(), UiStateOwner<AlbumDetailsState> by UiStateHandler(AlbumDetailsState()) {
+) : ViewModel(),
+    UiStateOwner<AlbumDetailsState> by UiStateHandler(AlbumDetailsState()),
+    UiEventOwner<AlbumDetailsEvents> by UiEventHandler() {
 
     fun handleIntent(intent: AlbumDetailsIntent) {
         when (intent) {
@@ -77,9 +87,17 @@ internal class AlbumDetailsViewModel @Inject constructor(
     private fun deleteAlbum() {
         viewModelScope.launch(dispatcher) {
             asyncRunCatching(showLoading = true) {
-                kotlin.runCatching {
+                val event = kotlin.runCatching {
                     repository.deleteAlbum(stateData.album)
-                }
+                }.fold(
+                    onSuccess = {
+                        AlbumDetailsEvents.DeleteSuccess
+                    },
+                    onFailure = {
+                        AlbumDetailsEvents.DeleteError
+                    }
+                )
+                enqueueEvent(event)
             }
         }
     }

@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,6 +63,8 @@ import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.extensions.header
+import platform.uicomponents.extensions.showToast
+import platform.uistate.uievent.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 
 private const val GridCellsCount = 2
@@ -75,9 +78,24 @@ internal data class AlbumDetailsScreen(
         val model = getViewModel<AlbumDetailsViewModel>()
         val state by model.uiState.collectAsState()
         val router = AlbumDetailsRouter.rememberAlbumDetailRouter()
+        val context = LocalContext.current
 
         LaunchedEffect(Unit) {
             model.handleIntent(AlbumDetailsIntent.LoadAlbumData(albumId))
+        }
+
+        UiEventEffect(eventHandler = model) { event ->
+            when (event) {
+                AlbumDetailsEvents.DeleteSuccess -> {
+                    router.handleNavigation(AlbumDetailDestination.GoBack)
+                    context.showToast("Album deleted successfully")
+                }
+
+                AlbumDetailsEvents.DeleteError -> {
+                    context.showToast("An error occurred and your album could not be deleted")
+                }
+            }
+
         }
 
         state.UiStateContent(stateContent = {
@@ -127,6 +145,7 @@ internal data class AlbumDetailsScreen(
                         onContinue = {
                             scope.launch {
                                 sheetState.hide()
+                                handleIntent(AlbumDetailsIntent.Delete)
                             }
                         }
                     )
