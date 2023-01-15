@@ -104,7 +104,7 @@ internal class CreateViewModel @Inject constructor(
                 }.fold(
                     onSuccess = {
                         CreateAlbumEvents.Result(
-                            AlbumResult.Success,
+                            AlbumResult.CreateSuccess,
                         )
                     },
                     onFailure = { CreateAlbumEvents.Result(AlbumResult.Error) },
@@ -121,9 +121,14 @@ internal class CreateViewModel @Inject constructor(
                 val event = kotlin.runCatching {
                     repository.updateAlbum(stateData.album)
                 }.fold(
-                    onSuccess = {},
-                    onFailure = {}
+                    onSuccess = {
+                        CreateAlbumEvents.Result(
+                            AlbumResult.UpdateSuccess,
+                        )
+                    },
+                    onFailure = { CreateAlbumEvents.Result(AlbumResult.Error) }
                 )
+                enqueueEvent(event)
             }
         }
     }

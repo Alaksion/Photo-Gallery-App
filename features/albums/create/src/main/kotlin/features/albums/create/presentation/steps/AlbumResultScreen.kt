@@ -21,7 +21,8 @@ internal enum class AlbumResult(
     val title: String,
     val description: String
 ) {
-    Success("Album created successfully", "You can now add your favorite photos to it"),
+    CreateSuccess("Album created successfully", "You can now add your favorite photos to it"),
+    UpdateSuccess("Album updated successfully", "New version of this album is already available"),
     Error("Something went wrong", "Please try again in few minutes");
 }
 
