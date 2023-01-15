@@ -8,6 +8,7 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import platform.database.models.models.album.AlbumModel
 import platform.database.models.models.album.CreateAlbumModel
 import platform.database.models.utils.dateFormatter
@@ -77,4 +78,7 @@ internal interface AlbumEntityDao {
 
     @Delete
     suspend fun delete(album: AlbumEntity)
+
+    @Update
+    suspend fun update(album: AlbumEntity)
 }

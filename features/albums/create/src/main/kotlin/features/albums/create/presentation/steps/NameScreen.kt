@@ -28,12 +28,16 @@ import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import features.albums.create.presentation.CreateAlbumIntent
 import features.albums.create.presentation.CreateViewModel
+import features.albums.create.presentation.extensions.toolbarTitle
+import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
-internal object NameScreen : Screen {
+internal data class NameScreen(
+    private val type: ManageAlbumOperation
+) : Screen {
 
     @Composable
     override fun Content() {
@@ -42,7 +46,7 @@ internal object NameScreen : Screen {
 
         state.UiStateContent(stateContent = {
             StateContent(
-                name = it.name, handleIntent = model::handleIntent
+                name = it.album.name, handleIntent = model::handleIntent
             )
         }, errorState = {})
     }
@@ -56,7 +60,7 @@ internal object NameScreen : Screen {
         val focus = LocalFocusManager.current
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text("Create a new album") }, navigationIcon = {
+                TopAppBar(title = { Text(type.toolbarTitle()) }, navigationIcon = {
                     IconButton(
                         onClick = { navigator?.popUntilRoot() }
                     ) {
@@ -89,7 +93,7 @@ internal object NameScreen : Screen {
                 )
                 WeightSpacer(weight = 1f)
                 Button(
-                    onClick = { navigator?.push(DescriptionScreen) },
+                    onClick = { navigator?.push(DescriptionScreen(type)) },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = name.isNotEmpty()
                 ) {

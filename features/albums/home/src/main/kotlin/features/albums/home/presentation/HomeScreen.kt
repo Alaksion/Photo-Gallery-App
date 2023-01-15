@@ -29,6 +29,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import platform.navigation.NavigationProvider
+import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
 import platform.uicomponents.components.spacers.VerticalSpacer
@@ -52,7 +53,9 @@ internal object HomeScreen : AndroidScreen() {
                     state = it,
                     goToCreateAlbum = {
                         navigator?.push(
-                            ScreenRegistry.get(NavigationProvider.Albums.Create)
+                            ScreenRegistry.get(
+                                NavigationProvider.Albums.Manage(ManageAlbumOperation.Create)
+                            )
                         )
                     },
                     goToAlbumDetail = { albumId ->

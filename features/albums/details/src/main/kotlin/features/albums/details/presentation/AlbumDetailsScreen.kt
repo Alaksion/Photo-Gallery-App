@@ -22,6 +22,7 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -161,7 +162,8 @@ internal data class AlbumDetailsScreen(
                                 scope.launch {
                                     sheetState.show()
                                 }
-                            }
+                            },
+                            edit = { handleNavigation(AlbumDetailDestination.Edit(albumId)) }
                         )
                     },
                 ) {
@@ -247,7 +249,8 @@ internal data class AlbumDetailsScreen(
     @Composable
     private fun TopBar(
         goBack: () -> Unit,
-        delete: () -> Unit
+        delete: () -> Unit,
+        edit: () -> Unit,
     ) {
         TopAppBar(
             title = { Text("Go back") },
@@ -259,6 +262,9 @@ internal data class AlbumDetailsScreen(
                 }
             },
             actions = {
+                IconButton(onClick = edit) {
+                    Icon(imageVector = Icons.Outlined.Edit, null)
+                }
                 IconButton(onClick = delete) {
                     Icon(imageVector = Icons.Outlined.Delete, null)
                 }

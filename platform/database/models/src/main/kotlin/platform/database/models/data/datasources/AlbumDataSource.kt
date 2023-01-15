@@ -20,6 +20,8 @@ interface AlbumDataSource {
 
     suspend fun delete(album: AlbumModel)
 
+    suspend fun update(album: AlbumModel)
+
 }
 
 internal class AlbumDataSourceImplementation @Inject constructor(
@@ -54,6 +56,12 @@ internal class AlbumDataSourceImplementation @Inject constructor(
     override suspend fun delete(album: AlbumModel) {
         runQuery(logger) {
             albumDao.delete(album.toAlbumEntity())
+        }
+    }
+
+    override suspend fun update(album: AlbumModel) {
+        runQuery(logger) {
+            albumDao.update(album.toAlbumEntity())
         }
     }
 

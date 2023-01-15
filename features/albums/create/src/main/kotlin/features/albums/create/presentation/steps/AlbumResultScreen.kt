@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import features.albums.create.presentation.extensions.toolbarTitle
+import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.WeightSpacer
 
@@ -20,17 +22,21 @@ internal enum class AlbumResult(
     val title: String,
     val description: String
 ) {
-    Success("Album created successfully", "You can now add your favorite photos to it"),
+    CreateSuccess("Album created successfully", "You can now add your favorite photos to it"),
+    UpdateSuccess("Album updated successfully", "New version of this album is already available"),
     Error("Something went wrong", "Please try again in few minutes");
 }
 
-internal data class AlbumResultScreen(val result: AlbumResult) : Screen {
+internal data class AlbumResultScreen(
+    private val result: AlbumResult,
+    private val type: ManageAlbumOperation
+) : Screen {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         Scaffold(
-            topBar = { TopAppBar(title = { Text("Create New Album") }) }
+            topBar = { TopAppBar(title = { Text(type.toolbarTitle()) }) }
         ) {
             val nav = LocalNavigator.current
             Column(

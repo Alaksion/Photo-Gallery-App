@@ -28,12 +28,16 @@ import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import features.albums.create.presentation.CreateAlbumIntent
 import features.albums.create.presentation.CreateViewModel
+import features.albums.create.presentation.extensions.toolbarTitle
+import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uistate.UiStateContent
 
-internal object DescriptionScreen : Screen {
+internal data class DescriptionScreen(
+    private val type: ManageAlbumOperation
+) : Screen {
 
     @Composable
     override fun Content() {
@@ -43,7 +47,7 @@ internal object DescriptionScreen : Screen {
         state.UiStateContent(
             stateContent = {
                 StateContent(
-                    description = it.description,
+                    description = it.album.description,
                     onNameChange = model::handleIntent
                 )
             },
@@ -62,7 +66,7 @@ internal object DescriptionScreen : Screen {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Create a new album") },
+                    title = { Text(type.toolbarTitle()) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
                             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)
@@ -97,7 +101,7 @@ internal object DescriptionScreen : Screen {
                 )
                 WeightSpacer(weight = 1f)
                 Button(
-                    onClick = { navigator?.push(CreateAlbumScreen) },
+                    onClick = { navigator?.push(CreateAlbumScreen(type)) },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = description.isNotEmpty()
                 ) {

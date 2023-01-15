@@ -27,8 +27,10 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import features.albums.create.presentation.CreateAlbumIntent
-import features.albums.create.presentation.CreateAlbumState
 import features.albums.create.presentation.CreateViewModel
+import features.albums.create.presentation.ManageAlbumState
+import features.albums.create.presentation.extensions.toolbarTitle
+import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
@@ -37,7 +39,9 @@ import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uistate.uievent.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 
-internal object CreateAlbumScreen : Screen {
+internal data class CreateAlbumScreen(
+    private val type: ManageAlbumOperation
+) : Screen {
 
     @Composable
     override fun Content() {
@@ -46,7 +50,7 @@ internal object CreateAlbumScreen : Screen {
         val navigator = LocalNavigator.current
 
         UiEventEffect(eventHandler = model) {
-            navigator?.push(AlbumResultScreen(it.result))
+            navigator?.push(AlbumResultScreen(it.result, type))
         }
 
         state.UiStateContent(
@@ -96,7 +100,7 @@ internal object CreateAlbumScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun CreateAlbumContent(
-        state: CreateAlbumState,
+        state: ManageAlbumState,
         handleIntent: (CreateAlbumIntent) -> Unit,
         goBack: () -> Unit,
     ) {
@@ -104,7 +108,7 @@ internal object CreateAlbumScreen : Screen {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Create New Album") },
+                    title = { Text(type.toolbarTitle()) },
                     navigationIcon = {
                         IconButton(onClick = goBack) {
                             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)
@@ -121,7 +125,7 @@ internal object CreateAlbumScreen : Screen {
                 VerticalSpacer(height = MviSampleSizes.medium)
                 ConfirmationCard(
                     label = "Album's name",
-                    description = state.name,
+                    description = state.album.name,
                     icon = Icons.Outlined.LocationOn,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -129,7 +133,7 @@ internal object CreateAlbumScreen : Screen {
                 )
                 ConfirmationCard(
                     label = "Album's description",
-                    description = state.description,
+                    description = state.album.description,
                     icon = Icons.Outlined.List,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -138,7 +142,7 @@ internal object CreateAlbumScreen : Screen {
                 WeightSpacer(weight = 1f)
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { handleIntent(CreateAlbumIntent.CreateAlbum) },
+                    onClick = { handleIntent(CreateAlbumIntent.SubmitAlbum(type)) },
                     enabled = state.isButtonEnabled
                 ) {
                     Text("Create Album")

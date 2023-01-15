@@ -6,9 +6,12 @@ import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import platform.navigation.NavigationProvider
+import platform.navigation.params.ManageAlbumOperation
 
 internal sealed class AlbumDetailDestination {
     object GoBack : AlbumDetailDestination()
+
+    data class Edit(val albumId: Int) : AlbumDetailDestination()
     data class AddPhotos(val albumId: Int) : AlbumDetailDestination()
     data class PhotoDetail(val photoId: Int) : AlbumDetailDestination()
 }
@@ -16,20 +19,29 @@ internal sealed class AlbumDetailDestination {
 internal class AlbumDetailsRouter(private val navigator: Navigator) {
 
     fun handleNavigation(
-        destinations: AlbumDetailDestination
+        destination: AlbumDetailDestination
     ) {
-        when (destinations) {
+        when (destination) {
             AlbumDetailDestination.GoBack -> navigator.pop()
             is AlbumDetailDestination.AddPhotos -> {
                 val screen = ScreenRegistry.get(
-                    NavigationProvider.Photos.PickPhotoSource(destinations.albumId)
+                    NavigationProvider.Photos.PickPhotoSource(destination.albumId)
                 )
                 navigator.push(screen)
             }
 
             is AlbumDetailDestination.PhotoDetail -> {
                 val screen = ScreenRegistry.get(
-                    NavigationProvider.Photos.PhotoDetails(destinations.photoId)
+                    NavigationProvider.Photos.PhotoDetails(destination.photoId)
+                )
+                navigator.push(screen)
+            }
+
+            is AlbumDetailDestination.Edit -> {
+                val screen = ScreenRegistry.get(
+                    NavigationProvider.Albums.Manage(
+                        ManageAlbumOperation.Edit(destination.albumId)
+                    )
                 )
                 navigator.push(screen)
             }
