@@ -33,7 +33,7 @@ internal class AlbumsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateAlbum(data: AlbumModel) {
-
+        albumDataSource.update(data)
     }
 
 }

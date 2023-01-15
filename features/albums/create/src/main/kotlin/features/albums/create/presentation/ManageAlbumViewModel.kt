@@ -8,7 +8,6 @@ import features.albums.shared.domain.model.CreateAlbumDTO
 import features.albums.shared.domain.repository.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import platform.database.models.models.album.AlbumModel
 import platform.injection.IODispatcher
 import platform.navigation.params.CreateAlbumOperation
 import platform.uistate.uievent.UiEvent
@@ -73,7 +72,7 @@ internal class CreateViewModel @Inject constructor(
         updateState {
             updateData { state ->
                 state.copy(
-                    album = AlbumModel.fixture
+                    album = EmptyAlbum
                 )
             }
         }
