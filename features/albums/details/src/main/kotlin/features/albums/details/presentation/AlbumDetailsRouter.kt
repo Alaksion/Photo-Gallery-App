@@ -9,6 +9,8 @@ import platform.navigation.NavigationProvider
 
 internal sealed class AlbumDetailDestination {
     object GoBack : AlbumDetailDestination()
+
+    data class Edit(val albumId: Int) : AlbumDetailDestination()
     data class AddPhotos(val albumId: Int) : AlbumDetailDestination()
     data class PhotoDetail(val photoId: Int) : AlbumDetailDestination()
 }
@@ -32,6 +34,10 @@ internal class AlbumDetailsRouter(private val navigator: Navigator) {
                     NavigationProvider.Photos.PhotoDetails(destinations.photoId)
                 )
                 navigator.push(screen)
+            }
+
+            is AlbumDetailDestination.Edit -> {
+
             }
         }
     }
