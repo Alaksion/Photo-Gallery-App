@@ -14,7 +14,10 @@ private const val UiStateErrorLogTag = "UiStateContentError"
 fun <T> UiState<T>.UiStateContent(
     stateContent: @Composable (T) -> Unit,
     errorState: @Composable (Throwable) -> Unit,
-    loadingState: @Composable () -> Unit = { DefaultLoadingView(modifier = androidx.compose.ui.Modifier.fillMaxSize()) },
+    loadingState: @Composable () -> Unit =
+        {
+            DefaultLoadingView(modifier = androidx.compose.ui.Modifier.fillMaxSize())
+        },
 ) {
     when (val type = this.stateType) {
         is UiStateType.Content -> stateContent(this.stateData)
