@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -41,9 +42,8 @@ import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.WeightSpacer
+import platform.uicomponents.extensions.UiStateContent
 import platform.uicomponents.sideeffects.UiEventEffect
-import platform.uistate.uistate.UiStateContent
-import platform.uistate.uistate.collectState
 
 internal data class PhotoDetailsScreen(
     private val photoId: Int
@@ -52,7 +52,7 @@ internal data class PhotoDetailsScreen(
     @Composable
     override fun Content() {
         val model = getViewModel<PhotoDetailsViewModel>()
-        val state by model.collectState()
+        val state by model.state.collectAsState()
         val navigator = LocalNavigator.current
         val context = LocalContext.current
 

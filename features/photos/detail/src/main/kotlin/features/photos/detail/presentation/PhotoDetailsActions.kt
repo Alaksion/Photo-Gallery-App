@@ -1,6 +1,6 @@
 package features.photos.detail.presentation
 
-import platform.uistate.uievent.UiEvent
+import io.github.alaksion.uievent.UiEvent
 
 internal sealed class PhotoDetailsIntent {
     data class LoadData(val photoId: Int) : PhotoDetailsIntent()
