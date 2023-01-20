@@ -65,7 +65,7 @@ import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.extensions.header
 import platform.uicomponents.extensions.showToast
-import platform.uistate.uievent.UiEventEffect
+import platform.uicomponents.sideeffects.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 
 private const val GridCellsCount = 2

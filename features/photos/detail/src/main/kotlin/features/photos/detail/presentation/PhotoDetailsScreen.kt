@@ -41,7 +41,7 @@ import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.WeightSpacer
-import platform.uistate.uievent.UiEventEffect
+import platform.uicomponents.sideeffects.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 import platform.uistate.uistate.collectState
 

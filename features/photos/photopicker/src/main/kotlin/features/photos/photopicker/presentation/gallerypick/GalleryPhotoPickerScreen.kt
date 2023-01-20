@@ -49,7 +49,7 @@ import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.HorizontalSpacer
 import platform.uicomponents.components.spacers.VerticalSpacer
-import platform.uistate.uievent.UiEventEffect
+import platform.uicomponents.sideeffects.UiEventEffect
 import platform.uistate.uistate.UiStateContent
 
 private const val MaxSelectionSize = 20
