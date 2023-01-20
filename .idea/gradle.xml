@@ -33,7 +33,6 @@
             <option value="$PROJECT_DIR$/platform/test" />
             <option value="$PROJECT_DIR$/platform/test/fixtures" />
             <option value="$PROJECT_DIR$/platform/uicomponents" />
-            <option value="$PROJECT_DIR$/platform/uistate" />
           </set>
         </option>
       </GradleProjectSettings>

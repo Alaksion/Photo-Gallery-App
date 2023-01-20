@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
       <module name="MviSample.database.models" target="17" />
+      <module name="MviSample.platform.uistate" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
