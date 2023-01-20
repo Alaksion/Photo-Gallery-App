@@ -13,7 +13,6 @@ android {
 dependencies {
 
     implementation(projects.platform.uicomponents)
-    implementation(projects.platform.uistate)
     implementation(projects.platform.database.models)
     implementation(projects.platform.navigation)
     implementation(projects.platform.injection)
@@ -32,6 +31,7 @@ dependencies {
     implementation(libs.androidX.lifecycle.viewmodel)
 
     implementation(libs.androidX.compose.activity)
+    implementation(libs.bundles.kotlinState)
 
     // Tests
     testImplementation(libs.junit)

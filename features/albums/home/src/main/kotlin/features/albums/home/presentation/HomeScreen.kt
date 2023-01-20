@@ -33,14 +33,14 @@ import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.EmptyState
 import platform.uicomponents.components.spacers.VerticalSpacer
-import platform.uistate.uistate.UiStateContent
+import platform.uicomponents.extensions.UiStateContent
 
 internal object HomeScreen : AndroidScreen() {
 
     @Composable
     override fun Content() {
         val model = getViewModel<HomeViewModel>()
-        val state by model.uiState.collectAsState()
+        val state by model.state.collectAsState()
         val navigator = LocalNavigator.current
 
         LaunchedEffect(key1 = model) {

@@ -6,15 +6,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import features.albums.create.presentation.steps.AlbumResult
 import features.albums.shared.domain.model.CreateAlbumDTO
 import features.albums.shared.domain.repository.AlbumRepository
+import io.github.alaksion.MutableUiStateOwner
+import io.github.alaksion.UiStateHandler
+import io.github.alaksion.uievent.UiEvent
+import io.github.alaksion.uievent.UiEventHandler
+import io.github.alaksion.uievent.UiEventOwnerSender
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import platform.injection.IODispatcher
 import platform.navigation.params.ManageAlbumOperation
-import platform.uistate.uievent.UiEvent
-import platform.uistate.uievent.UiEventHandler
-import platform.uistate.uievent.UiEventOwner
-import platform.uistate.uistate.UiStateHandler
-import platform.uistate.uistate.UiStateOwner
 import javax.inject.Inject
 
 internal sealed class CreateAlbumIntent {
@@ -35,8 +35,8 @@ internal sealed class CreateAlbumEvents(val result: AlbumResult) : UiEvent() {
 internal class CreateViewModel @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository
-) : ViewModel(), UiStateOwner<ManageAlbumState> by UiStateHandler(ManageAlbumState()),
-    UiEventOwner<CreateAlbumEvents> by UiEventHandler() {
+) : ViewModel(), MutableUiStateOwner<ManageAlbumState> by UiStateHandler(ManageAlbumState()),
+    UiEventOwnerSender<CreateAlbumEvents> by UiEventHandler() {
 
     fun handleIntent(intent: CreateAlbumIntent) {
         when (intent) {
@@ -50,39 +50,45 @@ internal class CreateViewModel @Inject constructor(
 
     private fun updateName(value: String) {
         updateState {
-            updateData { currentState ->
-                currentState.copy(
-                    album = currentState.album.copy(name = value)
-                )
+            updateState { updater ->
+                updater.update { currentData ->
+                    currentData.copy(
+                        album = currentData.album.copy(name = value)
+                    )
+                }
             }
         }
     }
 
     private fun updateDescription(value: String) {
         updateState {
-            updateData { currentState ->
-                currentState.copy(
-                    album = currentState.album.copy(description = value)
-                )
+            updateState { updater ->
+                updater.update { currentData ->
+                    currentData.copy(
+                        album = currentData.album.copy(description = value)
+                    )
+                }
             }
         }
     }
 
     private fun clearData() {
         updateState {
-            updateData { state ->
-                state.copy(
-                    album = EmptyAlbum
-                )
+            updateState { updater ->
+                updater.update { currentData ->
+                    currentData.copy(
+                        album = EmptyAlbum
+                    )
+                }
             }
         }
     }
 
     private fun loadAlbumData(albumId: Int) {
         viewModelScope.launch(dispatcher) {
-            asyncUpdateState {
+            asyncUpdateState { updater ->
                 val data = repository.getAlbumById(albumId)
-                updateData { state ->
+                updater.update { state ->
                     state.copy(
                         album = data.album
                     )
@@ -93,7 +99,7 @@ internal class CreateViewModel @Inject constructor(
 
     private fun createAlbum() {
         viewModelScope.launch(dispatcher) {
-            asyncRunCatching {
+            asyncCatching {
                 val result = kotlin.runCatching {
                     repository.createAlbum(
                         data = CreateAlbumDTO(
@@ -110,14 +116,14 @@ internal class CreateViewModel @Inject constructor(
                     onFailure = { CreateAlbumEvents.Result(AlbumResult.Error) },
                 )
 
-                enqueueEvent(result)
+                sendEvent(result)
             }
         }
     }
 
     private fun updateAlbum() {
         viewModelScope.launch(dispatcher) {
-            asyncRunCatching {
+            asyncCatching {
                 val event = kotlin.runCatching {
                     repository.updateAlbum(stateData.album)
                 }.fold(
@@ -128,7 +134,7 @@ internal class CreateViewModel @Inject constructor(
                     },
                     onFailure = { CreateAlbumEvents.Result(AlbumResult.Error) }
                 )
-                enqueueEvent(event)
+                sendEvent(event)
             }
         }
     }

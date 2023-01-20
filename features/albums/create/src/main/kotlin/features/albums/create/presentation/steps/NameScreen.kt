@@ -33,6 +33,7 @@ import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
+import platform.uicomponents.extensions.UiStateContent
 import platform.uistate.uistate.UiStateContent
 
 internal data class NameScreen(
@@ -42,7 +43,7 @@ internal data class NameScreen(
     @Composable
     override fun Content() {
         val model = getViewModel<CreateViewModel>()
-        val state by model.uiState.collectAsState()
+        val state by model.state.collectAsState()
 
         state.UiStateContent(stateContent = {
             StateContent(
