@@ -41,11 +41,10 @@ fun <T : UiEvent> StateFlow<List<T>>.collectEvents(
 ) {
     lifecycleOwner.lifecycleScope.launch {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-        }
-        this@collectEvents.collect { eventQueue ->
-            eventQueue.firstOrNull()?.let { event ->
-                onEventReceived(event)
+            this@collectEvents.collect { eventQueue ->
+                eventQueue.firstOrNull()?.let { event ->
+                    onEventReceived(event)
+                }
             }
         }
     }
