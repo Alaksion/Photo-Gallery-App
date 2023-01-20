@@ -34,7 +34,6 @@ import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
 import platform.uicomponents.extensions.UiStateContent
-import platform.uistate.uistate.UiStateContent
 
 internal data class NameScreen(
     private val type: ManageAlbumOperation
