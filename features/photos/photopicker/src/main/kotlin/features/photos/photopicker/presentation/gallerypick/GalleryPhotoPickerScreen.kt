@@ -49,8 +49,8 @@ import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.HorizontalSpacer
 import platform.uicomponents.components.spacers.VerticalSpacer
-import platform.uistate.uievent.UiEventEffect
-import platform.uistate.uistate.UiStateContent
+import platform.uicomponents.extensions.UiStateContent
+import platform.uicomponents.sideeffects.UiEventEffect
 
 private const val MaxSelectionSize = 20
 
@@ -64,7 +64,7 @@ internal data class GalleryPhotoPickerScreen(
         val navigator = LocalNavigator.current
         val context = LocalContext.current
         val viewModel = getViewModel<GalleryPhotoPickerViewModel>()
-        val state by viewModel.uiState.collectAsState()
+        val state by viewModel.state.collectAsState()
 
         UiEventEffect(eventHandler = viewModel) {
             when (it) {

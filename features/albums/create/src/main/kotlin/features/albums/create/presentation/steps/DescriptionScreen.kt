@@ -33,7 +33,7 @@ import platform.navigation.params.ManageAlbumOperation
 import platform.uicomponents.MviSampleSizes
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
-import platform.uistate.uistate.UiStateContent
+import platform.uicomponents.extensions.UiStateContent
 
 internal data class DescriptionScreen(
     private val type: ManageAlbumOperation
@@ -42,7 +42,7 @@ internal data class DescriptionScreen(
     @Composable
     override fun Content() {
         val model = getViewModel<CreateViewModel>()
-        val state by model.uiState.collectAsState()
+        val state by model.state.collectAsState()
 
         state.UiStateContent(
             stateContent = {

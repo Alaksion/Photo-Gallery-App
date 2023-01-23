@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import features.photos.shared.data.PhotoRepository
+import io.github.alaksion.MutableUiStateOwner
+import io.github.alaksion.UiStateHandler
+import io.github.alaksion.uievent.UiEventHandler
+import io.github.alaksion.uievent.UiEventOwnerSender
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import platform.injection.IODispatcher
-import platform.uistate.uievent.UiEventHandler
-import platform.uistate.uievent.UiEventOwner
-import platform.uistate.uistate.UiStateHandler
-import platform.uistate.uistate.UiStateOwner
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +19,8 @@ internal class GalleryPhotoPickerViewModel @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher,
     private val photoRepo: PhotoRepository
 ) : ViewModel(),
-    UiStateOwner<GalleryPhotoPickerState> by UiStateHandler(GalleryPhotoPickerState()),
-    UiEventOwner<GalleryPhotoPickerEvents> by UiEventHandler() {
+    MutableUiStateOwner<GalleryPhotoPickerState> by UiStateHandler(GalleryPhotoPickerState()),
+    UiEventOwnerSender<GalleryPhotoPickerEvents> by UiEventHandler() {
 
     fun handleIntent(intent: GalleryPhotoPickerIntent) {
         when (intent) {
@@ -30,8 +30,8 @@ internal class GalleryPhotoPickerViewModel @Inject constructor(
     }
 
     private fun addPhoto(uri: List<Uri>) {
-        updateState {
-            updateData { currentState ->
+        updateState { updater ->
+            updater.update { currentState ->
                 currentState.copy(photos = currentState.photos + uri)
             }
         }
@@ -39,15 +39,15 @@ internal class GalleryPhotoPickerViewModel @Inject constructor(
 
     private fun createPhotos(albumId: Int) {
         viewModelScope.launch(dispatcher) {
-            asyncRunCatching {
+            asyncCatching {
                 kotlin.runCatching {
                     photoRepo.addPhotos(
                         photos = stateData.photos,
                         albumId = albumId
                     )
-                    enqueueEvent(GalleryPhotoPickerEvents.Success)
+                    sendEvent(GalleryPhotoPickerEvents.Success)
                 }.onFailure {
-                    enqueueEvent(GalleryPhotoPickerEvents.Error)
+                    sendEvent(GalleryPhotoPickerEvents.Error)
                 }
             }
         }

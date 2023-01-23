@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import features.albums.shared.domain.repository.AlbumRepository
+import io.github.alaksion.MutableUiStateOwner
+import io.github.alaksion.UiStateHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import platform.injection.IODispatcher
-import platform.uistate.uistate.UiStateHandler
-import platform.uistate.uistate.UiStateOwner
 import javax.inject.Inject
 
 internal sealed class HomeIntent {
@@ -20,7 +20,7 @@ internal sealed class HomeIntent {
 internal class HomeViewModel @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher,
     private val repository: AlbumRepository,
-) : ViewModel(), UiStateOwner<HomeState> by UiStateHandler(HomeState()) {
+) : ViewModel(), MutableUiStateOwner<HomeState> by UiStateHandler(HomeState()) {
 
     fun handleIntent(intent: HomeIntent) {
         when (intent) {
@@ -32,9 +32,9 @@ internal class HomeViewModel @Inject constructor(
     private fun loadAlbums() {
         if (stateData.isInitialized.not()) {
             viewModelScope.launch(dispatcher) {
-                asyncUpdateState {
+                asyncUpdateState { updater ->
                     val albums = repository.getAlbums()
-                    updateData { currentState ->
+                    updater.update { currentState ->
                         currentState.copy(
                             isInitialized = true,
                             albums = albums
@@ -47,12 +47,12 @@ internal class HomeViewModel @Inject constructor(
 
     private fun refreshAlbums() {
         viewModelScope.launch(dispatcher) {
-            asyncUpdateState {
-                updateData { state ->
+            asyncUpdateState { updater ->
+                updater.update { state ->
                     state.copy(isRefreshing = true)
                 }
                 val albums = repository.getAlbums()
-                updateData { currentState ->
+                updater.update { currentState ->
                     currentState.copy(
                         isRefreshing = false,
                         albums = albums

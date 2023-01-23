@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import features.photos.shared.data.PhotoRepository
+import io.github.alaksion.MutableUiStateOwner
+import io.github.alaksion.UiStateHandler
+import io.github.alaksion.uievent.UiEventHandler
+import io.github.alaksion.uievent.UiEventOwnerSender
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import platform.error.InternalException
 import platform.injection.IODispatcher
-import platform.uistate.uievent.UiEventHandler
-import platform.uistate.uievent.UiEventOwner
-import platform.uistate.uistate.UiStateHandler
-import platform.uistate.uistate.UiStateOwner
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +19,8 @@ internal class PhotoDetailsViewModel @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher,
     private val photoRepository: PhotoRepository
 ) : ViewModel(),
-    UiStateOwner<PhotoDetailsState> by UiStateHandler(PhotoDetailsState()),
-    UiEventOwner<PhotoDetailsEvents> by UiEventHandler() {
+    MutableUiStateOwner<PhotoDetailsState> by UiStateHandler(PhotoDetailsState()),
+    UiEventOwnerSender<PhotoDetailsEvents> by UiEventHandler() {
     fun handleIntent(intent: PhotoDetailsIntent) {
         when (intent) {
             is PhotoDetailsIntent.LoadData -> loadData(intent.photoId)
@@ -30,9 +30,9 @@ internal class PhotoDetailsViewModel @Inject constructor(
 
     private fun loadData(photoId: Int) {
         viewModelScope.launch(dispatcher) {
-            asyncUpdateState {
+            asyncUpdateState { updater ->
                 val photo = photoRepository.getPhotoById(photoId)
-                updateData { currentState ->
+                updater.update { currentState ->
                     currentState.copy(
                         photo = photo,
                         isInitialized = true
@@ -45,7 +45,7 @@ internal class PhotoDetailsViewModel @Inject constructor(
 
     private fun deletePhoto() {
         viewModelScope.launch(dispatcher) {
-            asyncRunCatching(showLoading = false) {
+            asyncCatching(showLoading = false) {
                 val event = kotlin.runCatching {
                     photoRepository.deletePhoto(stateData.photo)
                 }.fold(
@@ -58,7 +58,7 @@ internal class PhotoDetailsViewModel @Inject constructor(
                         PhotoDetailsEvents.DeleteError(message)
                     }
                 )
-                enqueueEvent(event)
+                sendEvent(event)
             }
         }
     }

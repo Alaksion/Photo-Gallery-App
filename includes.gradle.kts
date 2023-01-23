@@ -1,5 +1,4 @@
 include(":app")
-include(":platform:uistate")
 include(":platform:uicomponents")
 include(":platform:navigation")
 include(":platform:injection")

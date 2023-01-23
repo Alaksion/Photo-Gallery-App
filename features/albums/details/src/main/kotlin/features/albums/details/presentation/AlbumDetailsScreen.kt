@@ -63,10 +63,10 @@ import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewButton
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
+import platform.uicomponents.extensions.UiStateContent
 import platform.uicomponents.extensions.header
 import platform.uicomponents.extensions.showToast
-import platform.uistate.uievent.UiEventEffect
-import platform.uistate.uistate.UiStateContent
+import platform.uicomponents.sideeffects.UiEventEffect
 
 private const val GridCellsCount = 2
 
@@ -77,7 +77,7 @@ internal data class AlbumDetailsScreen(
     @Composable
     override fun Content() {
         val model = getViewModel<AlbumDetailsViewModel>()
-        val state by model.uiState.collectAsState()
+        val state by model.state.collectAsState()
         val router = AlbumDetailsRouter.rememberAlbumDetailRouter()
         val context = LocalContext.current
 

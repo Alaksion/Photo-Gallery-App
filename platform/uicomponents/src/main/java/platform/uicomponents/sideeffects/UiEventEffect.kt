@@ -1,10 +1,14 @@
-package platform.uistate.uievent
+package platform.uicomponents.sideeffects
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import io.github.alaksion.uievent.UiEvent
+import io.github.alaksion.uievent.UiEventOwner
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -21,7 +25,7 @@ fun <T : UiEvent> UiEventEffect(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(key1 = eventHandler, key2 = lifecycleOwner) {
-        eventHandler.events.collectEvents(
+        eventHandler.eventQueue.collectEvents(
             lifecycleOwner = lifecycleOwner,
             onEventReceived = {
                 onEventReceived(it)
@@ -32,13 +36,15 @@ fun <T : UiEvent> UiEventEffect(
 }
 
 fun <T : UiEvent> StateFlow<List<T>>.collectEvents(
-    onEventReceived: (T) -> Unit,
+    onEventReceived: suspend (T) -> Unit,
     lifecycleOwner: LifecycleOwner
 ) {
     lifecycleOwner.lifecycleScope.launch {
-        this@collectEvents.collect { eventQueue ->
-            eventQueue.firstOrNull()?.let { event ->
-                onEventReceived(event)
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            this@collectEvents.collect { eventQueue ->
+                eventQueue.firstOrNull()?.let { event ->
+                    onEventReceived(event)
+                }
             }
         }
     }

@@ -33,6 +33,8 @@ room = "2.5.0-rc01"
 hilt = "2.44.2"
 voyager = "1.0.0-rc03"
 
+kotlin-state = "1.0.0-alpha04"
+
 [libraries]
 
 androidX-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidX-compose-activity" }
@@ -80,6 +82,9 @@ customPlugin-kotlinGradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugi
 
 accompanist-pullRefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist-pull-refresh" }
 
+kotlinState-uiEvent = { module = "io.github.alaksion:uievent", version.ref = "kotlin-state" }
+kotlinState-uiState = { module = "io.github.alaksion:uistate", version.ref = "kotlin-state" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -94,3 +99,4 @@ gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-
 compose-debug = ["androidX-compose-debug-tooling", "androidX-compose-debug-manifest"]
 compose-ui = ["androidX-compose-ui", "androidX-compose-graphics", "androidX-compose-tooling-preview", "androidX-compose-material3"]
 voyager = ["voyager-navigator", "voyager-transitions", "voyager-hilt", "voyager-viewModel"]
+kotlinState = ["kotlinState-uiEvent", "kotlinState-uiState"]

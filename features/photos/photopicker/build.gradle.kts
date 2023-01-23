@@ -13,12 +13,12 @@ android {
 dependencies {
 
     implementation(projects.platform.uicomponents)
-    implementation(projects.platform.uistate)
     implementation(projects.platform.database.models)
     implementation(projects.platform.navigation)
     implementation(projects.platform.injection)
     implementation(projects.features.photos.shared)
 
+    implementation(libs.bundles.kotlinState)
     // Navigation
     implementation(libs.bundles.voyager)
 

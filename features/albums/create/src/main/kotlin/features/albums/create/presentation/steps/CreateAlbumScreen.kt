@@ -36,8 +36,8 @@ import platform.uicomponents.components.errorview.DefaultErrorView
 import platform.uicomponents.components.errorview.DefaultErrorViewOptions
 import platform.uicomponents.components.spacers.VerticalSpacer
 import platform.uicomponents.components.spacers.WeightSpacer
-import platform.uistate.uievent.UiEventEffect
-import platform.uistate.uistate.UiStateContent
+import platform.uicomponents.extensions.UiStateContent
+import platform.uicomponents.sideeffects.UiEventEffect
 
 internal data class CreateAlbumScreen(
     private val type: ManageAlbumOperation
@@ -46,7 +46,7 @@ internal data class CreateAlbumScreen(
     @Composable
     override fun Content() {
         val model = getViewModel<CreateViewModel>()
-        val state by model.uiState.collectAsState()
+        val state by model.state.collectAsState()
         val navigator = LocalNavigator.current
 
         UiEventEffect(eventHandler = model) {

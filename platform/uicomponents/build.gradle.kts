@@ -12,8 +12,11 @@ android {
 dependencies {
 
     implementation(projects.platform.error)
+    implementation(projects.platform.logs)
 
     implementation(libs.androidX.core.ktx)
+    implementation(libs.bundles.kotlinState)
+    implementation(libs.androidX.lifecycle.runtime)
 
     testImplementation(libs.junit)
 

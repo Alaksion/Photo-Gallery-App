@@ -1,7 +1,7 @@
 package features.photos.photopicker.presentation.gallerypick
 
 import android.net.Uri
-import platform.uistate.uievent.UiEvent
+import io.github.alaksion.uievent.UiEvent
 
 internal sealed class GalleryPhotoPickerIntent {
     data class AddPhoto(val uris: List<Uri>) : GalleryPhotoPickerIntent()
